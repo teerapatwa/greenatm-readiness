@@ -37,6 +37,14 @@ export function db(): DatabaseSync {
   return _db;
 }
 
+/** ปิด connection — ต้องเรียกก่อนเขียนทับไฟล์ฐานข้อมูล ไม่งั้นบน Windows ถูกล็อก */
+export function closeDb() {
+  if (_db) {
+    _db.close();
+    _db = null;
+  }
+}
+
 /** ลบฐานข้อมูลแล้วสร้างใหม่จาก seed — ใช้ในสคริปต์ตรวจเท่านั้น ไม่มี route ไหนเรียก */
 export function resetDatabase() {
   if (_db) {

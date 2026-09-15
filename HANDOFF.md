@@ -25,7 +25,7 @@
 
 ```
 verify:seed   35/35     กฎบนชุดข้อมูล (แจ้งเตือน · Suggestion · คาดการณ์ · AC-01/02/03/04/26)
-verify:app   165/165    ยิง HTTP จริงในนามผู้ใช้แต่ละคน — สิทธิ์และเส้นทางการเขียน
+verify:app   182/182    ยิง HTTP จริงในนามผู้ใช้แต่ละคน — สิทธิ์และเส้นทางการเขียน
 typecheck     สะอาด
 build         สะอาด
 ```
@@ -116,13 +116,23 @@ npx next start -p 3000       # เปิด http://localhost:3000
 
 # อีกหน้าต่างหนึ่ง
 APP_URL=http://localhost:3000 npm run verify:seed   # 35/35
-APP_URL=http://localhost:3000 npm run verify:app    # 165/165
+APP_URL=http://localhost:3000 npm run verify:app    # 182/182
 ```
 
 **ล้างข้อมูลกลับเป็นค่าตั้งต้น** — ต้องปิดเซิร์ฟเวอร์ก่อน ไม่งั้นไฟล์ถูกล็อก
 ```bash
 npm run db:reset
 ```
+
+**ระหว่างเดโม ใช้ปุ่มย้อนกลับแทน** — ไม่ต้องปิดเซิร์ฟเวอร์
+เข้าเป็น **ผู้ประสานงานระบบ GreenATM** → **ศูนย์ตรวจสอบ** → ท้ายหน้า **🧪 เครื่องมือสำหรับเดโม**
+กด *สำรองตอนนี้* ก่อนเริ่มเล่น แล้ว *ย้อนกลับมาที่นี่* เมื่อเล่นจบ ·
+มีจุด `baseline` สร้างให้อัตโนมัติและลบไม่ได้ · ระบบสำรองสภาพก่อนย้อนไว้ให้ด้วย
+จึงย้อนของการย้อนได้อีกชั้น · ไฟล์เก็บที่ `data/snapshots/` (ไม่ขึ้น repo)
+
+**ไฟล์หลักฐานสำหรับสาธิต** — `sample-data/demo-files/` (7 ไฟล์ · PDF/PNG จริง เปิดได้)
+สร้างใหม่ด้วย `python scripts/make-demo-files.py` · ลำดับที่แนะนำอยู่ใน
+`sample-data/demo-files/README.md`
 
 **สร้าง seed ใหม่** (หลังแก้ `scripts/gen-seed.py`) — ต้อง `db:reset` ตามด้วย
 ```bash
@@ -215,7 +225,9 @@ greenatm-app/                   ⭐ แอปจริง
                                    ItemAdmin · TargetDots · ReviewTabs · EvidenceDelete · Shell
   scripts/gen-seed.py              สร้าง seed.json แบบกำหนดผลตายตัว
   scripts/verify-seed.mjs          35 ข้อ
-  scripts/verify-app.mjs        ⭐ 165 ข้อ ยิง HTTP จริง
+  scripts/verify-app.mjs        ⭐ 182 ข้อ ยิง HTTP จริง
+  scripts/make-demo-files.py       สร้างไฟล์หลักฐานตัวอย่างสำหรับสาธิต
+  src/lib/db/snapshot.ts           สำรอง/ย้อนฐานข้อมูลเดโม (เครื่องมือเดโม ไม่ใช่ฟีเจอร์จริง)
 ```
 
 ---

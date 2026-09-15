@@ -10,3 +10,6 @@ next-env.d.ts
 srv.log
 srv.err
 data/
+
+# จุดสำรองฐานข้อมูลเดโม — เป็นของเฉพาะเครื่อง ไม่ขึ้น repo
+data/snapshots/

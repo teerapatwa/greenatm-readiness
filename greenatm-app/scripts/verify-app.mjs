@@ -729,6 +729,78 @@ try {
     (await state("u-mod")).allAlertCounts.ownerTotal === 27,
     (await state("u-mod")).allAlertCounts.ownerTotal);
 
+  // ── เครื่องมือเดโม: สำรอง / ย้อนกลับ ─────────────────────────────────────
+  group("เครื่องมือเดโม · สำรองและย้อนฐานข้อมูล — ผู้ดูแลเท่านั้น");
+  const ownerSnap = await as("u-owner3", "/api/demo/snapshots");
+  t("เจ้าของข้อมูลดูจุดสำรอง -> 403", ownerSnap.status === 403, `ได้ ${ownerSnap.status}`);
+  const execSnap = await as("u-exec", "/api/demo/snapshots", {
+    method: "POST", body: JSON.stringify({ name: "ผู้บริหารพยายามสำรอง" }),
+  });
+  t("ผู้บริหารสร้างจุดสำรอง -> 403", execSnap.status === 403, `ได้ ${execSnap.status}`);
+
+  const listed = await as("u-mod", "/api/demo/snapshots");
+  t("ผู้ดูแลดูรายการได้", listed.status === 200, listed.body?.error);
+  t("มีจุดตั้งต้น baseline ให้ย้อนกลับเสมอ",
+    (listed.body?.snapshots ?? []).some((s) => s.name === "baseline" && s.isBaseline));
+
+  const shortName = await as("u-mod", "/api/demo/snapshots", {
+    method: "POST", body: JSON.stringify({ name: "ก" }),
+  });
+  t("ชื่อจุดสำรองสั้นเกินไป -> ปฏิเสธ", shortName.status >= 400, shortName.body?.error);
+
+  const snapName = "ทดสอบชุดตรวจ";
+  const made = await as("u-mod", "/api/demo/snapshots", {
+    method: "POST", body: JSON.stringify({ name: snapName }),
+  });
+  t("สร้างจุดสำรองได้", made.status === 201, made.body?.error);
+  t("ชื่อไทยใช้ได้", made.body?.snapshot?.name === snapName, made.body?.snapshot?.name);
+  t("ไฟล์จุดสำรองมีขนาดจริง", (made.body?.snapshot?.bytes ?? 0) > 10000, made.body?.snapshot?.bytes);
+
+  // แก้ข้อมูลจริง แล้วย้อนกลับ ต้องได้ค่าเดิมคืน
+  const snapItem = (await state("u-mod")).items.find((i) => i.targetLevel < 5);
+  const beforeTarget = snapItem.targetLevel;
+  const beforeEvidence = (await state("u-mod")).evidence.length;
+  await as("u-mod", `/api/items/${snapItem.code}`, {
+    method: "PATCH", body: JSON.stringify({ targetLevel: 5 }),
+  });
+  const addedEv = await as("u-mod", "/api/evidence", {
+    method: "POST", body: JSON.stringify({ itemCode: snapItem.code, title: "เอกสารที่จะถูกย้อนทิ้ง" }),
+  });
+  const changed = await state("u-mod");
+  t(`ข้อมูลเปลี่ยนจริงก่อนย้อน (เป้า ${beforeTarget} -> 5 · หลักฐาน ${beforeEvidence} -> ${changed.evidence.length})`,
+    changed.items.find((i) => i.code === snapItem.code).targetLevel === 5
+    && changed.evidence.length === beforeEvidence + 1);
+
+  const restored = await as("u-mod", `/api/demo/snapshots/${encodeURIComponent(snapName)}`, {
+    method: "POST",
+  });
+  t("ย้อนกลับสำเร็จ", restored.status === 200, restored.body?.error);
+  t("ระบบสำรองสภาพก่อนย้อนให้อัตโนมัติ", !!restored.body?.safetyCopy, restored.body?.safetyCopy);
+
+  const afterRestore = await state("u-mod");
+  t(`เป้ากลับเป็น ${beforeTarget}`,
+    afterRestore.items.find((i) => i.code === snapItem.code).targetLevel === beforeTarget,
+    afterRestore.items.find((i) => i.code === snapItem.code).targetLevel);
+  t(`จำนวนหลักฐานกลับเป็น ${beforeEvidence}`,
+    afterRestore.evidence.length === beforeEvidence, afterRestore.evidence.length);
+  t("อ่านข้อมูลต่อได้หลังย้อน (connection เปิดใหม่สำเร็จ)", afterRestore.items.length === 24);
+
+  const delBaseline = await as("u-mod", "/api/demo/snapshots/baseline", { method: "DELETE" });
+  t("ลบจุดตั้งต้น -> ปฏิเสธ", delBaseline.status >= 400, delBaseline.body?.error);
+  const missing = await as("u-mod", "/api/demo/snapshots/ไม่มีอยู่จริง", { method: "POST" });
+  t("ย้อนไปจุดที่ไม่มี -> ปฏิเสธ", missing.status >= 400, missing.body?.error);
+
+  // เก็บกวาดจุดสำรองที่ชุดตรวจสร้าง ให้เหลือแต่ baseline
+  for (const s of (await as("u-mod", "/api/demo/snapshots")).body.snapshots) {
+    if (!s.isBaseline) {
+      await as("u-mod", `/api/demo/snapshots/${encodeURIComponent(s.name)}`, { method: "DELETE" });
+    }
+  }
+  const cleaned = (await as("u-mod", "/api/demo/snapshots")).body.snapshots;
+  t("ลบจุดสำรองที่ชุดตรวจสร้างคืนครบ เหลือแต่ baseline",
+    cleaned.length === 1 && cleaned[0].isBaseline,
+    cleaned.map((s) => s.name).join(" "));
+
   // ── รายงาน ───────────────────────────────────────────────────────────────
   for (const grp of groups) {
     console.log(`\n── ${grp.name} ${"─".repeat(Math.max(0, 62 - grp.name.length))}`);

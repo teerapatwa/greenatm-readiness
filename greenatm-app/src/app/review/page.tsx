@@ -7,6 +7,7 @@ import { Forbidden, Shell } from "@/components/Shell";
 import { Card, StatusPill, TierChip } from "@/components/ui";
 import { TierActions } from "@/components/actions";
 import { ReviewTabs } from "@/components/ReviewTabs";
+import { DemoTools } from "@/components/DemoTools";
 
 export const dynamic = "force-dynamic";
 
@@ -190,6 +191,10 @@ export default async function ReviewPage() {
           ),
         }}
       />
+
+      <div style={{ marginTop: 24 }}>
+        <DemoTools />
+      </div>
     </Shell>
   );
 }
