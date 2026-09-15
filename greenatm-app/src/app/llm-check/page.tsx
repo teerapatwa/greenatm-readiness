@@ -13,8 +13,8 @@ type Tf6 = any;
 
 function Verdict({ state, children }: { state: "pass" | "fail" | "unknown"; children: React.ReactNode }) {
   const map = {
-    pass: { icon: "✓", color: "var(--ok)" },
-    fail: { icon: "⛔", color: "var(--late)" },
+    pass: { icon: "✓", color: "var(--accent)" },
+    fail: { icon: "⛔", color: "var(--danger)" },
     unknown: { icon: "⬜", color: "var(--muted)" },
   }[state];
   return (
@@ -111,14 +111,14 @@ export default function LlmCheckPage() {
       </div>
 
       {err && (
-        <p className="mt-4 rounded-md border border-[var(--late)] px-3 py-2 text-[var(--late)]">
+        <p className="mt-4 rounded-md border border-[var(--danger)] px-3 py-2 text-[var(--danger)]">
           เรียก API ไม่สำเร็จ: {err}
         </p>
       )}
 
       {cfgErr && (
-        <div className="mt-4 rounded-md border border-[var(--late)] p-3">
-          <p className="font-medium text-[var(--late)]">ตั้งค่ายังไม่ครบ — ยังยิงไม่ได้</p>
+        <div className="mt-4 rounded-md border border-[var(--danger)] p-3">
+          <p className="font-medium text-[var(--danger)]">ตั้งค่ายังไม่ครบ — ยังยิงไม่ได้</p>
           <p className="mt-1 text-[14px]">{cfgErr}</p>
           {Array.isArray(health?.hints ?? tf6?.hints) && (
             <ul className="mt-2 list-disc pl-5 text-[14px] text-[var(--ink2)]">
@@ -139,7 +139,7 @@ export default function LlmCheckPage() {
             <div>มี API key: <b>{health.config.hasApiKey ? "มี" : "ไม่มี"}</b></div>
             <div>
               การเข้ารหัส:{" "}
-              <b style={{ color: health.config.insecureTransport ? "var(--warn)" : "var(--ok)" }}>
+              <b style={{ color: health.config.insecureTransport ? "var(--warn)" : "var(--accent)" }}>
                 {health.config.insecureTransport ? "HTTP ธรรมดา" : "HTTPS"}
               </b>
             </div>
@@ -260,7 +260,7 @@ export default function LlmCheckPage() {
               {tf6.finalAnswer}
             </pre>
           )}
-          {tf6.error && <p className="mt-2 text-[var(--late)]">{tf6.error}</p>}
+          {tf6.error && <p className="mt-2 text-[var(--danger)]">{tf6.error}</p>}
         </section>
       )}
     </main>

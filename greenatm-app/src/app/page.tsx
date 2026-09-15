@@ -1,226 +1,298 @@
 import Link from "next/link";
 import { currentUser } from "@/lib/auth/session";
+import { hasAbility } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { Shell } from "@/components/Shell";
-import { Card, Chip, LevelDots, MilestoneStrip, VERDICT } from "@/components/ui";
+import {
+  Card, Chip, LevelDistribution, LevelSegments, MilestoneStrip, Tag, VERDICT,
+} from "@/components/ui";
+import { TargetDots } from "@/components/TargetDots";
 
 export const dynamic = "force-dynamic";
 
 /**
- * หน้าแรก — ภาพรวมตามหมวดของ วว.นบ209
+ * หน้าแรก — โครงและขนาดยึดตาม GreenATM Evidence Dashboard (standalone).html
  *
- * ลำดับบนหน้าจอตั้งใจให้ "เรื่องที่ต้องตัดสินใจ" มาก่อนตัวเลขพาดหัว (FRONTEND §5.1)
- * และหัวข้อข่าวคือ **จำนวนรายการที่ไม่ขยับ** ไม่ใช่ค่าเฉลี่ยที่ดูดีขึ้น
+ * ของทีม 5 คอลัมน์: รายการ · สถานะปัจจุบัน · ปีที่แล้ว · เป้าปีนี้ (ทีมกลาง) · คาดการณ์
+ * ที่เราเพิ่ม 2 คอลัมน์: ผู้รับผิดชอบ · timeline/milestone (ตามที่ขอไว้)
+ * และปุ่มเป้าของทีมซึ่งเดิมกดไม่ได้ ที่นี่กดได้จริงถ้ามีสิทธิ์
  */
+
+const GRID = "2.1fr 1.1fr 1fr 90px 60px 172px 70px";
+
 export default async function HomePage() {
   const u = await currentUser();
   const v = buildView(u);
   const today = v.meta.today;
+  const canSetTarget = hasAbility(u.role, "set_target_level");
+
+  const dist = [1, 2, 3, 4, 5].map((L) => v.items.filter((i) => i.achievedLevel === L).length);
 
   const decisions = [
-    ...v.items.filter((i) => i.progress >= 67 && i.verified === 0 && i.evidenceCount === 0)
-      .slice(0, 3)
-      .map((i) => ({
-        tone: "warn" as const, code: i.code,
-        text: `งานคืบหน้า ${i.progress}% แต่ไม่มีหลักฐานที่นับได้เลย — ระดับที่ยืนยันยังเป็น 0`,
-      })),
-    ...v.items.filter((i) => i.slipHistory.length >= v.settings.slip_escalate_after)
-      .map((i) => ({
-        tone: "late" as const, code: i.code,
-        text: `เลื่อนแผนครบ ${i.slipHistory.length} ครั้ง — ต้องการการตัดสินใจ ไม่ใช่การเร่ง`,
-      })),
+    ...v.items
+      .filter((i) => i.progress >= 67 && i.verified === 0 && i.evidenceCount === 0)
+      .slice(0, 2)
+      .map((i) => ({ tone: "warn" as const, code: i.code, icon: "⚠",
+        text: `งานคืบหน้า ${i.progress}% แต่ไม่มีหลักฐานที่นับได้เลย — ระดับที่ยืนยันยังเป็น 0` })),
+    ...v.items
+      .filter((i) => i.slipHistory.length >= v.settings.slip_escalate_after)
+      .map((i) => ({ tone: "danger" as const, code: i.code, icon: "⛔",
+        text: `เลื่อนแผนครบ ${i.slipHistory.length} ครั้ง — ต้องการการตัดสินใจ ไม่ใช่การเร่ง` })),
     ...(v.org.notSubmitted > 0
-      ? [{
-          tone: "warn" as const, code: "",
-          text: `${v.org.notSubmitted} รายการยังไม่ส่งข้อมูลรอบนี้ · กำหนด ${v.meta.cycleDue}`,
-        }]
+      ? [{ tone: "warn" as const, code: "", icon: "⚠",
+          text: `${v.org.notSubmitted} รายการยังไม่ส่งข้อมูลรอบนี้ · กำหนดส่ง ${v.meta.cycleDue}` }]
       : []),
   ];
 
   return (
     <Shell active="home">
-      <h1 className="text-xl font-semibold">หน้าแรก — ภาพรวมระดับ GreenATM ตามหมวด</h1>
-      <p className="mt-1 text-[13.5px] text-[var(--ink2)]">
-        {u.role === "owner"
-          ? <>เห็นภาพรวมได้ทุกหมวด แต่<b>แก้ได้เฉพาะ {v.myItems.length} รายการของกองคุณ</b> (มีป้าย “ของกองคุณ”)</>
-          : u.role === "central"
-          ? <>เห็นและตรวจได้ทุกหมวด · ค่า Verified ขยับจากการยืนยันของบทบาทนี้เท่านั้น</>
-          : <>มุมมองอ่านอย่างเดียว — ไม่มีปุ่มแก้ข้อมูลในทุกหน้า</>}
-        {" · "}<b>กดที่แถวเพื่อดู timeline และรายละเอียด</b>
-      </p>
+      {/* ── หัวหน้า ── */}
+      <div style={{ marginBottom: 20 }}>
+        <div className="ga-h1">หน้าแรก — ภาพรวมระดับ GreenATM ตามหมวดหมู่</div>
+        <div className="ga-sub">
+          จัดกลุ่มตามแบบประเมิน {v.meta.formRef} · เทียบระดับปีที่แล้ว เป้าที่ทีมกลางกำหนด
+          และคาดการณ์จากอัตราปัจจุบัน · <b>แถวสีเขียวอ่อน = เป้าปีนี้สูงกว่าปีที่แล้ว</b>
+          {u.role === "owner" && <> · แก้ได้เฉพาะ {v.myItems.length} รายการของกองคุณ</>}
+          {u.role === "executive" && <> · มุมมองอ่านอย่างเดียว ยกเว้นการตั้งเป้า</>}
+        </div>
+      </div>
 
+      {/* ── เรื่องที่ต้องตัดสินใจ มาก่อนตัวเลข ── */}
       {decisions.length > 0 && (
-        <Card tone="warn" className="mt-4">
-          <p className="text-[13px] font-bold">📋 เรื่องที่ต้องตัดสินใจ — มาก่อนตัวเลขทุกตัว</p>
-          <ul className="mt-2 space-y-1.5">
+        <div style={{ marginBottom: 20 }}>
+          <Card tone="warn" pad="16px 20px">
+            <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--warn-ink)", marginBottom: 8 }}>
+              📋 เรื่องที่ต้องตัดสินใจ — มาก่อนตัวเลขทุกตัว
+            </div>
             {decisions.map((d, i) => (
-              <li key={i} className="text-[13.5px]">
-                <span aria-hidden style={{ color: `var(--${d.tone})` }}>
-                  {d.tone === "late" ? "⛔" : "⚠"}
-                </span>{" "}
+              <div key={i} style={{ fontSize: 13, color: "var(--ink)", marginTop: 4 }}>
+                <span aria-hidden style={{ color: `var(--${d.tone})` }}>{d.icon}</span>{" "}
                 {d.code && (
-                  <Link href={`/item/${d.code}`} className="font-semibold underline">
-                    {d.code}
-                  </Link>
+                  <Link href={`/item/${d.code}`} style={{ fontWeight: 700 }}>{d.code}</Link>
                 )}{" "}
                 {d.text}
-              </li>
+              </div>
             ))}
-          </ul>
-        </Card>
+          </Card>
+        </div>
       )}
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {/* ── แถบสรุปทั้งองค์กร + การกระจายตัวของ Level ── */}
+      <div style={{ marginBottom: 22 }}>
         <Card>
-          <p className="text-[12px] text-[var(--muted)]">ไม่ขยับระดับเลยตั้งแต่ปีที่แล้ว</p>
-          <p className="text-[26px] font-bold" style={{ color: "var(--warn)" }}>
-            {v.org.stalled}<span className="text-[15px] text-[var(--muted)]">/{v.items.length}</span>
-          </p>
-          <p className="text-[11.5px] text-[var(--muted)]">นี่คือสิ่งที่ค้นพบ ค่าเฉลี่ยเป็นเพียงผลพวง</p>
-        </Card>
-        <Card>
-          <p className="text-[12px] text-[var(--muted)]">ระดับเฉลี่ยทั้งองค์กร</p>
-          <p className="text-[26px] font-bold">{v.org.meanNow.toFixed(2)}</p>
-          <p className="text-[11.5px] text-[var(--muted)]">
-            ปีที่แล้ว {v.org.meanLast.toFixed(2)} ·{" "}
-            <b style={{ color: "var(--ok)" }}>+{(v.org.meanNow - v.org.meanLast).toFixed(2)}</b>
-          </p>
-        </Card>
-        <Card>
-          <p className="text-[12px] text-[var(--muted)]">ยังไม่ส่งรอบนี้</p>
-          <p className="text-[26px] font-bold" style={{ color: "var(--late)" }}>{v.org.notSubmitted}</p>
-          <p className="text-[11.5px] text-[var(--muted)]">กำหนด {v.meta.cycleDue}</p>
-        </Card>
-        <Card>
-          <p className="text-[12px] text-[var(--muted)]">แจ้งเตือนถึงคุณ</p>
-          <p className="text-[26px] font-bold">{v.alerts.length}</p>
-          <p className="text-[11.5px] text-[var(--muted)]">
-            {u.role === "executive"
-              ? "ผู้บริหารไม่รับแจ้งเตือนรายรายการ"
-              : `จากทั้งระบบ ${v.allAlertCounts.ownerTotal + v.allAlertCounts.moderator} ฉบับ`}
-          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: 28, flexWrap: "wrap" }}>
+            <div>
+              <div className="ga-label">ข้อประเมินทั้งหมด</div>
+              <div className="ga-stat tnum">{v.items.length} ข้อ</div>
+            </div>
+            <div>
+              <div className="ga-label">Level เฉลี่ยทั้งองค์กร</div>
+              <div className="ga-stat tnum" style={{ color: "var(--accent)" }}>
+                {v.org.meanNow.toFixed(2)}
+              </div>
+              <div style={{ fontSize: 11.5, color: "var(--muted2)" }}>
+                ปีที่แล้ว {v.org.meanLast.toFixed(2)} ·{" "}
+                <b style={{ color: "var(--accent)" }}>
+                  +{(v.org.meanNow - v.org.meanLast).toFixed(2)}
+                </b>
+              </div>
+            </div>
+            <div>
+              <div className="ga-label">ไม่ขยับระดับจากปีที่แล้ว</div>
+              <div className="ga-stat tnum" style={{ color: "var(--warn)" }}>
+                {v.org.stalled}
+                <span style={{ fontSize: 15, color: "var(--muted2)" }}>/{v.items.length}</span>
+              </div>
+              <div style={{ fontSize: 11.5, color: "var(--muted2)" }}>
+                นี่คือสิ่งที่ค้นพบ ค่าเฉลี่ยเป็นผลพวง
+              </div>
+            </div>
+            <div>
+              <div className="ga-label">ยังไม่ส่งรอบนี้</div>
+              <div className="ga-stat tnum" style={{ color: "var(--danger)" }}>
+                {v.org.notSubmitted}
+              </div>
+              <div style={{ fontSize: 11.5, color: "var(--muted2)" }}>กำหนด {v.meta.cycleDue}</div>
+            </div>
+            <div>
+              <div className="ga-label">แจ้งเตือนถึงคุณ</div>
+              <div className="ga-stat tnum">{v.alerts.length}</div>
+              <div style={{ fontSize: 11.5, color: "var(--muted2)" }}>
+                {u.role === "executive" ? "ผู้บริหารไม่รับรายรายการ"
+                  : `จากทั้งระบบ ${v.allAlertCounts.moderator + v.allAlertCounts.ownerTotal} ฉบับ`}
+              </div>
+            </div>
+            <div style={{ flex: 1, minWidth: 240 }}>
+              <div className="ga-label" style={{ marginBottom: 6 }}>
+                การกระจายตัวของ Level (1–5) ทุกหมวดหมู่
+              </div>
+              <LevelDistribution counts={dist} />
+            </div>
+          </div>
         </Card>
       </div>
 
       {v.org.unowned > 0 && (
-        <Card tone="warn" className="mt-4">
-          <p className="text-[13.5px]">
-            <b>{v.org.unowned} รายการไม่มีเจ้าของข้อมูลในระบบ</b> — และ{" "}
-            <b>{v.allAlertCounts.orphan} ฉบับของแจ้งเตือนจึงไม่ถึงใครเลย</b>{" "}
-            <span className="text-[var(--ink2)]">
-              รายการที่ไม่มีเจ้าของ คือรายการที่ไม่มีใครมาอัปเดต — แสดงไว้ดีกว่ากลบด้วยผู้ใช้สมมติ
-            </span>
-          </p>
-        </Card>
+        <div style={{ marginBottom: 20 }}>
+          <Card tone="warn" pad="14px 18px">
+            <div style={{ fontSize: 13, color: "var(--warn-ink)" }}>
+              <b>{v.org.unowned} รายการไม่มีเจ้าของข้อมูลในระบบ</b> —{" "}
+              <b>{v.allAlertCounts.orphan} ฉบับของแจ้งเตือนจึงไม่ถึงใครเลย</b>
+              {hasAbility(u.role, "manage_item")
+                ? " · เปิดรายการนั้นแล้วมอบหมายผู้รับผิดชอบได้ที่หน้ารายละเอียด"
+                : " · ผู้ดูแลเป็นผู้มอบหมายผู้รับผิดชอบ"}
+            </div>
+          </Card>
+        </div>
       )}
 
+      {/* ── รายหมวด ── */}
       {v.categories.map((c) => {
         const list = v.items.filter((i) => i.category === c.num);
         const div = v.divisions.find((d) => d.id === c.divisionId);
         const mean = list.reduce((s, i) => s + i.achievedLevel, 0) / (list.length || 1);
-        return (
-          <section key={c.num} className="mt-5">
-            <div className="flex flex-wrap items-baseline justify-between gap-2">
-              <div>
-                <h2 className="text-[16px] font-semibold">หมวด {c.num} · {c.name}</h2>
-                <p className="text-[12.5px] text-[var(--ink2)]">
-                  {list.length} รายการ · {div?.name}
-                  {list.every((i) => !i.ownerUserId) && (
-                    <b style={{ color: "var(--warn)" }}> · หมวดนี้ยังไม่มีผู้ใช้เจ้าของข้อมูลในเดโม</b>
-                  )}
-                </p>
-              </div>
-              <p className="text-[12.5px] text-[var(--muted)]">
-                ระดับเฉลี่ยหมวดนี้ <b className="text-[17px] text-[var(--ink)]">{mean.toFixed(2)}</b>
-              </p>
-            </div>
+        const catDist = [1, 2, 3, 4, 5].map((L) => list.filter((i) => i.achievedLevel === L).length);
 
-            <div className="mt-2 overflow-x-auto rounded-lg border border-[var(--line)] bg-[var(--card)]">
-              <table className="w-full text-[13px]">
-                <thead className="bg-[var(--page)] text-left text-[12px] text-[var(--muted)]">
-                  <tr>
-                    <th className="px-3 py-2 font-medium">รายการ</th>
-                    <th className="px-3 py-2 font-medium">ผู้รับผิดชอบ</th>
-                    <th className="px-3 py-2 font-medium">timeline / milestone</th>
-                    <th className="px-3 py-2 font-medium">ระดับปัจจุบัน</th>
-                    <th className="px-3 py-2 text-center font-medium">ปีที่แล้ว</th>
-                    <th className="px-3 py-2 text-center font-medium">เป้าปีนี้</th>
-                    <th className="px-3 py-2 text-center font-medium">คาดการณ์ 1 ปี</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {list.map((i) => {
-                    const owner = v.users.find((x) => x.id === i.ownerUserId);
-                    return (
-                      <tr
-                        key={i.code}
-                        className="border-t border-[var(--line)] hover:bg-[var(--page)]"
-                        style={i.isMine ? { background: "rgba(31,111,74,.05)" } : undefined}
-                      >
-                        <td className="px-3 py-2.5">
-                          <Link href={`/item/${i.code}`} className="font-semibold underline">
-                            {i.code}
-                          </Link>{" "}
-                          {i.name}
-                          <span className="ml-1 inline-flex gap-1">
-                            {i.isMine && (
-                              <span className="rounded-full border px-1.5 text-[11px]"
-                                style={{ borderColor: "var(--accent)", color: "var(--accent)" }}>
-                                ของกองคุณ
-                              </span>
-                            )}
-                            {!i.ownerUserId && (
-                              <span className="rounded-full border px-1.5 text-[11px] text-[var(--muted)]"
-                                style={{ borderColor: "var(--line)" }}>
-                                ไม่มีเจ้าของในระบบ
-                              </span>
-                            )}
-                            {!i.submittedThisCycle && (
-                              <span className="rounded-full border px-1.5 text-[11px]"
-                                style={{ borderColor: "var(--late)", color: "var(--late)" }}>
-                                ยังไม่ส่ง
-                              </span>
-                            )}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2.5 text-[12.5px] text-[var(--ink2)]">
-                          {owner?.title ?? <span className="text-[var(--muted)]">—</span>}
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <MilestoneStrip milestones={i.milestones} today={today} />
-                          {i.slipHistory.length >= v.settings.slip_escalate_after && (
-                            <p className="mt-1 text-[11.5px]" style={{ color: "var(--late)" }}>
-                              ⛔ เลื่อน {i.slipHistory.length} ครั้ง
-                            </p>
-                          )}
-                        </td>
-                        <td className="px-3 py-2.5">
-                          <LevelDots achieved={i.achievedLevel} target={i.targetLevel} />
-                          <p className="mt-1 text-[11.5px] text-[var(--muted)]">
-                            ไประดับถัดไปแล้ว {i.percentWithinNextLevel}%
-                            {i.verified === 0 && " · ยืนยันด้วยหลักฐาน 0%"}
-                          </p>
-                        </td>
-                        <td className="px-3 py-2.5 text-center">{i.lastYearLevel}</td>
-                        <td className="px-3 py-2.5 text-center">{i.targetLevel}</td>
-                        <td className="px-3 py-2.5 text-center">
-                          <b>{i.forecast1.toFixed(1)}</b>
+        return (
+          <div key={c.num} style={{ marginBottom: 16 }}>
+            <Card>
+              <div style={{
+                display: "flex", justifyContent: "space-between", alignItems: "flex-start",
+                flexWrap: "wrap", gap: 10, marginBottom: 14,
+              }}>
+                <div>
+                  <div className="ga-eyebrow">หมวดหมู่ {c.num}</div>
+                  <div style={{ fontSize: 15.5, fontWeight: 800, color: "var(--ink)", marginTop: 2 }}>
+                    {c.name}
+                  </div>
+                  <div style={{ fontSize: 12, color: "var(--muted2)", marginTop: 1 }}>
+                    {div?.nameEn} · {list.length} ข้อ · {div?.name}
+                    {list.every((i) => !i.ownerUserId) && (
+                      <b style={{ color: "var(--warn)" }}> · ยังไม่มีผู้ใช้เจ้าของข้อมูลในหมวดนี้</b>
+                    )}
+                  </div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <div className="ga-label">Level เฉลี่ยหมวดนี้</div>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: "var(--ink)" }} className="tnum">
+                    {mean.toFixed(2)}
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginBottom: 16 }}>
+                <LevelDistribution counts={catDist} height={8} legend={false} />
+              </div>
+
+              {/* หัวคอลัมน์ */}
+              <div className="ga-thead" style={{
+                display: "grid", gridTemplateColumns: GRID, gap: 10, padding: "0 12px 6px",
+              }}>
+                <div>รายการ</div>
+                <div>ผู้รับผิดชอบ</div>
+                <div>timeline / milestone</div>
+                <div>สถานะปัจจุบัน</div>
+                <div>ปีที่แล้ว</div>
+                <div>เป้าปีนี้ (ทีมกลาง)</div>
+                <div>คาดการณ์</div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                {list.map((i) => {
+                  const stretch = i.targetLevel > i.lastYearLevel;
+                  const owner = v.users.find((x) => x.id === i.ownerUserId);
+                  const sug = VERDICT[i.suggestion.verdict];
+                  const note =
+                    i.slipHistory.length >= v.settings.slip_escalate_after
+                      ? { icon: "⛔", text: `เลื่อนแผน ${i.slipHistory.length} ครั้งด้วยเหตุผลเดิม — ต้องการการตัดสินใจ`, tone: "danger" }
+                      : i.evidenceCount === 0 && i.achievedLevel >= i.targetLevel
+                      ? { icon: "⚠", text: "ถึงเป้าแล้วแต่ไม่มีหลักฐานแม้ชิ้นเดียว — ยังพิสูจน์ไม่ได้", tone: "warn" }
+                      : !i.submittedThisCycle
+                      ? { icon: "⚠", text: `ยังไม่ส่งข้อมูลรอบนี้ · เหลือ ${i.daysToDue} วัน`, tone: "warn" }
+                      : null;
+
+                  return (
+                    <div key={i.code} style={{
+                      background: i.isMine ? "#f6fbf7" : stretch ? "#f2f9f4" : "var(--card)",
+                      border: `1px solid ${i.isMine ? "var(--ok-line)" : "transparent"}`,
+                      borderRadius: 8, padding: "9px 12px",
+                    }}>
+                      <div style={{
+                        display: "grid", gridTemplateColumns: GRID, gap: 10, alignItems: "center",
+                      }}>
+                        <div style={{ fontSize: 13, color: "var(--ink)" }}>
+                          <Link href={`/item/${i.code}`}><b>{i.code}</b></Link> {i.name}
+                          {stretch && <Tag tone="ok">เป้าสูงกว่าปีที่แล้ว</Tag>}
+                          {i.isMine && <Tag tone="ok">ของกองคุณ</Tag>}
+                          {!i.ownerUserId && <Tag tone="muted">ไม่มีเจ้าของ</Tag>}
+                        </div>
+
+                        <div style={{ fontSize: 11.5, color: "var(--ink2)" }}>
+                          {owner?.title ?? <span style={{ color: "var(--muted2)" }}>— ยังไม่มอบหมาย —</span>}
+                        </div>
+
+                        <div><MilestoneStrip milestones={i.milestones} today={today} /></div>
+
+                        <div>
+                          <LevelSegments achieved={i.achievedLevel} percentWithinNext={i.percentWithinNextLevel} />
+                          <div style={{ fontSize: 10.5, color: "var(--muted2)", marginTop: 3 }}>
+                            ไประดับถัดไป {i.percentWithinNextLevel}%
+                          </div>
+                        </div>
+
+                        <div style={{
+                          fontSize: 15, fontWeight: 800, color: "var(--muted2)", textAlign: "center",
+                        }} className="tnum">
+                          {i.lastYearLevel}
+                        </div>
+
+                        <div>
+                          <TargetDots code={i.code} achieved={i.achievedLevel}
+                            target={i.targetLevel} lastYear={i.lastYearLevel} editable={canSetTarget} />
+                        </div>
+
+                        <div style={{
+                          textAlign: "center", fontSize: 15, fontWeight: 800,
+                          color: i.forecast1 < i.targetLevel ? "var(--warn)" : "var(--accent)",
+                        }} className="tnum">
+                          {i.forecast1.toFixed(1)}
                           {i.forecast1 < i.targetLevel && (
-                            <p className="text-[11px]" style={{ color: "var(--warn)" }}>ต่ำกว่าเป้า</p>
+                            <div style={{ fontSize: 10, fontWeight: 600 }}>ต่ำกว่าเป้า</div>
                           )}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </section>
+                        </div>
+                      </div>
+
+                      {note && (
+                        <div style={{
+                          marginTop: 6, fontSize: 11.5, fontWeight: 600,
+                          color: note.tone === "danger" ? "var(--danger)" : "var(--warn-ink)",
+                        }}>
+                          {note.icon} {note.text}
+                        </div>
+                      )}
+
+                      {i.isMine && (
+                        <div style={{ marginTop: 6 }}>
+                          <Chip glyph={sug.glyph} label={sug.label} color={sug.color} />
+                          <span style={{ fontSize: 11.5, color: "var(--ink2)", marginLeft: 8 }}>
+                            {i.suggestion.reason}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </Card>
+          </div>
         );
       })}
 
-      <p className="mt-6 text-[12px] text-[var(--muted)]">
-        คอลัมน์ “คาดการณ์” คือการฉายภาพจากอัตราปีเดียว <b>ไม่ใช่คำมั่น</b> — ดูสมมติฐานทั้งหมดที่หน้าแนวโน้ม
+      <p style={{ fontSize: 11.5, color: "var(--muted2)", marginTop: 4 }}>
+        คอลัมน์ “คาดการณ์” คือการฉายภาพจากอัตราปีเดียว <b>ไม่ใช่คำมั่น</b> —{" "}
+        {hasAbility(u.role, "set_target_level")
+          ? "กดตัวเลขในคอลัมน์ “เป้าปีนี้” เพื่อตั้งเป้าได้เลย"
+          : "การตั้งเป้าเป็นของทีมกลางและผู้บริหาร"}
       </p>
     </Shell>
   );

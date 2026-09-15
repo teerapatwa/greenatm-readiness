@@ -358,6 +358,91 @@ export function outbox() {
 
 // ── เป้าระดับของปี (ผู้บริหาร) ───────────────────────────────────────────────
 
+/**
+ * แก้ชื่อหัวข้อและมอบหมายผู้รับผิดชอบ — ทีมกลางเท่านั้น (§5.5 "แก้ข้อมูลของกองอื่น")
+ *
+ * ผู้รับผิดชอบต้องเป็นผู้ใช้บทบาท owner ที่สังกัดกองเดียวกับรายการนั้น
+ * ไม่งั้นการมอบหมายจะสร้างสถานะที่สิทธิ์ตรวจไม่ผ่าน — คนถูกมอบหมายแต่แก้ไม่ได้
+ */
+export function updateItemMeta(
+  code: string,
+  patch: { name?: string; ownerUserId?: string | null },
+  actor: string,
+) {
+  const it = itemByCode(code);
+  if (!it) throw new Error(`ไม่พบรายการ ${code}`);
+  const changes: Record<string, [unknown, unknown]> = {};
+
+  if (patch.name !== undefined) {
+    const name = patch.name.trim();
+    if (name.length < 3) throw new Error("ชื่อหัวข้อสั้นเกินไป");
+    if (name.length > 200) throw new Error("ชื่อหัวข้อยาวเกิน 200 ตัวอักษร");
+    if (name !== it.name) {
+      db().prepare("UPDATE tracked_item SET name=? WHERE code=?").run(name, code);
+      changes.name = [it.name, name];
+    }
+  }
+
+  if (patch.ownerUserId !== undefined) {
+    const next = patch.ownerUserId;
+    if (next !== null) {
+      const u = userById(next);
+      if (!u) throw new Error(`ไม่รู้จักผู้ใช้ ${next}`);
+      if (u.role !== "owner") {
+        throw new Error(`${u.title} ไม่ใช่บทบาทเจ้าของข้อมูล จึงมอบหมายรายการให้ไม่ได้`);
+      }
+      if (u.divisionId !== it.divisionId) {
+        throw new Error(
+          `${u.title} สังกัดคนละกองกับรายการนี้ — ถ้ามอบหมายไป สิทธิ์จะตรวจไม่ผ่านและแก้ข้อมูลไม่ได้`,
+        );
+      }
+    }
+    if (next !== it.ownerUserId) {
+      db().prepare("UPDATE tracked_item SET owner_user_id=? WHERE code=?").run(next, code);
+      changes.ownerUserId = [it.ownerUserId, next];
+    }
+  }
+
+  if (Object.keys(changes).length === 0) return { changed: false, changes };
+  db().prepare("UPDATE tracked_item SET last_updated=? WHERE code=?").run(today(), code);
+  audit(actor, "update_item_meta", "tracked_item", code,
+    Object.fromEntries(Object.entries(changes).map(([k, v]) => [k, v[0]])),
+    Object.fromEntries(Object.entries(changes).map(([k, v]) => [k, v[1]])));
+  return { changed: true, changes };
+}
+
+/**
+ * ปรับระดับที่ได้ — ทีมกลางเท่านั้น และ **ต้องมีหลักฐานชั้น A/B ที่ยืนยันแล้วรองรับ**
+ * (§5.5 "on confirmed evidence, logged") · นี่คือกฎที่กันไม่ให้ระดับขยับด้วยคำกล่าวอ้าง
+ */
+export function setAchievedLevel(code: string, level: number, actor: string) {
+  const it = itemByCode(code);
+  if (!it) throw new Error(`ไม่พบรายการ ${code}`);
+  if (!Number.isInteger(level) || level < 0 || level > 5) {
+    throw new Error("ระดับต้องเป็นจำนวนเต็ม 0–5");
+  }
+  if (level > it.targetLevel) {
+    throw new Error(`ระดับ ${level} สูงกว่าเป้าปีนี้ (${it.targetLevel}) — ตั้งเป้าให้ถึงก่อน`);
+  }
+  if (level > it.achievedLevel) {
+    const confirmed = evidence().filter(
+      (e) => e.itemCode === code && (e.confirmedTier === "A" || e.confirmedTier === "B"),
+    );
+    if (confirmed.length === 0) {
+      throw new Error(
+        "ขึ้นระดับไม่ได้ — รายการนี้ยังไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้วแม้ชิ้นเดียว " +
+        "(ระดับขยับด้วยหลักฐาน ไม่ใช่ด้วยการกรอก)",
+      );
+    }
+  }
+  if (level === it.achievedLevel) return { changed: false };
+  db().prepare("UPDATE tracked_item SET achieved_level=?, last_updated=? WHERE code=?")
+    .run(level, today(), code);
+  audit(actor, "set_achieved_level", "tracked_item", code,
+    { achievedLevel: it.achievedLevel }, { achievedLevel: level });
+  return { changed: true };
+}
+
 export function setTargetLevel(code: string, target: number, actor: string) {
   const it = itemByCode(code);
   if (!it) throw new Error(`ไม่พบรายการ ${code}`);

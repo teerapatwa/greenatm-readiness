@@ -60,7 +60,7 @@ export default async function ReviewPage() {
                     <p className="mt-1 text-[13.5px]">{e.title}</p>
                     <p className="text-[12px] text-[var(--ink2)]">
                       วันที่ในเอกสาร:{" "}
-                      {e.documentDate ?? <b style={{ color: "var(--ret)" }}>ไม่พบ — ต้องให้เจ้าของข้อมูลเติมก่อน</b>}
+                      {e.documentDate ?? <b style={{ color: "var(--warn)" }}>ไม่พบ — ต้องให้เจ้าของข้อมูลเติมก่อน</b>}
                     </p>
                     {e.proposedReason && (
                       <p className="mt-1 text-[12.5px] text-[var(--ink2)]">เหตุผลของ agent: {e.proposedReason}</p>

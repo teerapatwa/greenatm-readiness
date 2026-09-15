@@ -3,7 +3,7 @@ import { currentUser } from "@/lib/auth/session";
 import { canSee } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { Forbidden, Shell } from "@/components/Shell";
-import { Card, Chip, Empty, LevelDots, MilestoneStrip, VERDICT } from "@/components/ui";
+import { Card, Chip, Empty, LevelSegments, MilestoneStrip, VERDICT } from "@/components/ui";
 import { ConfirmCard } from "@/components/actions";
 
 export const dynamic = "force-dynamic";
@@ -49,8 +49,8 @@ export default async function MyPage() {
       )}
 
       {notSubmitted.length > 0 && (
-        <Card tone="late" className="mt-4">
-          <p className="text-[13.5px] font-bold" style={{ color: "var(--late)" }}>
+        <Card tone="danger" className="mt-4">
+          <p className="text-[13.5px] font-bold" style={{ color: "var(--danger)" }}>
             มี {notSubmitted.length} รายการที่ยังไม่ส่งข้อมูลรอบนี้
           </p>
           <p className="text-[12.5px] text-[var(--ink2)]">
@@ -90,13 +90,13 @@ export default async function MyPage() {
                     <td className="px-3 py-3 text-[12.5px]">
                       {i.dueDate}
                       {!i.submittedThisCycle && (
-                        <p className="text-[11.5px]" style={{ color: i.daysToDue < 0 ? "var(--late)" : "var(--warn)" }}>
+                        <p className="text-[11.5px]" style={{ color: i.daysToDue < 0 ? "var(--danger)" : "var(--warn)" }}>
                           {i.daysToDue < 0 ? `เลย ${-i.daysToDue} วัน` : `เหลือ ${i.daysToDue} วัน`}
                         </p>
                       )}
                     </td>
                     <td className="px-3 py-3">
-                      <LevelDots achieved={i.achievedLevel} target={i.targetLevel} />
+                      <LevelSegments achieved={i.achievedLevel} percentWithinNext={i.percentWithinNextLevel} />
                       <div className="mt-1.5"><MilestoneStrip milestones={i.milestones} today={v.meta.today} /></div>
                     </td>
                     <td className="px-3 py-3">

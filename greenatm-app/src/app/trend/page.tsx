@@ -73,8 +73,8 @@ export default async function TrendPage() {
                         className="h-full rounded-sm"
                         style={{
                           width: `${(sc.byYear[sc.byYear.length - 1] / max) * 100}%`,
-                          background: sc.key === "stalled" ? "var(--late)"
-                            : sc.key === "faster" ? "var(--ok)" : "var(--accent2)",
+                          background: sc.key === "stalled" ? "var(--danger)"
+                            : sc.key === "faster" ? "var(--accent)" : "var(--teal)",
                         }}
                       />
                     </div>
@@ -111,7 +111,7 @@ export default async function TrendPage() {
         </p>
       </Card>
 
-      <Card tone="late" className="mt-4">
+      <Card tone="danger" className="mt-4">
         <h2 className="text-[14px] font-semibold">
           รายการที่ระดับไม่ขยับเลย ({t.stalled.length})
         </h2>
@@ -151,7 +151,7 @@ export default async function TrendPage() {
                     <span className="text-[12.5px]">{i.name}</span>
                     {i.stalled && (
                       <span className="ml-1 rounded-full border px-1.5 text-[11px]"
-                        style={{ borderColor: "var(--late)", color: "var(--late)" }}>
+                        style={{ borderColor: "var(--danger)", color: "var(--danger)" }}>
                         ไม่ขยับ
                       </span>
                     )}
@@ -159,7 +159,7 @@ export default async function TrendPage() {
                   <td className="px-3 py-2 text-center">{i.lastYearLevel}</td>
                   <td className="px-3 py-2 text-center">{i.achievedLevel}</td>
                   <td className="px-3 py-2 text-center">{i.targetLevel}</td>
-                  <td className="px-3 py-2 text-center" style={{ color: i.velocity <= 0 ? "var(--late)" : undefined }}>
+                  <td className="px-3 py-2 text-center" style={{ color: i.velocity <= 0 ? "var(--danger)" : undefined }}>
                     {i.velocity > 0 ? "+" : ""}{i.velocity.toFixed(2)}
                   </td>
                   <td className="px-3 py-2 text-center">{i.p3.toFixed(1)}</td>

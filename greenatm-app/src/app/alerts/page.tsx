@@ -45,7 +45,7 @@ export default async function AlertsPage() {
       <Card tone="warn" className="mt-4">
         <p className="text-[13.5px] font-bold">
           {isMod ? "คิวของผู้ดูแล (ทีมกลาง)" : `ถึงกองของคุณ`} — {v.alerts.length} ฉบับ
-          {urgent > 0 && <span style={{ color: "var(--late)" }}> · ด่วน {urgent}</span>}
+          {urgent > 0 && <span style={{ color: "var(--danger)" }}> · ด่วน {urgent}</span>}
         </p>
         <p className="mt-1 text-[12.5px] text-[var(--ink2)]">
           {isMod ? (
@@ -75,7 +75,7 @@ export default async function AlertsPage() {
               const item = v.items.find((x) => x.code === a.itemCode)!;
               return (
                 <li key={i}>
-                  <Card tone={a.verb === "ESCALATE" ? "late" : undefined}>
+                  <Card tone={a.verb === "ESCALATE" ? "danger" : undefined}>
                     <div className="flex flex-wrap items-center gap-2">
                       <code className="text-[11.5px] text-[var(--muted)]">{a.rule}</code>
                       <Chip glyph={vb.glyph} label={vb.label} color={vb.color} />
@@ -125,7 +125,7 @@ export default async function AlertsPage() {
                     <b>ถึง {v.users.find((x) => x.id === m.toDisplay)?.title ?? m.toDisplay}</b>{" "}
                     <code className="text-[11.5px] text-[var(--muted)]">{m.alertRule} · {m.itemCode}</code>
                     {m.sentAt && (
-                      <span className="ml-2 text-[12px]" style={{ color: "var(--ok)" }}>
+                      <span className="ml-2 text-[12px]" style={{ color: "var(--accent)" }}>
                         ✓ กดส่งแล้วโดย {m.sentBy}
                       </span>
                     )}

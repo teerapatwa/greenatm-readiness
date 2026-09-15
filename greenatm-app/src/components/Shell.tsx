@@ -69,7 +69,7 @@ export async function Shell({ active, children }: { active: Screen; children: Re
                 <span className="flex items-center justify-between gap-2">
                   <span>{idx + 1} · {n.label}</span>
                   {badge !== null && (
-                    <span className="rounded-full px-1.5 text-[11px] text-white" style={{ background: "var(--late)" }}>
+                    <span className="rounded-full px-1.5 text-[11px] text-white" style={{ background: "var(--danger)" }}>
                       {badge}
                     </span>
                   )}
@@ -107,7 +107,7 @@ export async function Shell({ active, children }: { active: Screen; children: Re
           </p>
           <ul className="space-y-1 px-4 text-[11.5px] leading-snug">
             {p.can.map((x) => (
-              <li key={x} style={{ color: "var(--ok)" }}>✓ <span className="text-[var(--ink2)]">{x}</span></li>
+              <li key={x} style={{ color: "var(--accent)" }}>✓ <span className="text-[var(--ink2)]">{x}</span></li>
             ))}
             {p.cannot.map((x) => (
               <li key={x} className="text-[var(--muted)]">✕ {x}</li>
@@ -137,9 +137,9 @@ export function Forbidden({ roleLabel, what }: { roleLabel: string; what: string
       <h1 className="text-xl font-semibold">ไม่มีสิทธิ์เข้าหน้านี้</h1>
       <div
         className="mt-4 rounded-lg border-2 p-4"
-        style={{ borderColor: "var(--late)" }}
+        style={{ borderColor: "var(--danger)" }}
       >
-        <p className="text-[15px] font-semibold" style={{ color: "var(--late)" }}>
+        <p className="text-[15px] font-semibold" style={{ color: "var(--danger)" }}>
           403 — บทบาท “{roleLabel}” ไม่มีสิทธิ์{what}
         </p>
         <p className="mt-2 text-[13px] text-[var(--ink2)]">

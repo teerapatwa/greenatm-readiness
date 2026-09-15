@@ -7,11 +7,12 @@ import { buildAlerts } from "@/lib/data/rules";
 import { snapshot } from "@/lib/db/queries";
 import { Shell } from "@/components/Shell";
 import {
-  Card, Chip, Empty, LevelDots, PairedFigures, SlipHistory, Timeline, TierChip, VERB, VERDICT,
+  Card, Chip, Empty, LevelSegments, SlipHistory, ThreeColumnRule, Timeline, TierChip, VERB, VERDICT,
 } from "@/components/ui";
 import { ItemPicker } from "@/components/ItemPicker";
+import { ItemAdmin } from "@/components/ItemAdmin";
 import {
-  ConfirmCard, EvidenceDateForm, EvidenceForm, ProgressForm, TargetLevelField, TierActions,
+  ConfirmCard, EvidenceDateForm, EvidenceForm, ProgressForm, TierActions,
 } from "@/components/actions";
 
 export const dynamic = "force-dynamic";
@@ -42,8 +43,8 @@ export default async function ItemPage({ params }: { params: Promise<{ code: str
       />
 
       {u.role === "owner" && !item.canWrite && (
-        <div className="mt-3 rounded-lg border-2 p-4" style={{ borderColor: "var(--late)" }}>
-          <p className="text-[15px] font-semibold" style={{ color: "var(--late)" }}>
+        <div className="mt-3 rounded-lg border-2 p-4" style={{ borderColor: "var(--danger)" }}>
+          <p className="text-[15px] font-semibold" style={{ color: "var(--danger)" }}>
             403 — รายการนี้เป็นของ{v.divisions.find((d) => d.id === item.divisionId)?.name} ไม่ใช่กองของคุณ
           </p>
           <p className="mt-1.5 text-[13px] text-[var(--ink2)]">
@@ -65,41 +66,71 @@ export default async function ItemPage({ params }: { params: Promise<{ code: str
         หมวด {item.category} · {v.divisions.find((d) => d.id === item.divisionId)?.name} ·
         ผู้รับผิดชอบ <b>{owner?.title ?? "ไม่มีเจ้าของในระบบ"}</b>
         {!item.submittedThisCycle && (
-          <span style={{ color: "var(--late)" }}> · ยังไม่ส่งข้อมูลรอบนี้</span>
+          <span style={{ color: "var(--danger)" }}> · ยังไม่ส่งข้อมูลรอบนี้</span>
         )}
       </p>
 
-      <div className="mt-4 grid gap-3 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <p className="text-[13px] font-semibold">สองตัวเลขที่ระบบนี้ไม่ยอมรวมกัน</p>
-          <div className="mt-2"><PairedFigures progress={item.progress} verified={item.verified} evidenceCount={ev.length} /></div>
-          <p className="mt-2 text-[12px] text-[var(--muted)]">
-            ตัวเลขซ้าย<b>ดันตัวเลขขวาไม่ได้เลย</b> — ค่าขวาขยับเมื่อทีมกลางยืนยันหลักฐานชั้น A/B เท่านั้น
-          </p>
-        </Card>
+      <div className="mt-4">
         <Card>
-          <p className="text-[12px] text-[var(--muted)]">ระดับที่ได้ / เป้าปีนี้</p>
-          <div className="mt-1.5"><LevelDots achieved={item.achievedLevel} target={item.targetLevel} /></div>
-          <p className="mt-2 text-[12.5px] text-[var(--ink2)]">
-            ปีที่แล้ว {item.lastYearLevel} · ไประดับ {frontier} แล้ว {item.percentWithinNextLevel}%
-          </p>
-          <p className="mt-1 text-[12.5px] text-[var(--ink2)]">
-            คาดการณ์ 3 ปี <b>{(item.velocity > 0 ? Math.min(5, item.achievedLevel + item.percentWithinNextLevel / 100 + item.velocity * 3) : item.achievedLevel + item.percentWithinNextLevel / 100).toFixed(1)}</b>
-            {" · "}ความเร็ว {item.velocity > 0 ? "+" : ""}{item.velocity.toFixed(2)}/ปี
-          </p>
-          {hasAbility(u.role, "set_target_level") && (
-            <div className="mt-2.5 border-t border-[var(--line)] pt-2.5">
-              <TargetLevelField itemCode={item.code} value={item.targetLevel} achieved={item.achievedLevel} />
-            </div>
-          )}
+          <div style={{ fontWeight: 700, color: "var(--ink)", fontSize: 14.5, marginBottom: 14 }}>
+            กติกาหัวใจ — สามคอลัมน์ที่ห้ามรวมกัน
+          </div>
+          <ThreeColumnRule
+            progress={item.progress}
+            milestoneDone={item.milestones.filter((m) => m.percentComplete === 100).length}
+            milestoneTotal={item.milestones.length}
+            evidence={ev}
+            verified={item.verified}
+          />
         </Card>
       </div>
 
-      <Card className="mt-3">
-        <p className="text-[13px] font-semibold">Suggestion จาก agent</p>
-        <div className="mt-1.5"><Chip glyph={s.glyph} label={s.label} color={s.color} /></div>
-        <p className="mt-2 text-[13.5px]">{item.suggestion.reason}</p>
-      </Card>
+      <div className="mt-3 grid gap-3 lg:grid-cols-3">
+        <Card className="lg:col-span-2">
+          <div className="ga-label">Suggestion จาก agent</div>
+          <div style={{ marginTop: 6 }}><Chip glyph={s.glyph} label={s.label} color={s.color} /></div>
+          <p style={{ marginTop: 8, fontSize: 13.5 }}>{item.suggestion.reason}</p>
+        </Card>
+        <Card>
+          <div className="ga-label">ระดับและความเร็ว</div>
+          <div style={{ marginTop: 6 }}>
+            <LevelSegments achieved={item.achievedLevel} percentWithinNext={item.percentWithinNextLevel} />
+          </div>
+          <p style={{ marginTop: 8, fontSize: 12.5, color: "var(--ink2)" }}>
+            ปีที่แล้ว {item.lastYearLevel} · ตอนนี้ {item.achievedLevel} · เป้า {item.targetLevel}
+            <br />ไประดับ {frontier} แล้ว {item.percentWithinNextLevel}%
+            <br />คาดการณ์ 3 ปี{" "}
+            <b>{(item.velocity > 0
+              ? Math.min(5, item.achievedLevel + item.percentWithinNextLevel / 100 + item.velocity * 3)
+              : item.achievedLevel + item.percentWithinNextLevel / 100).toFixed(1)}</b>
+            {" · "}ความเร็ว {item.velocity > 0 ? "+" : ""}{item.velocity.toFixed(2)}/ปี
+          </p>
+        </Card>
+      </div>
+
+      {(hasAbility(u.role, "manage_item") || hasAbility(u.role, "set_target_level")) && (
+        <div className="mt-3">
+          <Card>
+            <div style={{ fontWeight: 700, color: "var(--ink)", fontSize: 14.5, marginBottom: 12 }}>
+              แก้ข้อมูลของรายการนี้
+            </div>
+            <ItemAdmin
+              code={item.code}
+              name={item.name}
+              ownerUserId={item.ownerUserId}
+              achievedLevel={item.achievedLevel}
+              targetLevel={item.targetLevel}
+              lastYearLevel={item.lastYearLevel}
+              canManage={hasAbility(u.role, "manage_item")}
+              canSetTarget={hasAbility(u.role, "set_target_level")}
+              hasConfirmedEvidence={ev.some((e) => e.confirmedTier === "A" || e.confirmedTier === "B")}
+              candidates={v.users
+                .filter((x) => x.role === "owner" && x.divisionId === item.divisionId)
+                .map((x) => ({ id: x.id, title: x.title }))}
+            />
+          </Card>
+        </div>
+      )}
 
       {pendingHere.length > 0 && (
         <div className="mt-3 space-y-2">
@@ -150,7 +181,7 @@ export default async function ItemPage({ params }: { params: Promise<{ code: str
                   <p className="mt-1 text-[13.5px]">{e.title}</p>
                   <p className="text-[12px] text-[var(--ink2)]">
                     วันที่ในเอกสาร:{" "}
-                    {e.documentDate ?? <b style={{ color: "var(--ret)" }}>ไม่พบในตัวเอกสาร — ระบบถาม ไม่เดาจากวันอัปโหลด</b>}
+                    {e.documentDate ?? <b style={{ color: "var(--warn)" }}>ไม่พบในตัวเอกสาร — ระบบถาม ไม่เดาจากวันอัปโหลด</b>}
                   </p>
                   {e.proposedReason && (
                     <p className="mt-1 text-[12.5px] text-[var(--ink2)]">เหตุผลของ agent: {e.proposedReason}</p>

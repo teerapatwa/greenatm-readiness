@@ -16,6 +16,7 @@ export type Ability =
   | "draft_outbox"        // ร่างข้อความแจ้งเตือน
   | "send_outbox"         // กดส่งร่าง
   | "set_target_level"    // ตั้งเป้าระดับของปี
+  | "manage_item"         // แก้ชื่อหัวข้อ · มอบหมายผู้รับผิดชอบ · ปรับระดับที่ได้
   | "set_setting";        // แก้ค่าตั้งค่าระบบ
 
 export type RoleProfile = {
@@ -52,18 +53,21 @@ export const ROLES: Record<Role, RoleProfile> = {
     role: "central",
     label: "ผู้ดูแล (ทีมกลาง)",
     screens: ["home", "item", "alerts", "review", "trend"],
-    abilities: ["confirm_tier", "draft_outbox", "send_outbox", "set_setting", "enter_progress"],
+    abilities: ["confirm_tier", "draft_outbox", "send_outbox", "set_setting", "enter_progress",
+                "set_target_level", "manage_item"],
     receives: "moderator-queue",
     can: [
       "ยืนยันหรือแก้ชั้นหลักฐานพร้อมเหตุผล — ค่า Verified ขยับจากจุดนี้เท่านั้น",
       "เห็นทุกรายการทุกกอง และเห็นว่ากองไหนยังไม่ส่ง",
       "รับแจ้งเตือนเรื่องกำหนดส่ง แผนงานเลยกำหนด และการเลื่อนแผนซ้ำ",
       "ตรวจร่างข้อความใน Outbox แล้วกดส่งเอง",
+      "ตั้งเป้าระดับของปี และปรับระดับที่ได้ (ต้องมีหลักฐานยืนยันรองรับ)",
+      "แก้ชื่อหัวข้อ และมอบหมายผู้รับผิดชอบรายรายการ",
       "แก้ค่าตั้งค่าระบบ เช่น ระยะเตือนล่วงหน้า",
     ],
     cannot: [
       "ตั้งสถานะ On Track / At Risk เอง — โค้ดคำนวณ",
-      "ตั้งเป้าระดับของปี — เป็นของผู้บริหาร",
+      "ปรับระดับที่ได้โดยไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้ว",
       "อนุมัติคำตอบรอบเดือน",
       "ประกาศว่าองค์กรผ่านการประเมิน",
     ],

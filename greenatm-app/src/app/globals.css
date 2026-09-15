@@ -3,55 +3,134 @@
 @tailwind utilities;
 
 /*
-  Design tokens — FRONTEND.md §3
-  สีสถานะสองค่าถูกปรับจาก mockup เดิมเพราะวัดแล้วแยกจากกันยากเกินไป
-  (#c4453a ↔ #e07a3f วัดได้ ΔE 13.1 ต่ำกว่าพื้น 15)
-  ค่าใหม่ #d03b3b ↔ #ec835a วัดได้ 15.7 ผ่านพื้น — กฎ ไอคอน+ข้อความ ยังต้องคงไว้เสมอ
+  Design tokens — ดึงมาจาก GreenATM Evidence Dashboard (standalone).html ของทีมโดยตรง
+  (สกัด <script type="__bundler/template"> ออกมาแล้วอ่านค่าสีจาก inline style ทุกจุด)
+
+  ทีมตกลงใช้ theme นี้ จึงยึดค่าเดิมทั้งหมด ไม่ปรับรสนิยมเพิ่ม
+  ส่วนที่เราเพิ่ม (ผู้รับผิดชอบ · timeline · Suggestion · แจ้งเตือน) ใช้ token ชุดเดียวกันนี้
 */
 :root {
   color-scheme: light;
-  --page: #f6f8f5;
+
+  /* ── ตัวอักษรและพื้น ── */
+  --ink: #152922;        /* หัวข้อ · ตัวเลขเน้น */
+  --ink2: #5c6b62;       /* คำอธิบายใต้หัวข้อ */
+  --muted: #7c8a80;      /* ป้ายกำกับเล็ก */
+  --muted2: #8c9a90;     /* หัวตาราง uppercase · ตัวเลขปีที่แล้ว */
   --card: #ffffff;
-  --ink: #152922;
-  --ink2: #5c6b62;
-  --muted: #7c8a80;
-  --line: #e2e6e0;
-  --accent: #1f6f4a;   /* สีแบรนด์/chrome — chroma ต่ำ ห้ามใช้ถมเป็นสีข้อมูล */
-  --accent2: #2a78d6;  /* ตัวเลขที่นับจริง */
-  --ok: #1f8a4c;
-  --warn: #e8a020;
-  --late: #d03b3b;
-  --ret: #ec835a;
-  /* ordinal ramp ชั้นหลักฐาน A→C (สีเดียว ไล่เข้ม-อ่อน · ผ่าน validator) */
-  --tier-a: #184f95;
-  --tier-b: #2a78d6;
-  --tier-c: #86b6ef;
-  --tier-d: #898781;
+  --page: #f1f3ef;
+  --line: #e2e6e0;       /* เส้นขอบการ์ดทุกใบ */
+  --fill: #f4f6f3;       /* พื้นกล่องย่อยในการ์ด */
+  --fill2: #f7f8f6;      /* พื้นหัวตาราง */
+
+  /* ── สีแบรนด์ ── */
+  --accent: #1f8a53;
+  --accent-hover: #166b40;
+
+  /* ── สถานะ (มีสัญลักษณ์กำกับเสมอ ไม่ใช้สีเดี่ยว) ── */
+  --danger: #c0392b;
+  --danger-bg: #fbe7e4;
+  --danger-line: #f0c3bb;
+  --warn: #b8860b;
+  --warn-ink: #7a5c12;
+  --warn-bg: #fff5e0;
+  --warn-line: #f0d9a8;
+  --ok-bg: #eaf3ec;
+  --ok-line: #cfe4d5;
+  --teal: #4f8a76;
+
+  /* ── ระดับ 1–5: ไล่เข้มสีเดียว (ordinal) ตามที่ไฟล์ทีมใช้ ── */
+  --l1: #edf0ea;
+  --l2: #cfe4d5;
+  --l3: #8fc3a3;
+  --l4: #4f8a76;
+  --l5: #1f8a53;
+
+  /* ── ชั้นหลักฐาน A–D ── */
+  --tier-a: #1f8a53;
+  --tier-b: #4f8a76;
+  --tier-c: #b8860b;
+  --tier-d: #8c9a90;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --page: #0d0d0d;
-    --card: #1a1a19;
-    --ink: #ffffff;
-    --ink2: #c3c2b7;
-    --muted: #898781;
-    --line: #2c2c2a;
-    --accent2: #3987e5;
-    --tier-a: #184f95;
-    --tier-b: #3987e5;
-    --tier-c: #9ec5f4;
-  }
+* {
+  box-sizing: border-box;
 }
 
 html,
 body {
+  margin: 0;
   background: var(--page);
   color: var(--ink);
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  /*
+    ไฟล์ทีมโหลด Noto Sans Thai จาก Google Fonts — เราทำอย่างนั้นไม่ได้
+    เพราะกฎ "ห้ามใช้ CDN ภายนอก ต้องเปิดได้บนเครือข่ายปิด"
+    จึงประกาศชื่อฟอนต์ไว้: เครื่องที่มีฟอนต์นี้จะได้หน้าตาเหมือนกันเป๊ะ
+    เครื่องที่ไม่มีจะถอยไปใช้ฟอนต์ระบบ ซึ่งยังอ่านได้ปกติ
+  */
+  font-family: "Noto Sans Thai", "Noto Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-table tbody td {
+a {
+  color: var(--accent);
+}
+a:hover {
+  color: var(--accent-hover);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #c9d1c6;
+  border-radius: 4px;
+}
+
+/* ตัวเลขในตารางต้องเรียงตรงคอลัมน์ */
+.tnum {
   font-variant-numeric: tabular-nums;
+}
+
+/* ── ชิ้นส่วนที่ซ้ำทั่วหน้าจอ — ค่าตรงตามไฟล์ทีม ── */
+.ga-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px 22px;
+}
+.ga-h1 {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+}
+.ga-sub {
+  font-size: 13.5px;
+  color: var(--ink2);
+  margin-top: 4px;
+}
+.ga-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted2);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.ga-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+.ga-stat {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-top: 4px;
+}
+.ga-thead {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted2);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }

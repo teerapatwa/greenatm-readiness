@@ -50,7 +50,7 @@ const primary = `${btn} bg-[var(--accent)] text-white`;
 const ghost = `${btn} border border-[var(--line)]`;
 
 function Msg({ error, note }: { error: string | null; note: string | null }) {
-  if (error) return <p className="mt-2 text-[12.5px]" style={{ color: "var(--late)" }}>⛔ {error}</p>;
+  if (error) return <p className="mt-2 text-[12.5px]" style={{ color: "var(--danger)" }}>⛔ {error}</p>;
   if (note) return <p className="mt-2 text-[12.5px] text-[var(--ink2)]">{note}</p>;
   return null;
 }
@@ -194,8 +194,8 @@ export function ConfirmCard({ pending }: {
     ? `milestone ขั้นที่ ${pending.milestoneSeq}`
     : "ความคืบหน้าไปสู่ระดับถัดไป";
   return (
-    <div className="rounded-lg border-2 p-3.5" style={{ borderColor: "var(--accent2)" }}>
-      <p className="text-[12px] font-semibold text-[var(--accent2)]">
+    <div className="rounded-lg border-2 p-3.5" style={{ borderColor: "var(--teal)" }}>
+      <p className="text-[12px] font-semibold text-[var(--teal)]">
         รอคุณยืนยัน · ค่าจริงยังไม่เปลี่ยน
       </p>
       <p className="mt-1.5 text-[15px]">
@@ -404,41 +404,6 @@ export function SettingField({ settingKey, label, value, suffix }: {
           method: "PATCH", body: JSON.stringify({ key: settingKey, value: v }),
         }).then(() => ({ note: "บันทึกแล้ว — ผลมีทันที ไม่ต้องรีสตาร์ต" })))}>
         บันทึก
-      </button>
-      <Msg error={error} note={note} />
-    </div>
-  );
-}
-
-export function TargetLevelField({ itemCode, value, achieved }: {
-  itemCode: string; value: number; achieved: number;
-}) {
-  const { run, busy, error, note } = useAction();
-  const [v, setV] = useState(value);
-  return (
-    <div className="flex flex-wrap items-center gap-2">
-      <span className="text-[13px]">เป้าระดับของปีนี้</span>
-      <select
-        className="rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1 text-[13px]"
-        value={v} onChange={(e) => setV(Number(e.target.value))}
-      >
-        {[1, 2, 3, 4, 5].map((L) => (
-          <option key={L} value={L} disabled={L < achieved}>
-            ระดับ {L}{L < achieved ? " (ต่ำกว่าที่ได้แล้ว)" : ""}
-          </option>
-        ))}
-      </select>
-      <button className={ghost} disabled={busy || v === value}
-        onClick={() => run(async () => {
-          const res = await fetch(`/api/items/${itemCode}/target`, {
-            method: "PATCH", headers: { "content-type": "application/json" },
-            body: JSON.stringify({ targetLevel: v }),
-          });
-          const b = await res.json();
-          if (!res.ok) throw new Error([b.error, b.detail].filter(Boolean).join(" · "));
-          return { note: `ตั้งเป้าเป็นระดับ ${b.targetLevel} แล้ว` };
-        })}>
-        บันทึกเป้า
       </button>
       <Msg error={error} note={note} />
     </div>

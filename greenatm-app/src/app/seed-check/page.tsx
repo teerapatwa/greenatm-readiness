@@ -4,12 +4,12 @@ import { buildAlerts, alertCounts, progressPercent, verifiedPercent, suggestion,
 export const dynamic = "force-dynamic";
 
 const VERDICT: Record<string, { glyph: string; label: string; color: string }> = {
-  complete: { glyph: "✓", label: "เสร็จสมบูรณ์", color: "var(--ok)" },
-  nearly: { glyph: "◗", label: "ใกล้ถึงแล้ว", color: "var(--accent2)" },
+  complete: { glyph: "✓", label: "เสร็จสมบูรณ์", color: "var(--accent)" },
+  nearly: { glyph: "◗", label: "ใกล้ถึงแล้ว", color: "var(--teal)" },
   onplan: { glyph: "—", label: "ตามแผน", color: "var(--muted)" },
   needsfix: { glyph: "⚠", label: "ต้องแก้ไข", color: "var(--warn)" },
-  asked: { glyph: "?", label: "ขอข้อมูลเพิ่ม", color: "var(--ret)" },
-  escalate: { glyph: "⛔", label: "ยกระดับ", color: "var(--late)" },
+  asked: { glyph: "?", label: "ขอข้อมูลเพิ่ม", color: "var(--warn)" },
+  escalate: { glyph: "⛔", label: "ยกระดับ", color: "var(--danger)" },
 };
 
 export default function SeedCheck() {
@@ -80,7 +80,7 @@ export default function SeedCheck() {
                   <td className="py-1.5 pr-3 whitespace-nowrap">{it.code}</td>
                   <td className="py-1.5 pr-3">{it.name}</td>
                   <td className="py-1.5 pr-3 whitespace-nowrap">
-                    {owner ? owner.title : <span className="text-[var(--late)]">ไม่มีเจ้าของ</span>}
+                    {owner ? owner.title : <span className="text-[var(--danger)]">ไม่มีเจ้าของ</span>}
                   </td>
                   <td className="py-1.5 pr-3">{it.lastYearLevel}</td>
                   <td className="py-1.5 pr-3">
@@ -91,7 +91,7 @@ export default function SeedCheck() {
                   </td>
                   <td className="py-1.5 pr-3">{it.targetLevel}</td>
                   <td className="py-1.5 pr-3 text-[var(--ink2)]">{progressPercent(it)}%</td>
-                  <td className="py-1.5 pr-3 font-medium" style={{ color: "var(--accent2)" }}>
+                  <td className="py-1.5 pr-3 font-medium" style={{ color: "var(--teal)" }}>
                     {verifiedPercent(it, SEED.evidence)}%
                   </td>
                   <td className="py-1.5" style={{ color: v.color }} title={s.reason}>
@@ -115,7 +115,7 @@ export default function SeedCheck() {
             <span className="w-[80px] shrink-0 font-medium">{a.verb}</span>
             <span className="flex-1 min-w-[240px]">{a.head} — {a.body}</span>
             <span className="shrink-0 text-[var(--muted)]">
-              {a.toOwner ? "เจ้าของ" : <b className="text-[var(--late)]">ไม่มีผู้รับ</b>}
+              {a.toOwner ? "เจ้าของ" : <b className="text-[var(--danger)]">ไม่มีผู้รับ</b>}
               {a.toModerator && " + moderator"}
             </span>
           </li>

@@ -106,14 +106,22 @@ try {
     method: "PATCH", body: JSON.stringify({ tier: "A" }),
   });
   t("ผู้บริหารยืนยันชั้นหลักฐาน → 403", rTierExec.status === 403, `ได้ ${rTierExec.status}`);
-  const rTargetOwner = await as("u-owner2", `/api/items/${views["u-owner2"].myItems[0].code}/target`, {
+  const rTargetOwner = await as("u-owner2", `/api/items/${views["u-owner2"].myItems[0].code}`, {
     method: "PATCH", body: JSON.stringify({ targetLevel: 5 }),
   });
   t("เจ้าของข้อมูลตั้งเป้าระดับ → 403", rTargetOwner.status === 403, `ได้ ${rTargetOwner.status}`);
-  const rTargetMod = await as("u-mod", `/api/items/${mod.items[0].code}/target`, {
-    method: "PATCH", body: JSON.stringify({ targetLevel: 5 }),
+  const rNameOwner = await as("u-owner2", `/api/items/${views["u-owner2"].myItems[0].code}`, {
+    method: "PATCH", body: JSON.stringify({ name: "ชื่อที่เจ้าของข้อมูลพยายามแก้" }),
   });
-  t("ผู้ดูแลตั้งเป้าระดับ → 403 (เป็นของผู้บริหาร)", rTargetMod.status === 403, `ได้ ${rTargetMod.status}`);
+  t("เจ้าของข้อมูลแก้ชื่อหัวข้อ → 403", rNameOwner.status === 403, `ได้ ${rNameOwner.status}`);
+  const rOwnerAssign = await as("u-owner2", `/api/items/${views["u-owner2"].myItems[0].code}`, {
+    method: "PATCH", body: JSON.stringify({ ownerUserId: "u-owner1" }),
+  });
+  t("เจ้าของข้อมูลมอบหมายผู้รับผิดชอบ → 403", rOwnerAssign.status === 403, `ได้ ${rOwnerAssign.status}`);
+  const rExecName = await as("u-exec", `/api/items/${exec.items[0].code}`, {
+    method: "PATCH", body: JSON.stringify({ name: "ผู้บริหารพยายามแก้ชื่อ" }),
+  });
+  t("ผู้บริหารแก้ชื่อหัวข้อ → 403 (ตั้งเป้าได้ แต่แก้หัวข้อไม่ได้)", rExecName.status === 403, `ได้ ${rExecName.status}`);
 
   // ── AC-17 · ร่างแล้วไม่กดยืนยัน ค่าต้องไม่ขยับ ────────────────────────────
   group("AC-17 ⭐ · ร่างแล้วไม่กดยืนยัน — ค่าจริงต้องไม่เปลี่ยน");
@@ -277,14 +285,75 @@ try {
   });
   t("อ้าง milestone ที่ไม่มี → ปฏิเสธ", badSeq.status >= 400, `ได้ ${badSeq.status}`);
   const itemForTarget = exec.items.find((i) => i.achievedLevel > 1);
-  const lowTarget = await as("u-exec", `/api/items/${itemForTarget.code}/target`, {
+  const lowTarget = await as("u-exec", `/api/items/${itemForTarget.code}`, {
     method: "PATCH", body: JSON.stringify({ targetLevel: 1 }),
   });
   t("ตั้งเป้าต่ำกว่าระดับที่ได้แล้ว → ปฏิเสธ", lowTarget.status >= 400, `ได้ ${lowTarget.status}`);
-  const okTarget = await as("u-exec", `/api/items/${itemForTarget.code}/target`, {
+  const okTarget = await as("u-exec", `/api/items/${itemForTarget.code}`, {
     method: "PATCH", body: JSON.stringify({ targetLevel: 5 }),
   });
   t("ผู้บริหารตั้งเป้าที่ถูกต้องได้", okTarget.status === 200, okTarget.body?.error);
+
+  group("§5.5 · ทีมกลางแก้หัวข้อ · มอบหมายผู้รับผิดชอบ · ตั้งเป้า (ที่ผู้ใช้แจ้งว่าทำไม่ได้)");
+  const orphan = mod.items.find((i) => !i.ownerUserId);
+  t(`ยังมีรายการที่ไม่มีเจ้าของให้มอบหมาย (${orphan?.code})`, !!orphan);
+  const modTarget = await as("u-mod", `/api/items/${orphan.code}`, {
+    method: "PATCH", body: JSON.stringify({ targetLevel: 4 }),
+  });
+  t("ผู้ดูแลตั้งเป้าระดับได้ (ตาม PLAN §5.5)", modTarget.status === 200, modTarget.body?.error);
+  t("เป้าเปลี่ยนเป็น 4 จริง", modTarget.body?.item?.targetLevel === 4, modTarget.body?.item?.targetLevel);
+
+  const rename = await as("u-mod", `/api/items/${orphan.code}`, {
+    method: "PATCH", body: JSON.stringify({ name: orphan.name + " (ปรับชื่อโดยทีมกลาง)" }),
+  });
+  t("ผู้ดูแลแก้ชื่อหัวข้อได้", rename.status === 200, rename.body?.error);
+  t("ชื่อใหม่ถูกบันทึก", rename.body?.item?.name?.includes("ปรับชื่อโดยทีมกลาง"));
+  const tooShort = await as("u-mod", `/api/items/${orphan.code}`, {
+    method: "PATCH", body: JSON.stringify({ name: "ก" }),
+  });
+  t("ชื่อสั้นเกินไป → ปฏิเสธ", tooShort.status >= 400, `ได้ ${tooShort.status}`);
+
+  const wrongDiv = mod.users.find((x) => x.role === "owner" && x.divisionId !== orphan.divisionId);
+  const badAssign = await as("u-mod", `/api/items/${orphan.code}`, {
+    method: "PATCH", body: JSON.stringify({ ownerUserId: wrongDiv.id }),
+  });
+  t("มอบหมายให้คนจากกองอื่น → ปฏิเสธพร้อมเหตุผล", badAssign.status >= 400,
+    badAssign.body?.error);
+  t("เหตุผลบอกว่าสิทธิ์จะตรวจไม่ผ่าน", /สิทธิ์จะตรวจไม่ผ่าน/.test(badAssign.body?.error ?? ""));
+  const notOwnerRole = await as("u-mod", `/api/items/${orphan.code}`, {
+    method: "PATCH", body: JSON.stringify({ ownerUserId: "u-exec" }),
+  });
+  t("มอบหมายให้ผู้บริหาร → ปฏิเสธ", notOwnerRole.status >= 400, notOwnerRole.body?.error);
+
+  group("§5.5 · ระดับที่ได้ขยับด้วยหลักฐาน ไม่ใช่ด้วยการกรอก");
+  const noEv = mod.items.find((i) => i.evidenceCount === 0 && i.achievedLevel < 5);
+  const raiseTgt = await as("u-mod", `/api/items/${noEv.code}`, {
+    method: "PATCH", body: JSON.stringify({ targetLevel: 5 }),
+  });
+  t(`ตั้งเป้า ${noEv.code} เป็น 5 ได้`, raiseTgt.status === 200, raiseTgt.body?.error);
+  const raiseNoEv = await as("u-mod", `/api/items/${noEv.code}`, {
+    method: "PATCH", body: JSON.stringify({ achievedLevel: noEv.achievedLevel + 1 }),
+  });
+  t("ขึ้นระดับโดยไม่มีหลักฐานยืนยัน → ปฏิเสธ", raiseNoEv.status >= 400, raiseNoEv.body?.error);
+  t("เหตุผลบอกว่าต้องมีหลักฐานชั้น A/B",
+    /หลักฐานชั้น A\/B/.test(raiseNoEv.body?.error ?? ""), raiseNoEv.body?.error);
+  const withEv = (await state("u-mod")).items.find(
+    (i) => i.achievedLevel < 5 &&
+      mod.evidence.some((e) => e.itemCode === i.code && (e.confirmedTier === "A" || e.confirmedTier === "B")));
+  if (withEv) {
+    await as("u-mod", `/api/items/${withEv.code}`, {
+      method: "PATCH", body: JSON.stringify({ targetLevel: 5 }),
+    });
+    const raiseOk = await as("u-mod", `/api/items/${withEv.code}`, {
+      method: "PATCH", body: JSON.stringify({ achievedLevel: withEv.achievedLevel + 1 }),
+    });
+    t(`ขึ้นระดับ ${withEv.code} ได้เพราะมีหลักฐานยืนยันรองรับ`, raiseOk.status === 200, raiseOk.body?.error);
+    t("ระดับใหม่ถูกบันทึก", raiseOk.body?.item?.achievedLevel === withEv.achievedLevel + 1);
+  }
+  const overTarget = await as("u-mod", `/api/items/${noEv.code}`, {
+    method: "PATCH", body: JSON.stringify({ targetLevel: 2, achievedLevel: 5 }),
+  });
+  t("ระดับที่ได้สูงกว่าเป้า → ปฏิเสธ", overTarget.status >= 400, overTarget.body?.error);
 
   // ── AC-26 · ถึงเป้าแต่ไม่มีหลักฐาน ห้ามขึ้น complete ─────────────────────
   group("AC-26 ⭐ · ถึงเป้าแต่ไม่มีหลักฐาน ห้ามขึ้นว่าเสร็จสมบูรณ์");
