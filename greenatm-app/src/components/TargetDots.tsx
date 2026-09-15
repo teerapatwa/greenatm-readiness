@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { LEVEL_FILL } from "./ui";
+import { LEVEL_FILL, LEVEL_INK } from "./ui";
 
 /**
  * เป้าปีนี้ — ปุ่ม 5 ระดับ ตามที่ไฟล์ทีมออกแบบไว้ (`<button>` ต่อระดับ)
@@ -52,7 +52,7 @@ export function TargetDots({ code, achieved, target, lastYear, editable }: {
             width: 28, height: 26, borderRadius: 6, fontSize: 11.5,
             fontWeight: on ? 800 : 600,
             background: on ? LEVEL_FILL[L] : reached ? "var(--fill)" : "var(--card)",
-            color: on ? (L >= 4 ? "#fff" : "var(--ink)") : blocked ? "var(--muted2)" : "var(--ink2)",
+            color: on ? LEVEL_INK[L] : blocked ? "var(--muted2)" : "var(--ink2)",
             border: `1px solid ${on ? LEVEL_FILL[L] : "var(--line)"}`,
             display: "grid", placeItems: "center",
             fontVariantNumeric: "tabular-nums",

@@ -6,7 +6,10 @@ import type { Evidence, Item, Milestone, Verdict } from "@/lib/data/rules";
  * กฎที่คงไว้: สถานะทุกอย่างมีสัญลักษณ์กำกับ ไม่ใช้สีเพียงอย่างเดียว
  */
 
-export const LEVEL_FILL = ["#edf0ea", "#edf0ea", "#cfe4d5", "#8fc3a3", "#4f8a76", "#1f8a53"];
+/** index 0 ไม่ใช้ · index 1–5 = ordinal ramp ที่ผ่าน validator (ดู globals.css) */
+export const LEVEL_FILL = ["", "#86bd9c", "#5ea37f", "#35815d", "#1c6f4b", "#0b5333"];
+/** ตัวอักษรบนกล่องระดับ — L1–L2 หมึก · L3–L5 ขาว (คำนวณ contrast แล้ว) */
+export const LEVEL_INK = ["", "var(--ink)", "var(--ink)", "#fff", "#fff", "#fff"];
 
 export const VERDICT: Record<Verdict, { glyph: string; label: string; color: string }> = {
   complete: { glyph: "✓", label: "เสร็จสมบูรณ์", color: "#1f8a53" },
@@ -113,14 +116,14 @@ export function LevelSegments({ achieved, percentWithinNext, showPercent = false
           <div key={L} title={done ? `ได้ระดับ ${L}` : next ? `กำลังไประดับ ${L} · ${percentWithinNext}%` : `ระดับ ${L}`}
             style={{
               width: 15, height: 20, borderRadius: 3, overflow: "hidden",
-              background: done ? LEVEL_FILL[L] : "var(--l1)",
+              background: done ? LEVEL_FILL[L] : "var(--track)",
               border: `1px solid ${done ? LEVEL_FILL[L] : "var(--line)"}`,
               position: "relative",
             }}>
             {next && percentWithinNext > 0 && (
               <div style={{
                 position: "absolute", bottom: 0, left: 0, right: 0,
-                height: `${percentWithinNext}%`, background: "var(--l3)",
+                height: `${percentWithinNext}%`, background: LEVEL_FILL[Math.min(5, achieved + 1)],
               }} />
             )}
           </div>
@@ -156,7 +159,7 @@ export function LevelDistribution({ counts, height = 14, legend = true }: {
             <div key={idx} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: "var(--ink2)" }}>
               <span style={{
                 width: 9, height: 9, borderRadius: 2, background: LEVEL_FILL[idx + 1],
-                border: `1px solid ${idx === 0 ? "var(--line)" : LEVEL_FILL[idx + 1]}`, display: "inline-block",
+                border: `1px solid ${LEVEL_FILL[idx + 1]}`, display: "inline-block",
               }} />
               Level {idx + 1} ({n})
             </div>
@@ -376,7 +379,7 @@ export function MilestoneBars({ milestones, today }: { milestones: Milestone[]; 
               <span>{m.seq}. {m.name}{late && <span style={{ color: "var(--danger)" }}> ⛔</span>}</span>
               <span className="tnum" style={{ fontWeight: 700 }}>{m.percentComplete}%</span>
             </div>
-            <div style={{ height: 6, background: "var(--l1)", borderRadius: 3, overflow: "hidden" }}>
+            <div style={{ height: 6, background: "var(--track)", borderRadius: 3, overflow: "hidden" }}>
               <div style={{ height: "100%", width: `${m.percentComplete}%`, background: fill }} />
             </div>
             <div style={{ fontSize: 11, color: "var(--muted2)", marginTop: 3 }}>

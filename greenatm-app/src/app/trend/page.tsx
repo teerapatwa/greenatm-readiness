@@ -68,7 +68,7 @@ export default async function TrendPage() {
                     </td>
                   ))}
                   <td style={{ padding: "10px 12px" }}>
-                    <div style={{ height: 8, width: "100%", borderRadius: 3, background: "var(--l1)" }}>
+                    <div style={{ height: 8, width: "100%", borderRadius: 3, background: "var(--track)" }}>
                       <div
                         style={{
                           height: "100%", borderRadius: 3,

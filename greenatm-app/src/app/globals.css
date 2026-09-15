@@ -39,12 +39,25 @@
   --ok-line: #cfe4d5;
   --teal: #4f8a76;
 
-  /* ── ระดับ 1–5: ไล่เข้มสีเดียว (ordinal) ตามที่ไฟล์ทีมใช้ ── */
-  --l1: #edf0ea;
-  --l2: #cfe4d5;
-  --l3: #8fc3a3;
-  --l4: #4f8a76;
-  --l5: #1f8a53;
+  /*
+    ── พื้นรางของแถบ — ไม่ใช่สีข้อมูล ──
+    ค่านี้มาจากไฟล์ทีม ซึ่งใช้เป็น background ของแถบความคืบหน้า
+    แยกชื่อไว้เพราะเคยเผลอเอาไปใช้เป็นสี Level 1 แล้ว Level 1 กลายเป็นมองไม่เห็น
+  */
+  --track: #edf0ea;
+
+  /*
+    ── ระดับ 1–5: ordinal ramp สีเดียว ไล่อ่อน→เข้ม ──
+    ตรวจด้วย dataviz validate_palette.js --ordinal ผ่านครบ 4 ข้อ:
+      lightness monotone · adjacent ΔL >= 0.06 · light end 2.09:1 vs surface · hue spread 3°
+    ปลายอ่อนต้องไม่จางกว่านี้ ไม่งั้นสู้พื้นการ์ดสีขาวไม่ได้
+    ตัวอักษรบนกล่อง: L1–L2 ใช้สีหมึก · L3–L5 ใช้สีขาว (คำนวณ contrast แล้วทุกขั้น)
+  */
+  --l1: #86bd9c;
+  --l2: #5ea37f;
+  --l3: #35815d;
+  --l4: #1c6f4b;
+  --l5: #0b5333;
 
   /* ── ชั้นหลักฐาน A–D ── */
   --tier-a: #1f8a53;
@@ -227,7 +240,7 @@ a:hover {
 }
 .ga-row {
   padding: 13px 18px;
-  border-top: 1px solid var(--l1);
+  border-top: 1px solid var(--track);
   align-items: center;
   font-size: 13px;
 }
