@@ -1,0 +1,12 @@
+node_modules
+.next
+out
+.env
+.env.local
+*.sqlite
+sample-data/uploads/
+*.tsbuildinfo
+next-env.d.ts
+srv.log
+srv.err
+data/

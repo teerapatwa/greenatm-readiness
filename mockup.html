@@ -1,0 +1,555 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mockup สำหรับพิตช์ · GreenATM Evidence &amp; Readiness Platform</title><style>
+:root{--page:#f9f9f7;--card:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+--grid:#e1e0d9;--line:rgba(11,11,11,.10);--accent:#2a78d6;
+--a:#184f95;--b:#2a78d6;--c:#86b6ef;--d:#898781;
+--ok:#0ca30c;--risk:#fab219;--late:#d03b3b;--ret:#ec835a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);
+font:15px/1.6 "Noto Sans Thai","Leelawadee UI",Tahoma,system-ui,sans-serif}
+.mock{background:#2b2a26;color:#fff;font-size:12.5px;padding:6px 16px;text-align:center}
+.mock b{color:#fab219}
+.demo{position:sticky;top:0;z-index:50;background:#12305c;color:#eaf1fb;padding:9px 16px;
+display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-bottom:2px solid #0a1f3d}
+.demo .st{font-weight:700;font-size:13px;background:#eaf1fb;color:#12305c;border-radius:999px;padding:2px 10px}
+.demo .tx{flex:1;font-size:13.5px;min-width:250px}.demo .tx b{color:#ffd98a}
+.demo button{background:#eaf1fb;color:#12305c;border:0;border-radius:7px;padding:5px 13px;font:inherit;font-weight:700;cursor:pointer}
+.demo button:disabled{opacity:.35;cursor:not-allowed}
+.demo .ghostb{background:transparent;color:#eaf1fb;border:1px solid #4a6a9c;font-weight:400}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:9px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.logo{font-weight:700}.spacer{flex:1}
+select,button{font:inherit;background:var(--card);color:var(--ink);border:1px solid var(--grid);border-radius:7px;padding:5px 11px;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.mini{font-size:12.5px;padding:3px 9px}.ghost{color:var(--ink2)}
+.prim{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.warn{background:#fdf6e3;border-bottom:1px solid #f0e2b8;color:#6b5514;font-size:13px;padding:5px 18px;text-align:center}
+.down{background:#fbe9e9;border-bottom:1px solid #f0c4c4;color:#a02020;font-size:13px;padding:5px 18px;text-align:center;font-weight:700}
+.wrap{display:flex;min-height:72vh}
+nav{width:200px;background:var(--card);border-right:1px solid var(--line);padding:12px 0;flex:none}
+nav a{display:block;padding:8px 18px;color:var(--ink2);text-decoration:none;font-size:14px;cursor:pointer;border-left:3px solid transparent}
+nav a:hover{background:var(--page)}
+nav a.on{color:var(--ink);font-weight:700;border-left-color:var(--accent);background:var(--page)}
+nav a.off{opacity:.25;cursor:not-allowed;text-decoration:line-through}
+main{flex:1;padding:18px 22px;max-width:1180px}
+h1{font-size:21px;margin:0 0 4px}h2{font-size:18px;margin:0}
+h3{font-size:13px;color:var(--ink2);margin:0 0 9px;font-weight:700}
+.sub{color:var(--ink2);font-size:13px}.dim{color:var(--muted)}.sm{font-size:12.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-bottom:13px}
+.dbox{border:2px solid var(--risk);border-radius:10px;background:#fdf9ee;padding:11px 14px;margin-bottom:15px}
+.dbox h3{color:#6b5514}
+.drow{display:flex;gap:10px;align-items:center;padding:6px 0;border-top:1px solid #f0e2b8}
+.drow:first-of-type{border-top:0}.dic{width:20px}.dtx{flex:1;font-size:13.5px}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:13.5px}
+th,td{border-bottom:1px solid var(--grid);padding:7px 9px;text-align:left;vertical-align:middle}
+th{font-size:12.5px;color:var(--ink2);border-bottom:2px solid var(--grid)}
+.num-c{text-align:right;font-variant-numeric:tabular-nums}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+.chip{display:inline-flex;gap:4px;align-items:center;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+.s-ok{background:#e6f4e6;color:#046604}.s-no{background:#fbe9e9;color:#a02020}
+.s-part{background:#fdf2d8;color:#6b5514}
+.tier{display:inline-flex;gap:4px;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.t-A{background:var(--a)}.t-B{background:var(--b)}.t-C{background:var(--c);color:#12314f}
+.t-D{background:var(--d)}.t-STALE{background:var(--ret);color:#3a1a0a}.t-ASK{background:#6b5514}
+/* level ladder */
+.ladder{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:13px}
+.lrow{display:flex;align-items:center;gap:11px;margin:7px 0}
+.lname{width:62px;font-weight:700;font-size:13.5px}
+.ltrack{flex:1;height:26px;background:var(--grid);border-radius:6px;position:relative;overflow:hidden}
+.lfill{height:100%;background:var(--accent);transition:width .55s ease}
+.lfill.pass{background:var(--ok)}.lfill.fail{background:var(--late)}
+.lboost{height:100%;background:repeating-linear-gradient(45deg,#fab219,#fab219 5px,#f6c454 5px,#f6c454 10px);
+position:absolute;top:0;transition:all .55s ease}
+.lmark{position:absolute;top:-3px;bottom:-3px;width:2px;background:#0b0b0b;left:80%}
+.lval{width:118px;text-align:right;font-variant-numeric:tabular-nums;font-size:13.5px}
+.lval b{font-size:16px}
+.lstat{width:86px;text-align:right}
+.hero{font-size:15px;margin:3px 0 10px}
+.hero b{font-size:27px;color:var(--accent)}
+.cliff{border:2px solid var(--risk);background:#fdf9ee;border-radius:10px;padding:12px 14px;margin:13px 0}
+.cliff h3{color:#6b5514}
+.lv{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--grid)}
+.lv:first-of-type{border-top:0}
+.lvn{width:58px;font-weight:700;font-size:13px}
+.lvo{flex:1;font-size:12.8px;color:var(--ink2);line-height:1.55}
+.lvp{width:96px;text-align:right;font-variant-numeric:tabular-nums;font-size:13px}
+.zeroed{color:var(--late);font-weight:700}
+.ev{border-top:1px solid var(--grid);padding:8px 0}.ev:first-of-type{border-top:0}
+.evh{display:flex;gap:7px;align-items:center;font-size:13px}
+.evn{font-size:12.5px;color:var(--ink2)}.evr{font-size:12.5px;color:var(--muted);margin:2px 0 6px}
+.ok-tag{color:#046604;font-size:12px;font-weight:700}
+.empty{padding:15px;text-align:center;color:var(--muted);font-size:13px}
+/* chat */
+.chat{display:flex;flex-direction:column;gap:11px;min-height:330px;padding:4px 0 10px}
+.msg{max-width:80%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.65}
+.m-ai{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:3px}
+.m-me{background:#e7f0fb;border:1px solid #c9ddf5;align-self:flex-end;border-bottom-right-radius:3px}
+.m-sys{align-self:center;font-size:12.5px;color:var(--muted)}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:8px}
+.ccard.hi{border:2px solid var(--accent);background:#f4f9ff}
+.ccard h4{margin:0 0 7px;font-size:13px;color:var(--ink2)}
+.delta{display:flex;gap:10px;align-items:center;font-size:19px;font-weight:700;margin:5px 0}
+.delta .old{color:var(--muted);text-decoration:line-through;font-size:16px}
+.pending{font-size:12.5px;color:#6b5514;background:#fdf2d8;border-radius:6px;padding:5px 9px;margin:7px 0}
+.gap{display:flex;gap:7px;font-size:13px;padding:4px 0;align-items:flex-start}
+.composer{display:flex;gap:8px;border-top:1px solid var(--grid);padding-top:10px}
+.composer input{flex:1;font:inherit;border:1px solid var(--grid);border-radius:8px;padding:8px 11px;background:var(--card)}
+.drawer{background:#1f1e1b;color:#e8e6df;border-radius:10px;padding:13px 15px;margin-top:13px}
+.drawer .dh{font-weight:700;margin-bottom:7px}.drawer .dim{color:#9a978c;font-weight:400;font-size:12.5px}
+pre{margin:0;font:12.5px/1.75 ui-monospace,Consolas,monospace;white-space:pre-wrap;color:#cfe3ff}
+.drawer .note{color:#9a978c;margin-top:8px;font-size:12.5px}
+.drawer code{background:#33312c;padding:1px 5px;border-radius:4px}
+.reg{border:2px solid var(--risk);border-radius:10px;padding:11px 13px;background:#fdf9ee;margin-top:13px}
+.reg h3{color:#6b5514}
+.tabs{display:flex;gap:6px;margin-bottom:11px;flex-wrap:wrap}
+.tabs button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+footer{padding:13px 22px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line)}
+@media(max-width:900px){nav{display:none}}
+</style></head><body>
+
+<div class="mock">MOCKUP สำหรับพิตช์ — <b>ไม่ใช่แอปจริง · ไม่มี backend · ไม่เรียกโมเดล</b> ·
+หัวข้อ · คะแนน · objective = <b>ของจริงจากเอกสาร CANSO</b> · คะแนนที่ทำได้ · หลักฐาน = สมมติ</div>
+
+<div class="demo">
+  <span class="st" id="dstep">เดโม 0/8</span>
+  <span class="tx" id="dtext">กด <b>เริ่มเดโม</b> เพื่อเดินตามสคริปต์ 3 นาที · หรือกดเมนูซ้ายดูเอง</span>
+  <button class="ghostb" id="dprev" onclick="demoPrev()">◀</button>
+  <button id="dnext" onclick="demoNext()">เริ่มเดโม ▶</button>
+  <button class="ghostb" onclick="demoReset()">รีเซ็ต</button>
+</div>
+
+<header><span class="logo">⬤ GreenATM Readiness</span>
+<select id="role" onchange="setRole(this.value)">
+  <option value="submitter">บทบาท: เจ้าของข้อมูล</option>
+  <option value="central">บทบาท: ทีมกลาง</option>
+  <option value="exec">บทบาท: ผู้บริหาร</option></select>
+<span class="sub" id="roleinfo"></span><span class="spacer"></span>
+<button class="mini ghost" onclick="toggleDown()" id="downbtn">จำลอง: ปิด endpoint</button>
+<span class="sub" id="cycle"></span></header>
+<div class="warn">⚠ ข้อมูลตัวอย่าง (Mockup) — ไม่ใช่สถานะจริงขององค์กร · ซ่อนไม่ได้</div>
+<div class="down" id="downbar" style="display:none">⛔ เชื่อมต่อผู้ช่วย AI ไม่ได้ — ระบบส่วนอื่นยังใช้งานได้ตามปกติ</div>
+
+<div class="wrap"><nav id="nav"></nav><main id="main"></main></div>
+<footer>สร้างจาก <code>sample-data/manifest.json</code> ด้วย <code>tools/build_mockup.py</code> ·
+โครงคะแนนตาม <code>GreenATM Scoring Template (July 2026)</code> และ <code>GreenATM_AccreditationGuide_2026</code> ·
+<b>ไม่ใช่แอปพลิเคชัน</b></footer>
+
+<script>
+const D = {"_synthetic": true, "_warning": "ชื่อหัวข้อ · คะแนน · objective = ของจริงจาก CANSO GreenATM · คะแนน raw · หลักฐาน · เจ้าของ = SYNTHETIC สร้างขึ้นเพื่อสาธิตเท่านั้น", "_note_for_implementers": "expectedTier / blockedPoints มีไว้สำหรับ verify.py เท่านั้น ห้ามส่งเข้า context ของโมเดล", "source": "GreenATM_TopicsandLevelObjectives.pdf · GreenATM_AccreditationGuide_2026.pdf (CANSO, v2.0 ส.ค. 2026)", "asOfDate": "2026-09-15", "cycle": "ก.ย. 2569", "scoring": {"totalPoints": 100, "passMark": 80, "levels": 5, "rule": "awarded ให้ถึงระดับต่ำสุดที่ยังไม่เต็ม · ระดับที่สูงกว่าได้ 0", "flowDown": "คะแนนเกินจากระดับสูงเติมระดับล่างได้ 'ระดับเดียว' เท่านั้น", "currentAccreditation": 2, "targetAccreditation": 3, "awardedByLevel": [100, 93, 58, 8, 0], "awardedByCategory": {"Governance": [14, 14, 10, 2, 0], "Improved ATM": [69, 65, 40, 4, 0], "Business Operations": [17, 14, 8, 2, 0]}, "summary": [{"level": 1, "total": 100, "required": 80, "short": 0, "availableAbove": 159, "achievedOwnRight": true, "achievedWithContribution": false, "achieved": true}, {"level": 2, "total": 93, "required": 80, "short": 0, "availableAbove": 66, "achievedOwnRight": true, "achievedWithContribution": false, "achieved": true}, {"level": 3, "total": 58, "required": 80, "short": 22, "availableAbove": 8, "achievedOwnRight": false, "achievedWithContribution": false, "achieved": false}, {"level": 4, "total": 8, "required": 80, "short": 72, "availableAbove": 0, "achievedOwnRight": false, "achievedWithContribution": false, "achieved": false}, {"level": 5, "total": 0, "required": 80, "short": 80, "availableAbove": 0, "achievedOwnRight": false, "achievedWithContribution": false, "achieved": false}]}, "divisions": [{"id": "d-gov", "name": "สำนักนโยบายและแผน"}, {"id": "d-ops", "name": "กองปฏิบัติการจราจรทางอากาศ"}, {"id": "d-env", "name": "กองสิ่งแวดล้อมและวิศวกรรม"}], "users": [{"id": "u-gov", "name": "ผู้ส่งข้อมูล สำนักนโยบายและแผน", "division_id": "d-gov", "role": "submitter"}, {"id": "u-ops", "name": "ผู้ส่งข้อมูล กองปฏิบัติการ", "division_id": "d-ops", "role": "submitter"}, {"id": "u-env", "name": "ผู้ส่งข้อมูล กองสิ่งแวดล้อม", "division_id": "d-env", "role": "submitter"}, {"id": "u-cen", "name": "ทีมกลาง", "division_id": "d-gov", "role": "central"}, {"id": "u-exe", "name": "ผู้บริหาร", "division_id": "d-gov", "role": "executive"}], "app_setting": {"pass_mark": 80, "evidence_stale_months": 12, "agent_max_tool_calls": 10, "agent_timeout_seconds": 60, "monthly_due_day": 5, "alert_lead_days": 15, "slip_escalate_after": 3, "stale_update_days": 30}, "cycleDue": "2026-09-05", "topics": [{"code": "T01", "ref": "1.1.1", "category": "Governance", "categoryTh": "การกำกับดูแล", "name": "Policy and plan", "nameTh": "นโยบายและแผนด้านสิ่งแวดล้อม", "points": 4, "owner": "u-gov", "levels": [{"level": 1, "objective": "The business has an environmental policy.", "raw": 4, "awarded": 4}, {"level": 2, "objective": "The environmental policy is clearly endorsed at senior levels and has been proactively communicated to all staff.", "raw": 4, "awarded": 4}, {"level": 3, "objective": "The organisation has developed an environmental management strategy or plan, which shows how the aims and objectives included in the environmental policy will be achieved.", "raw": 4, "awarded": 4}, {"level": 4, "objective": "The environmental policy is subject to review at least once every five years to ensure it remains aligned with the latest thinking and best practice.", "raw": 2, "awarded": 2}, {"level": 5, "objective": "The organisation has delivered on its environmental policy over a period of at least five years, demonstrated by the actions within its environmental strategy or plan having been delivered and the benefits achieved.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-03", "lastUpdate": "2026-09-03", "plan": null, "evidence": [{"id": "E-001", "level": 2, "file": "บันทึกการประชุมคณะกรรมการ 2-2569.pdf", "documentDate": "2026-03-12", "expectedTier": "B", "why": "เอกสารภายในที่ผ่านการรับรองและลงนามแล้ว", "path": "evidence/E-001.md"}]}, {"code": "T02", "ref": "1.1.2", "category": "Governance", "categoryTh": "การกำกับดูแล", "name": "Environmental Management System", "nameTh": "ระบบจัดการสิ่งแวดล้อม", "points": 3, "owner": "u-gov", "levels": [{"level": 1, "objective": "The organisation has evaluated if it should develop an environmental management system (e.g. ISO14001 or Environmental Management & Audit Scheme (EMAS)): · \u0007If the answer is yes, then planning is progressing · \u0007If the answer is no, then the ANSP needs to expla", "raw": 3, "awarded": 3}, {"level": 2, "objective": "The scope of the EMS includes the organisation’s business operations, infrastructure and ATC service provisions.", "raw": 3, "awarded": 3}, {"level": 3, "objective": "The work to implement the EMS has commenced and supporting documentation has been or is being written.", "raw": 2, "awarded": 2}, {"level": 4, "objective": "The ANSP can provide examples where the EMS has been used to identify and make reductions in environmental impacts.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "The organisation maintains a third-party certified EMS (e.g. ISO 14001 or has fully implemented EMAS), covering all operational activities, infrastructure and service provision.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-08-30", "lastUpdate": "2026-08-30", "plan": null, "evidence": [{"id": "E-003", "level": 3, "file": "บันทึกประชุมติดตามงาน 6-2569.pdf", "documentDate": "2026-08-28", "expectedTier": "C", "why": "บันทึกการประชุม ยังไม่ผ่านการรับรอง และไม่มีผลการตรวจติดตาม", "path": "evidence/E-003.md"}, {"id": "E-004", "level": 3, "file": "สไลด์ความคืบหน้า EMS.pptx", "documentDate": "2026-08-30", "expectedTier": "C", "why": "สไลด์นำเสนอภายใน ไม่มีเอกสารอ้างอิงประกอบ", "path": "evidence/E-004.md"}]}, {"code": "T03", "ref": "1.1.3", "category": "Governance", "categoryTh": "การกำกับดูแล", "name": "Environmental Culture", "nameTh": "วัฒนธรรมองค์กรด้านสิ่งแวดล้อม", "points": 4, "owner": "u-gov", "levels": [{"level": 1, "objective": "There is a plan or ongoing initiatives to develop a suite of communication, engagement and/or training programmes for environmental management and sustainability.", "raw": 4, "awarded": 4}, {"level": 2, "objective": "Environmental communication, awareness initiatives and training programmes have been developed and introduced at some sites or for certain groups. There are systems and processes in place to encourage staff to share environmental learning with other groups.", "raw": 4, "awarded": 4}, {"level": 3, "objective": "Environmental communication, awareness initiatives and training programmes are now in place and consistently delivered across the entire organisation. The environmental training and initiatives are tailored to the receiving team/department and span all levels ", "raw": 3, "awarded": 3}, {"level": 4, "objective": "The value of environmental responsibility in the organisation is promoted internally and externally (e.g. airlines/airspace users, passengers, regulators, elected bodies, general public).", "raw": 0, "awarded": 0}, {"level": 5, "objective": "An action plan has been developed to address identified gaps, and performance indicators are used to monitor progress and ensure effective implementation.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": null, "lastUpdate": "2025-07-15", "plan": {"name": "จัดอบรมความตระหนักรอบปี 2570", "plannedDate": "2027-03-31", "revisedDate": null, "percent": 0, "slips": []}, "evidence": [{"id": "E-017", "level": 3, "file": "รายงานสรุปผลการอบรม HR-2568-214.pdf", "documentDate": "2025-07-15", "expectedTier": "B", "why": "อนุมัติแล้ว แต่ลงวันที่เกิน 12 เดือน", "path": "evidence/E-017.md"}, {"id": "E-018", "level": 4, "file": "(ร่าง) กำหนดการอบรม 2570.docx", "documentDate": "2026-08-12", "expectedTier": "C", "why": "ร่าง ยังไม่ยืนยันงบประมาณ", "path": "evidence/E-018.md"}, {"id": "E-019", "level": 2, "file": "รายงานต่อผู้มีส่วนได้เสีย ENV-2569-012.pdf", "documentDate": "2026-02-20", "expectedTier": "B", "why": "เอกสารภายในที่อนุมัติเผยแพร่แล้ว", "path": "evidence/E-019.md"}, {"id": "E-020", "level": 3, "file": "บันทึกประชุมหารือแนวทางรายงาน 2569.docx", "documentDate": "2026-07-18", "expectedTier": "C", "why": "ยังไม่ได้ข้อสรุป", "path": "evidence/E-020.md"}]}, {"code": "T04", "ref": "1.1.4", "category": "Governance", "categoryTh": "การกำกับดูแล", "name": "Environmental Targets", "nameTh": "เป้าหมายด้านสิ่งแวดล้อม", "points": 3, "owner": "u-gov", "levels": [{"level": 1, "objective": "The organisation has committed to defining environmental targets.", "raw": 3, "awarded": 3}, {"level": 2, "objective": "Environmental targets have been set, including details as to how they will be measured, the baseline against which they will be assessed, and the mechanisms that will be used to monitor compliance against the targets.", "raw": 3, "awarded": 3}, {"level": 3, "objective": "The organisation monitors progress against its environmental targets, as part of its ongoing management and review procedures. Progress is reported to staff at least once a year.", "raw": 1, "awarded": 1}, {"level": 4, "objective": "The progress against targets is formally reported publicly at least on an annual basis, with a documented and transparent explanation for changes in progress.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "Over 65 per cent of the targets have been fully achieved for two or more consecutive years, and new targets have been defined, including a stretch element.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-04", "lastUpdate": "2026-09-04", "plan": null, "evidence": [{"id": "E-002", "level": 3, "file": "(ร่าง) เป้าหมายระหว่างทาง.docx", "documentDate": "2026-08-05", "expectedTier": "C", "why": "ร่าง ยังไม่ผ่านความเห็นชอบ", "path": "evidence/E-002.md"}, {"id": "E-024", "level": 4, "file": "(ร่าง) โครงร่างรายงานความยั่งยืน 2569.docx", "documentDate": "2026-08-28", "expectedTier": "C", "why": "ร่างโครงร่าง ยังไม่มีเนื้อหา", "path": "evidence/E-024.md"}]}, {"code": "T05", "ref": "1.2.1", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Flexible Use of Airspace (FUA)", "nameTh": "การใช้ห้วงอากาศแบบยืดหยุ่น (FUA)", "points": 8, "owner": "u-ops", "levels": [{"level": 1, "objective": "The ANSP has identified one or more examples within their airspace where FUA could deliver more efficient flight trajectories and has planned discussions with accountable authorities on its flexible use.", "raw": 8, "awarded": 8}, {"level": 2, "objective": "Discussions between the ANSP and other stakeholders have occurred. Stakeholders have agreed to implementing FUA as a part of strategic Air Space Management (ASM).", "raw": 8, "awarded": 8}, {"level": 3, "objective": "The ANSP has quantified the track miles/flight time that might be saved per flight for different occurrences of FUA.", "raw": 8, "awarded": 8}, {"level": 4, "objective": "FUA is operated on a tactical basis, i.e. requests for and decisions on flexible use are made within the day of operation, in response to short-notice changes in airspace requirements. Benefits realisation (improvements in track miles/flight time) from the use", "raw": 0, "awarded": 0}, {"level": 5, "objective": "There is an automated process with advanced, real-time management of airspace configurations. Airspace allocation is dynamically updated, and information is constantly being shared between all ATM partners and airspace users.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-02", "lastUpdate": "2026-09-02", "plan": null, "evidence": []}, {"code": "T06", "ref": "1.2.2", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Meteorological Information", "nameTh": "ข้อมูลอุตุนิยมวิทยา", "points": 4, "owner": "u-ops", "levels": [{"level": 1, "objective": "(MET information is available and briefed to those in operational ATC and flow management positions.", "raw": 4, "awarded": 4}, {"level": 2, "objective": "There are established procedures for integrating MET information into strategic and pre-tactical operational planning, covering planning horizons from 3 days to the day of operations. ATCOs and flow managers have access to MET information appropriate to their ", "raw": 4, "awarded": 4}, {"level": 3, "objective": "MET information is systematically translated into impact assessments that support ATM and capacity determination decisions, and/or plays an important role in ATM decision support tools designed around how controllers and flow managers make decisions in time-pr", "raw": 4, "awarded": 4}, {"level": 4, "objective": "MET information, supported by AI/ML-enhanced numerical weather prediction and high-resolution nowcasting, has reached a level of accuracy, resolution and frequency that supports fully integrated strategic, pre-tactical and tactical ATM planning in high-traffic", "raw": 1, "awarded": 1}, {"level": 5, "objective": "MET information, supported by AI/ML-enhanced numerical weather prediction and high-resolution nowcasting, has reached a level of accuracy, resolution and frequency that supports fully integrated strategic, pre-tactical and tactical ATM planning in high-traffic", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-01", "lastUpdate": "2026-09-01", "plan": null, "evidence": []}, {"code": "T07", "ref": "1.2.3", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Improved Surveillance and Communications", "nameTh": "การปรับปรุงการเฝ้าตรวจและการสื่อสาร", "points": 8, "owner": "u-ops", "levels": [{"level": 1, "objective": "The ANSP has identified areas of airspace where efficiency is constrained by the current surveillance and communication performance capability.", "raw": 8, "awarded": 8}, {"level": 2, "objective": "Analysis has been conducted to assess if airspace efficiency (routing or capacity), for those areas identified at Level 1, could benefit from reduced separation standards.", "raw": 8, "awarded": 8}, {"level": 3, "objective": "Actions to improve airspace efficiency by improving surveillance or communications have been started.", "raw": 4, "awarded": 4}, {"level": 4, "objective": "Improvements to communication and surveillance have been implemented, allowing separation distances to be reduced.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "The organisation can demonstrate ≤5 NM separation standards across applicable airspace, with 3 NM in appropriate terminal areas, or provide justification where larger separation standards are required (e.g., oceanic operations or specific operational needs) an", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": null, "lastUpdate": "2026-06-20", "plan": null, "evidence": []}, {"code": "T08", "ref": "1.2.4", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Airport Collaborative Decision Making (A-CDM)", "nameTh": "A-CDM ที่ท่าอากาศยาน", "points": 3, "owner": "u-ops", "levels": [{"level": 1, "objective": "The organisation has engaged with the airport to understand the potential benefits of A-CDM.", "raw": 3, "awarded": 3}, {"level": 2, "objective": "In collaboration with aviation stakeholders, an A-CDM Performance Framework for the airport has been defined.", "raw": 3, "awarded": 3}, {"level": 3, "objective": "An agreement has been reached on the data that will be shared and the source (both manual and automated).", "raw": 3, "awarded": 3}, {"level": 4, "objective": "Variable taxi-times (VTT) and pre-departure sequencing are in operation if benefits were identified. Monitoring of performance improvements from implementing VTT and pre-departure sequencing is on-going. A target for improving surface departure efficiency has ", "raw": 3, "awarded": 3}, {"level": 5, "objective": "A-CDM has been enhanced to interface with ATFM systems, and this interaction may occur at local or/and at regional level, depending on the regional ATM setup.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-04", "lastUpdate": "2026-09-04", "plan": null, "evidence": []}, {"code": "T09", "ref": "1.2.5", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Continuous Climb Operations (CCO)", "nameTh": "การไต่ระดับต่อเนื่อง (CCO)", "points": 5, "owner": "u-ops", "levels": [{"level": 1, "objective": "The organisation has made commitments to growing the opportunities for CCO.", "raw": 5, "awarded": 5}, {"level": 2, "objective": "There is/has been ad-hoc assessment or trials have been conducted to understand the ability of facilitating CCOs to top of ascent.", "raw": 5, "awarded": 5}, {"level": 3, "objective": "Assessment of CCO performance across a range of airport sizes (main/regional, international/ domestic) has been conducted, and differences in performance understood.", "raw": 3, "awarded": 3}, {"level": 4, "objective": "Departure procedures and associated airspace, within the area of responsibility, have been redesigned to enable CCO to top of ascent under normal traffic conditions. Where altitude constraints are embedded within departure procedures or sector entry level rest", "raw": 0, "awarded": 0}, {"level": 5, "objective": "CCO rate improvement goals have been set for all airports with greater than 40,000 departure movements.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-03", "lastUpdate": "2026-09-03", "plan": null, "evidence": []}, {"code": "T10", "ref": "1.2.6", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Continuous Descent Operations (CDO)", "nameTh": "การร่อนลงต่อเนื่อง (CDO)", "points": 8, "owner": "u-ops", "levels": [{"level": 1, "objective": "The organisation has an objective to increase the opportunities for CDO, from top of descent to runway.", "raw": 8, "awarded": 8}, {"level": 2, "objective": "There have been assessments or trials conducted to understand the ability of delivering CDOs from top of descent.", "raw": 8, "awarded": 8}, {"level": 3, "objective": "Specific awareness or training initiatives with air traffic controllers have been undertaken with the aim of encouraging CDO wherever possible.", "raw": 5, "awarded": 5}, {"level": 4, "objective": "Descent and arrival procedures and associated airspace, within the area of responsibility, have been redesigned to enable CDO from top of descent under normal traffic conditions. Where altitude constraints are embedded within arrival procedures or sector entry", "raw": 0, "awarded": 0}, {"level": 5, "objective": "CDO rate improvement goals have been set for all airports with more than 40,000 arrival movements.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-08-20", "lastUpdate": "2026-08-20", "plan": {"name": "ขยายการวัด CDO ไปยัง VTBD", "plannedDate": "2027-01-31", "revisedDate": null, "percent": 10, "slips": []}, "evidence": [{"id": "E-005", "level": 3, "file": "รายงานผลการทดลองวัด ENV-2569-041.pdf", "documentDate": "2026-06-18", "expectedTier": "A", "why": "ลงนามรับรอง มีข้อมูลที่วัดได้ ระบุขอบเขตชัดเจน", "path": "evidence/E-005.md"}, {"id": "E-006", "level": 2, "file": "บันทึกอนุมัติวิธีคำนวณ ENV-2569-033.pdf", "documentDate": "2026-05-02", "expectedTier": "B", "why": "เอกสารภายในที่อนุมัติแล้ว", "path": "evidence/E-006.md"}, {"id": "E-007", "level": 4, "file": "(ร่าง) แผนขยายไป VTBD.docx", "documentDate": "2026-08-20", "expectedTier": "C", "why": "ร่าง ยังไม่มีผู้รับผิดชอบและงบประมาณ", "path": "evidence/E-007.md"}, {"id": "E-023", "level": 3, "file": "หนังสือรับรองผลการทวนสอบ EXT-2569-009.pdf", "documentDate": "2026-08-05", "expectedTier": "A", "why": "ผ่านการทวนสอบจากหน่วยงานภายนอก", "path": "evidence/E-023.md"}]}, {"code": "T11", "ref": "1.2.7", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Performance Based Navigation (PBN)", "nameTh": "การเดินอากาศตามสมรรถนะ (PBN)", "points": 7, "owner": "u-ops", "levels": [{"level": 1, "objective": "There is a written commitment to commence planning activities for PBN implementation within the country/ area of accountability.", "raw": 7, "awarded": 7}, {"level": 2, "objective": "The ANSP has an up-to-date PBN implementation strategy and/or plan. Some PBN routes have been implemented.", "raw": 7, "awarded": 7}, {"level": 3, "objective": "Multiple PBN implementations are occurring/have been completed, spanning Terminal Manoeuvring Areas and the en-route environment, in alignment with the PBN Implementation Strategy/Plan.", "raw": 7, "awarded": 7}, {"level": 4, "objective": "The ANSP has calculated the percentage of en-route routes that are PBN and the percentage of airports that have PBN-enabled SID/STAR procedures.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "Over 75 per cent of both en-route routes and airports with SID/STAR procedures are PBN-enabled.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-05", "lastUpdate": "2026-09-05", "plan": null, "evidence": []}, {"code": "T12", "ref": "1.2.8", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Runway Capacity", "nameTh": "ความจุทางวิ่ง", "points": 4, "owner": "u-ops", "levels": [{"level": 1, "objective": "The ANSP has identified airports where approach delays or runway holding delays exist.", "raw": 4, "awarded": 4}, {"level": 2, "objective": "Feasibility studies focused on how ATM runway operations can be improved to reduce delays have been completed.", "raw": 4, "awarded": 4}, {"level": 3, "objective": "Planning and pre-deployment work are underway to implement improved runway operations.", "raw": 2, "awarded": 2}, {"level": 4, "objective": "The airports identified at previous levels have deployed revised runway operations. Improved throughput on runways has been seen, and there is evidence that optimisation efforts are reducing delays and improving capacity. Benefits tracking (reduced delay and e", "raw": 0, "awarded": 0}, {"level": 5, "objective": "Benefits are regularly monitored (both in terms of reduced delays and emissions) and shared with stakeholders.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-02", "lastUpdate": "2026-09-02", "plan": null, "evidence": []}, {"code": "T13", "ref": "1.2.9", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Trajectory Optimisation", "nameTh": "การปรับวิถีการบินให้เหมาะสม", "points": 8, "owner": "u-ops", "levels": [{"level": 1, "objective": "The ANSP has identified potential improvements to its en-route airspace design or operation that could deliver more efficient trajectories.", "raw": 8, "awarded": 8}, {"level": 2, "objective": "There is a strategy or plan for how the ANSP will improve en-route airspace design and/or ATC operational practices to facilitate airspace users to optimise their en-route trajectories.", "raw": 6, "awarded": 6}, {"level": 3, "objective": "The initial stages of the en-route airspace improvement strategy have been implemented.", "raw": 8, "awarded": 0}, {"level": 4, "objective": "There is widespread implementation of free-route airspace (FRA) or direct-routes within the domestic airspace on a 24-hour basis.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "Cross-border trajectory optimisation (if beneficial and possible) has been implemented and is fully operational.", "raw": 0, "awarded": 0}], "blockedPoints": 8, "dueDate": "2026-09-05", "submittedOn": null, "lastUpdate": "2026-04-03", "plan": {"name": "ปิดช่องว่างระดับ 2 — จัดทำรายงานผลการใช้งานจริง", "plannedDate": "2026-08-15", "revisedDate": "2026-10-31", "percent": 45, "slips": [["2026-08-15", "2026-09-15", "รอข้อมูลจากกองปฏิบัติการ"], ["2026-09-15", "2026-09-30", "รอข้อมูลจากกองปฏิบัติการ"], ["2026-09-30", "2026-10-31", "รอข้อมูลจากกองปฏิบัติการ"]]}, "evidence": [{"id": "E-021", "level": 3, "file": "รายงานผลการศึกษาการลดเวลาวิ่งบนทางขับ.pdf", "documentDate": null, "expectedTier": "ASK", "why": "ไม่มีวันที่ในตัวเอกสาร → ระบบต้องถาม ห้ามเดาจากวันอัปโหลด", "path": "evidence/E-021.md"}, {"id": "E-022", "level": 2, "file": "บันทึกอนุมัติแนวปฏิบัติ OPS-2569-078.pdf", "documentDate": "2026-04-03", "expectedTier": "B", "why": "เอกสารภายในที่อนุมัติแล้ว", "path": "evidence/E-022.md"}]}, {"code": "T14", "ref": "1.2.10", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Air Traffic Flow Management (ATFM)", "nameTh": "การบริหารความคล่องตัวจราจร (ATFM)", "points": 8, "owner": "u-ops", "levels": [{"level": 1, "objective": "The ANSP has undertaken and documented an assessment to determine the operational need and potential benefits of ATFM, both domestically and cross-border. Where a need has been identified, the organisation has committed and started engagement with airspace use", "raw": 8, "awarded": 8}, {"level": 2, "objective": "Opportunities to implement an appropriate level of ATFM, aligned with the organisation’s operational needs, have been identified.", "raw": 8, "awarded": 8}, {"level": 3, "objective": "The detailed design for ATFM operations has been completed (people, process & technology).", "raw": 4, "awarded": 4}, {"level": 4, "objective": "ATFM has been implemented and there is an efficient and frequent system of post-operations analysis, involving the relevant stakeholders evaluating the operations against agreed performance indicators.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "An evaluation of ATFM benefits possible in a regional environment has been completed, and a specific time-bound commitment to expand ATFM was agreed by the majority of regional ANSPs.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-01", "lastUpdate": "2026-09-01", "plan": null, "evidence": []}, {"code": "T15", "ref": "1.2.11", "category": "Improved ATM", "categoryTh": "การปรับปรุงการจราจรทางอากาศ", "name": "Research and Development", "nameTh": "การวิจัยและพัฒนา", "points": 6, "owner": "u-ops", "levels": [{"level": 1, "objective": "There is a general awareness of research that is ongoing and some effort to stay abreast of developments in the field.", "raw": 6, "awarded": 6}, {"level": 2, "objective": "The ANSP can demonstrate membership of international bodies that share industry best-practice, developments in ATC research and results from trials.", "raw": 4, "awarded": 4}, {"level": 3, "objective": "There is evidence of the ANSP conducting ATM trials or participating in trials that will lead to environmental benefits within their organisation.", "raw": 6, "awarded": 0}, {"level": 4, "objective": "The ANSP can demonstrate an active involvement in ATM research or trials with other aviation stakeholders by providing at least three examples within the last 10 years.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "The ANSP can demonstrate being an early adopter, within their region, of an ATM development with environmental benefits within the last 10 years.", "raw": 0, "awarded": 0}], "blockedPoints": 6, "dueDate": "2026-09-05", "submittedOn": null, "lastUpdate": "2026-05-12", "plan": {"name": "ปิดช่องว่างระดับ 2 — สรุปผลโครงการวิจัยที่ปิดแล้ว", "plannedDate": "2026-09-10", "revisedDate": "2026-10-15", "percent": 30, "slips": [["2026-09-10", "2026-10-15", "ผู้รับผิดชอบติดภารกิจอื่น"]]}, "evidence": []}, {"code": "T16", "ref": "1.3.1", "category": "Business Operations", "categoryTh": "การดำเนินธุรกิจ", "name": "Greenhouse Gas Management", "nameTh": "การจัดการก๊าซเรือนกระจก", "points": 7, "owner": "u-env", "levels": [{"level": 1, "objective": "The ANSP has committed to systematically identifying and measuring all scope 1 and scope 2 greenhouse gas emissions within its control.", "raw": 7, "awarded": 7}, {"level": 2, "objective": "The ANSP has completed a full scope 1 and scope 2 GHG inventory for a defined baseline year, quantifying total emissions in CO2 equivalent disaggregated by source category.", "raw": 7, "awarded": 7}, {"level": 3, "objective": "The ANSP has developed an improvement (reduction) plan for at least the next one to three years, which includes: · Targeted reductions per initiative implemented · A reduction measurement plan · An implementation timeline.", "raw": 5, "awarded": 5}, {"level": 4, "objective": "The organisation has a systemised approach to the identification, measurement and management of its scope 1 and scope 2 emissions, encompassing a Plan-Do-Check-Act (PDCA) cycle. Annual audits of energy identify: · Changes in emissions overall and by activity/u", "raw": 0, "awarded": 0}, {"level": 5, "objective": "The ANSP has successfully achieved its annual scope 1 and scope 2 emissions reduction targets for five consecutive years.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-08-31", "lastUpdate": "2026-08-31", "plan": {"name": "ติดตั้งระบบผลิตไฟฟ้าพลังงานแสงอาทิตย์ 120 kWp", "plannedDate": "2026-09-30", "revisedDate": "2026-12-15", "percent": 35, "slips": [["2026-09-30", "2026-10-31", "รอหน้าต่างหยุดจ่ายไฟ"], ["2026-10-31", "2026-11-30", "รอหน้าต่างหยุดจ่ายไฟ"], ["2026-11-30", "2026-12-15", "รอหน้าต่างหยุดจ่ายไฟ"]]}, "evidence": [{"id": "E-008", "level": 3, "file": "สรุปการคัดกรอง Scope 3.docx", "documentDate": "2026-07-15", "expectedTier": "C", "why": "เอกสารภายในเพื่อหารือ ไม่มีข้อมูลเชิงปริมาณประกอบ", "path": "evidence/E-008.md"}, {"id": "E-009", "level": 3, "file": "บันทึกช่วยจำการรายงานด้วยวาจา.docx", "documentDate": "2026-08-22", "expectedTier": "D", "why": "เป็นการรายงานด้วยวาจา ไม่มีเอกสารประกอบ", "path": "evidence/E-009.md"}, {"id": "E-010", "level": 4, "file": "(ร่าง) แผนดำเนินการลดพลังงาน 2570.docx", "documentDate": "2026-09-01", "expectedTier": "C", "why": "เป็นแผนที่ตั้งใจจะทำในอนาคต ไม่มีผลการวัดใด ๆ", "path": "evidence/E-010.md"}, {"id": "E-011", "level": 2, "file": "รายงานผลตรวจวัดหลังปรับปรุง ENG-2569-118.pdf", "documentDate": "2026-07-30", "expectedTier": "A", "why": "ตรวจวัดโดยหน่วยงานภายนอก มีผลสอบเทียบเครื่องมือแนบ", "path": "evidence/E-011.md"}, {"id": "E-012", "level": 2, "file": "บันทึกส่งมอบงาน ENG-2569-121.pdf", "documentDate": "2026-08-08", "expectedTier": "B", "why": "เอกสารภายในที่อนุมัติรับมอบงานแล้ว", "path": "evidence/E-012.md"}, {"id": "E-013", "level": 4, "file": "บันทึกอนุมัติแผนงาน ENG-2569-055.pdf", "documentDate": "2026-02-14", "expectedTier": "B", "why": "อนุมัติแผน ไม่ใช่ผลลัพธ์", "path": "evidence/E-013.md"}, {"id": "E-014", "level": 4, "file": "รายงานความคืบหน้า ส.ค. 2569.docx", "documentDate": "2026-08-31", "expectedTier": "C", "why": "รายงานภายใน ยังไม่ผ่านการรับรอง · ระบุการขอเลื่อนครั้งที่ 3", "path": "evidence/E-014.md"}, {"id": "E-015", "level": 3, "file": "รายงานความครอบคลุมมิเตอร์ ENG-2569-097.pdf", "documentDate": "2026-06-25", "expectedTier": "A", "why": "ผ่านการตรวจสอบและรับรองจากหน่วยตรวจสอบภายใน · ระบุความครอบคลุม 60%", "path": "evidence/E-015.md"}, {"id": "E-016", "level": 3, "file": "บันทึกอนุมัติแผนระยะที่ 2 ENG-2569-103.pdf", "documentDate": "2026-07-10", "expectedTier": "B", "why": "เอกสารภายในที่อนุมัติแล้ว", "path": "evidence/E-016.md"}]}, {"code": "T17", "ref": "1.3.2", "category": "Business Operations", "categoryTh": "การดำเนินธุรกิจ", "name": "CNS Inspection", "nameTh": "การบินตรวจสอบ CNS", "points": 2, "owner": "u-env", "levels": [{"level": 1, "objective": "The ANSP has made a commitment to measure the carbon footprint of CNS inspections and improve the efficiency of flight inspection operations.", "raw": 2, "awarded": 2}, {"level": 2, "objective": "The ANSP has calculated the carbon footprint of CNS inspections for at least the past two years and set a baseline against which to measure improvements.", "raw": 2, "awarded": 2}, {"level": 3, "objective": "The CO2 emissions from flight inspection have been reduced by 5 to 10 per cent compared to the five-year average.", "raw": 2, "awarded": 2}, {"level": 4, "objective": "The CO2 emissions from flight inspection have been reduced by 25 per cent over the baseline. The ANSP can explain how these reductions have been made.", "raw": 2, "awarded": 2}, {"level": 5, "objective": "The CO2 emissions from flight inspection have been reduced by 50 per cent over the baseline. Where possible, zero-emission technology is utilised, and 100 per cent of inspections that cannot utilise zero-emission technology are operated with the maximum permit", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-04", "lastUpdate": "2026-09-04", "plan": null, "evidence": []}, {"code": "T18", "ref": "1.3.3", "category": "Business Operations", "categoryTh": "การดำเนินธุรกิจ", "name": "Sustainable Procurement", "nameTh": "การจัดซื้อจัดจ้างที่ยั่งยืน", "points": 3, "owner": "u-env", "levels": [{"level": 1, "objective": "The ANSP has made a commitment to improve the sustainability of its procurement. There is evidence of ad-hoc sustainable procurement initiatives within the organisation.", "raw": 3, "awarded": 3}, {"level": 2, "objective": "The ANSP includes sustainability in its procurement policy or guidelines.", "raw": 2, "awarded": 2}, {"level": 3, "objective": "Sustainable procurement is implemented across the organisation, applying sustainable procurement criteria systematically to priority categories.", "raw": 0, "awarded": 0}, {"level": 4, "objective": "Measurement of the KPIs for at least 12 months is available and the ANSP has set targets for improvements in some of the KPIs.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "There is a Plan-Do-Check-Act (PDCA) cycle in place to ensure the organisation regularly reassesses which sectors/commodities should become priorities and a focus for sustainable procurement. At least one complete cycle has been completed.", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": null, "lastUpdate": "2026-03-11", "plan": null, "evidence": []}, {"code": "T19", "ref": "1.3.4", "category": "Business Operations", "categoryTh": "การดำเนินธุรกิจ", "name": "Airspace Change Process", "nameTh": "กระบวนการเปลี่ยนแปลงห้วงอากาศ", "points": 2, "owner": "u-env", "levels": [{"level": 1, "objective": "Either existing policies already require, or a commitment exists to update policies to require, consideration of environmental and community impacts alongside safety and operational requirements when making airspace changes.", "raw": 2, "awarded": 2}, {"level": 2, "objective": "The airspace change procedure requires a qualitative assessment of airspace change options for noise (if the change is in lower airspace) and fuel burn. The ANSP is able to explain how the assessment is considered in (or has influenced) airspace change decisio", "raw": 2, "awarded": 2}, {"level": 3, "objective": "The change process requires a quantitative comparison of noise (if the change is in lower airspace) and fuel burn estimates for a baseline and the design options. The ANSP is able to explain and demonstrate with examples how the evaluation is considered in the", "raw": 1, "awarded": 1}, {"level": 4, "objective": "The change process requires public consultation on the preferred airspace design if the airspace change is in the lower airspace. The consultation process allows the consultee to submit feedback, suggestions, and reasons for objection. The consultation feedbac", "raw": 0, "awarded": 0}, {"level": 5, "objective": "The final stage of the change process requires a benefits realisation assessment of the airspace change to be completed to understand if the actual noise (if the change is in the lower airspace) and fuel burn impacts are aligned with the pre-implementation est", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": "2026-09-03", "lastUpdate": "2026-09-03", "plan": null, "evidence": []}, {"code": "T20", "ref": "1.3.5", "category": "Business Operations", "categoryTh": "การดำเนินธุรกิจ", "name": "Mobility Management", "nameTh": "การบริหารการเดินทาง", "points": 3, "owner": "u-env", "levels": [{"level": 1, "objective": "The ANSP recognises the need to reduce emissions associated with its mobility activities and increase the sustainability of its mobility management practices. There are plans to: a) quantify the CO2 footprint from both employees’ business travel and commuting,", "raw": 3, "awarded": 3}, {"level": 2, "objective": "The emissions from both staff commuting and business travel have been quantified. The best practice benchmarking has enabled the organisation to identify mobility management improvement opportunities, and work on an implementation plan has commenced. Work is u", "raw": 1, "awarded": 1}, {"level": 3, "objective": "The mobility management improvement plan has been approved, and implementation has commenced.", "raw": 0, "awarded": 0}, {"level": 4, "objective": "Some of the mobility management improvements have been embedded for at least 12 months, and performance against the emission reduction targets is measured regularly, with progress communicated to staff.", "raw": 0, "awarded": 0}, {"level": 5, "objective": "The organisation has fully embedded all mobility management improvements and carries out a Plan-Do-Check-Act (PDCA) cycle at least every three years. Continuous improvement of mobility aspects is demonstrated and assured, and the environmental achievements fro", "raw": 0, "awarded": 0}], "blockedPoints": 0, "dueDate": "2026-09-05", "submittedOn": null, "lastUpdate": "2026-02-28", "plan": null, "evidence": []}]};
+const PASS = D.scoring.passMark, TOPICS = D.topics;
+const TIER={A:['◆','A'],B:['◇','B'],C:['○','C'],D:['✕','D'],STALE:['◇','ล้าสมัย'],ASK:['?','รอวันที่']};
+const NAV=[['home','ภาพรวมความพร้อม',null],['chat','แชตกับผู้ช่วย','submitter,central'],
+ ['topics','หัวข้อทั้งหมด',null],['alerts','แจ้งเตือน / Outbox','submitter,central'],
+ ['review','ศูนย์ตรวจสอบ','central,exec'],
+ ['docs','เอกสารส่งผู้ตรวจ','central,exec']];
+let S={role:'submitter',screen:'chat',topic:'T13',chat:[],outbox:[],down:false,flash:0,demo:0};
+TOPICS.forEach(t=>{t.raw0=t.levels.map(l=>l.raw)});
+
+const esc=s=>String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+const tp=c=>TOPICS.find(x=>x.code===c);
+const badge=t=>`<span class="tier t-${t}">${TIER[t][0]} ${TIER[t][1]}</span>`;
+function recalc(t){ // กฎ cliff
+ let stop=false;
+ t.levels.forEach(l=>{ if(stop){l.awarded=0;} else {l.awarded=l.raw; if(l.raw<t.points)stop=true;} });
+ t.blockedPoints=t.levels.filter(l=>l.awarded===0&&l.raw>0).reduce((a,l)=>a+l.raw,0);
+}
+const byLevel=()=>[0,1,2,3,4].map(L=>TOPICS.reduce((a,t)=>a+t.levels[L].awarded,0));
+function summary(){
+ const b=byLevel(); const out=[];
+ for(let T=1;T<=5;T++){
+  const short=[];for(let L=0;L<T;L++) if(b[L]<PASS) short.push(L);
+  let ok;
+  if(!short.length) ok=true;
+  else if(short.length>1) ok=false;
+  else{const L=short[0];let pool=0;for(let x=L+1;x<5;x++)pool+=b[x];ok=pool>=PASS-b[L];}
+  out.push({level:T,total:b[T-1],short:Math.max(0,PASS-b[T-1]),
+   above:b.slice(T).reduce((a,v)=>a+v,0),own:short.length===0,ok:ok});
+ }
+ return out;
+}
+const current=()=>{const s=summary().filter(x=>x.ok);return s.length?Math.max(...s.map(x=>x.level)):0;};
+
+/* ── หน้าแรก: ตรงกับชีต Summary ของฟอร์ม CANSO ── */
+function scHome(){
+ const b=byLevel(), sm=summary(), cur=current(), tgt=cur+1, t3=sm[tgt-1]||sm[4];
+ const blocked=TOPICS.filter(t=>t.blockedPoints>0).sort((a,b)=>b.blockedPoints-a.blockedPoints);
+ const blkTot=blocked.reduce((a,t)=>a+t.blockedPoints,0);
+ const remain=Math.max(0,t3.short-t3.above);
+ const cats=['Governance','Improved ATM','Business Operations'];
+ return `<h1>ภาพรวมความพร้อม GreenATM</h1>
+ <p class="sub">คำนวณตามกติกาของ CANSO — ต้องได้ ≥ ${PASS}/100 ที่ระดับนั้น <b>และทุกระดับที่ต่ำกว่า</b>
+ · คะแนนเกินจากระดับบนเติมลงล่างได้ <b>ระดับเดียว</b></p>
+
+ <div class="dbox"><h3>📋 สิ่งที่ต้องตัดสิน</h3>
+  <div class="drow"><span class="dic">⬜</span><b class="mono">Level ${tgt}</b>
+   <span class="dtx">ได้ ${t3.total}/100 · ขาด ${t3.short} · เติมจากระดับบนได้ ${t3.above}
+   → <b>ยังขาดอีก ${remain} คะแนน</b></span></div>
+  <div class="drow"><span class="dic">🛑</span><b class="mono">${blkTot} คะแนน</b>
+   <span class="dtx">ทำงานไว้แล้วแต่ได้ <b>0 คะแนน</b> เพราะระดับที่ต่ำกว่ายังไม่เต็ม</span>
+   <button class="mini" onclick="go('topics','${blocked[0]?blocked[0].code:'T01'}')">ดูว่าหัวข้อไหน</button></div>
+  <div class="drow"><span class="dic">⚠</span><b class="mono">E-021</b>
+   <span class="dtx">เอกสารไม่มีวันที่ในตัวเอกสาร — ระบบรอคำตอบจากเจ้าของ</span></div></div>
+
+ <div class="hero">ระดับที่ได้ตอนนี้ <b>Level ${cur}</b> <span class="sub">· เป้าหมาย Level ${tgt}</span></div>
+
+ <div class="ladder">
+ ${sm.slice().reverse().map(s=>{
+   const w=Math.min(100,s.total);
+   const boost=(!s.own&&s.ok)?Math.min(100,PASS)-w:0;
+   return `<div class="lrow"><div class="lname">Level ${s.level}</div>
+    <div class="ltrack"><div class="lfill ${s.total>=PASS?'pass':(s.ok?'':'fail')}" style="width:${w}%"></div>
+     ${boost>0?`<div class="lboost" style="left:${w}%;width:${boost}%"></div>`:''}
+     <div class="lmark"></div></div>
+    <div class="lval"><b>${s.total}</b>/100 ${s.short?`<span class="dim">ขาด ${s.short}</span>`:''}</div>
+    <div class="lstat">${s.ok?`<span class="chip s-ok">✓ ${s.own?'ได้':'ได้ (เติม)'}</span>`
+      :`<span class="chip s-no">✕ ยังไม่ได้</span>`}</div></div>`}).join('')}
+ <div class="sub" style="margin-top:8px">เส้นดำแนวตั้ง = เกณฑ์ ${PASS} คะแนน · แถบลาย = คะแนนที่เติมลงมาจากระดับบน</div></div>
+
+ <div class="cliff"><h3>⚠ กฎ cliff — งานที่ทำแล้วแต่ยังไม่ได้คะแนน</h3>
+ <p class="sm" style="margin:0 0 7px">CANSO ให้คะแนน <b>ถึงระดับต่ำสุดที่ยังทำไม่เต็มเท่านั้น</b>
+ ระดับที่สูงกว่านั้นได้ 0 แม้จะทำเสร็จแล้ว</p>
+ <table style="background:transparent"><thead><tr><th>หัวข้อ</th><th class="num-c">เต็ม</th>
+ <th>ติดที่ระดับ</th><th class="num-c">คะแนนที่หายไป</th><th></th></tr></thead><tbody>
+ ${blocked.map(t=>{const stuck=t.levels.findIndex(l=>l.raw<t.points)+1;
+   return `<tr><td><b class="mono">${t.code}</b> ${esc(t.name)}</td><td class="num-c">${t.points}</td>
+   <td>L${stuck} ได้ ${t.levels[stuck-1].raw}/${t.points}</td>
+   <td class="num-c zeroed">−${t.blockedPoints}</td>
+   <td><button class="mini" onclick="go('topics','${t.code}')">เปิด</button></td></tr>`}).join('')}
+ </tbody></table>
+ <p class="sm" style="margin:8px 0 0"><b>ปิดช่องว่างที่ระดับล่างของ ${blocked.length} หัวข้อนี้
+ → ได้คืน ${blkTot} คะแนน ซึ่งพอดีกับที่ยังขาด ${remain} คะแนน</b></p></div>
+
+ <div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>หมวด</th>
+ ${[1,2,3,4,5].map(L=>`<th class="num-c">L${L}</th>`).join('')}<th class="num-c">เต็ม</th></tr></thead><tbody>
+ ${cats.map(c=>{const ts=TOPICS.filter(t=>t.category===c);
+   return `<tr><td>${c}</td>${[0,1,2,3,4].map(L=>
+    `<td class="num-c">${ts.reduce((a,t)=>a+t.levels[L].awarded,0)}</td>`).join('')}
+   <td class="num-c dim">${ts.reduce((a,t)=>a+t.points,0)}</td></tr>`}).join('')}
+ <tr style="font-weight:700"><td>รวม</td>${b.map(v=>`<td class="num-c">${v}</td>`).join('')}
+ <td class="num-c">100</td></tr>
+ <tr><td class="dim">เกณฑ์</td>${b.map(()=>`<td class="num-c dim">${PASS}</td>`).join('')}<td></td></tr>
+ </tbody></table></div>
+ <p class="sub">▲ ตารางนี้คือชีต <b>Summary</b> ของฟอร์มให้คะแนน CANSO — ต่างกันแค่คำนวณสดและคลิกกลับไปถึงหลักฐานได้</p>`;
+}
+
+/* ── หัวข้อทั้งหมด ── */
+function scTopics(){
+ return `<h1>หัวข้อทั้งหมด · ${TOPICS.length} หัวข้อ · 100 คะแนน</h1>
+ <p class="sub">ชื่อและคะแนนตามเอกสาร CANSO · แถว <b>awarded</b> คือคะแนนที่นับจริงหลังกฎ cliff</p>
+ <div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>รหัส</th><th>หัวข้อ</th>
+ <th>หมวด</th><th class="num-c">เต็ม</th>${[1,2,3,4,5].map(L=>`<th class="num-c">L${L}</th>`).join('')}
+ <th class="num-c">หาย</th></tr></thead><tbody>
+ ${TOPICS.map(t=>`<tr style="cursor:pointer" onclick="go('topics','${t.code}')">
+  <td class="mono">${t.code}</td><td>${esc(t.name)}<div class="dim sm">${esc(t.nameTh)}</div></td>
+  <td class="sm">${t.category}</td><td class="num-c">${t.points}</td>
+  ${t.levels.map(l=>`<td class="num-c ${l.awarded===0&&l.raw>0?'zeroed':''}">${l.awarded}${
+    l.awarded===0&&l.raw>0?`<span class="dim sm"> (${l.raw})</span>`:''}</td>`).join('')}
+  <td class="num-c ${t.blockedPoints?'zeroed':'dim'}">${t.blockedPoints?'−'+t.blockedPoints:'—'}</td></tr>`).join('')}
+ </tbody></table></div>`;
+}
+function scTopic(){
+ const t=tp(S.topic); const stuck=t.levels.findIndex(l=>l.raw<t.points)+1;
+ return `<div style="margin-bottom:10px"><h2>${t.code} · ${esc(t.name)}</h2>
+ <div class="sub">${esc(t.nameTh)} · หมวด ${t.category} · เต็ม <b>${t.points}</b> คะแนน
+ · อ้างอิงเอกสาร ${t.ref}</div></div>
+ ${t.blockedPoints?`<div class="cliff"><h3>⚠ เสียไป ${t.blockedPoints} คะแนนเพราะกฎ cliff</h3>
+  <p class="sm" style="margin:0">ระดับ ${stuck} ยังได้ ${t.levels[stuck-1].raw}/${t.points}
+  — ระดับที่สูงกว่าจึงได้ 0 แม้จะทำไว้แล้ว <b>ปิดช่องว่างที่ระดับ ${stuck} ก่อน คุ้มที่สุด</b></p></div>`:''}
+ <div class="card"><h3>เกณฑ์รายระดับ (ข้อความจริงจากเอกสาร CANSO)</h3>
+ ${t.levels.map(l=>`<div class="lv"><div class="lvn">Level ${l.level}</div>
+  <div class="lvo">${esc(l.objective)||'<span class="dim">—</span>'}</div>
+  <div class="lvp">${l.awarded}/${t.points}
+   ${l.awarded===0&&l.raw>0?`<div class="zeroed sm">ทำไว้ ${l.raw} แต่ได้ 0</div>`:''}</div></div>`).join('')}</div>
+ <div class="card"><h3>หลักฐานที่แนบ</h3>
+ ${t.evidence.length?t.evidence.map(e=>`<div class="ev">
+   <div class="evh">${badge(e.expectedTier)} <b>${e.id}</b> <span class="dim sm">· ระดับ ${e.level}</span></div>
+   <div class="evn">${esc(e.file)}</div><div class="evr">${esc(e.why)}</div>
+   <div>${e.confirmed?'<span class="ok-tag">✓ ยืนยันแล้ว</span>':
+     (S.role==='central'?`<button class="mini prim" onclick="confirmEv('${t.code}','${e.id}')">ยืนยันชั้น</button>`
+      :'<span class="dim sm">รอทีมกลางยืนยัน</span>')}</div></div>`).join('')
+  :'<div class="empty">ยังไม่มีหลักฐานแนบ — หัวข้อนี้จึงยังพิสูจน์ไม่ได้</div>'}</div>
+ ${t.code==='T13'?agentDrawer(t):''}`;
+}
+function agentDrawer(t){
+ return `<div class="drawer"><div class="dh">แผง “agent ทำอะไรไปบ้าง” · ${t.code}
+ <span class="dim">ใช้ 5 จาก ${D.app_setting.agent_max_tool_calls} call · 19 วินาที</span></div>
+ <pre>1  get_topic("${t.code}")            → เต็ม ${t.points} คะแนน · เกณฑ์ 5 ระดับ
+2  get_scores("${t.code}")           → L1 ${t.levels[0].raw} · L2 ${t.levels[1].raw} · L3 ${t.levels[2].raw}
+3  list_evidence("${t.code}")        → ${t.evidence.length} ชิ้น
+4  read_evidence("E-021")          → ไม่พบวันที่ในตัวเอกสาร
+5  propose_gap("${t.code}", ["ปิดช่องว่างระดับ 2 ก่อน — ระดับ 3 ที่ทำไว้ ${t.levels[2].raw} คะแนนจะได้คืนทันที",
+                        "ขอวันที่ของ E-021 จากเจ้าของ"])</pre>
+ <div class="note">agent อ่าน <code>get_scores</code> แล้ว<b>ตัดสินเองว่าควรบอกให้ไปปิดระดับล่างก่อน</b>
+ — เป็นข้อสรุปที่สูตรคำนวณไม่ได้ · ข้อเสนอเข้าสถานะ pending ไม่เปลี่ยนคะแนนใด ๆ</div></div>`;
+}
+
+/* ── แชต (บทบาทเจ้าของข้อมูล) ── */
+function scChat(){
+ if(!S.chat.length){
+  const mine=TOPICS.filter(t=>t.owner===(S.role==='central'?'u-env':'u-env'));
+  const need=mine.filter(t=>t.blockedPoints>0||t.evidence.some(e=>e.expectedTier==='ASK')).slice(0,3);
+  S.chat=[{t:'ai',h:`สวัสดีครับ · รอบ ${D.cycle} · เป้าหมาย <b>Level ${current()+1}</b>
+   <div class="ccard"><h4>สิ่งที่ควรทำก่อนในรอบนี้</h4>
+   <div class="drow"><span class="dic">1</span><span class="dtx"><b class="mono">T13</b>
+    Trajectory Optimisation — ปิดช่องว่าง <b>ระดับ 2</b> แล้วจะได้คืน <b>8 คะแนน</b> ที่ทำไว้แล้ว</span></div>
+   <div class="drow"><span class="dic">2</span><span class="dtx"><b class="mono">T15</b>
+    Research and Development — เหมือนกัน ได้คืน <b>6 คะแนน</b></span></div>
+   <div class="drow"><span class="dic">3</span><span class="dtx"><b class="mono">E-021</b>
+    ต้องการวันที่ของเอกสาร — ระบบไม่เดาจากวันอัปโหลด</span></div>
+   </div>
+   รวมสองหัวข้อแรกได้คืน <b>14 คะแนน</b> ซึ่งพอดีกับที่ยังขาดเพื่อไป Level ${current()+1} ครับ`}];
+ }
+ return `<h1>แชตกับผู้ช่วย</h1>
+ <p class="sub">กองสิ่งแวดล้อม · รอบ ${D.cycle} ·
+ <a href="#" onclick="alert('ฟอร์มกรอกมืออยู่ที่ /my/form — ทางสำรองเมื่อโมเดลล่ม (AC-12)');return false">ใช้ฟอร์มแทน →</a></p>
+ <div class="card"><div class="chat" id="chatbox">
+ ${S.chat.map(m=>`<div class="msg m-${m.t}">${m.h}</div>`).join('')}</div>
+ <div class="composer">
+ <input id="ci" placeholder='${S.down?"ผู้ช่วยไม่พร้อมใช้งาน":"พิมพ์… เช่น “T13 ระดับ 2 เป็น 8”"}' ${S.down?'disabled':''}
+  onkeydown="if(event.key==='Enter')sendChat()">
+ <button class="mini ghost" onclick="dropEvidence()" ${S.down?'disabled':''}>📎 แนบไฟล์</button>
+ <button class="mini prim" onclick="sendChat()" ${S.down?'disabled':''}>ส่ง</button></div></div>`;
+}
+function push(t,h){S.chat.push({t:t,h:h})}
+function sendChat(){
+ const el=document.getElementById('ci'),v=(el&&el.value||'').trim();if(!v)return;el.value='';
+ push('me',esc(v));
+ const m=v.match(/(T\d\d)[^0-9]*(\d)[^0-9]+(\d{1,2})/i);
+ if(!m){push('ai','ผมยังไม่แน่ใจว่าหมายถึงหัวข้อไหน ระดับไหน และกี่คะแนนครับ '+
+  '<b>ช่วยระบุให้ชัดหน่อยได้ไหม</b> เช่น “T13 ระดับ 2 เป็น 8”'+
+  '<div class="pending">⚠ ตีความไม่ชัด → ถามกลับ ไม่เดา ไม่ขึ้นการ์ด (AC-19)</div>');render();return;}
+ const code=m[1].toUpperCase(),lv=+m[2],pt=+m[3],t=tp(code);
+ if(!t){push('ai',`ไม่พบหัวข้อ ${code} ในระบบครับ`);render();return;}
+ if(pt>t.points){push('ai',`${code} เต็ม ${t.points} คะแนน ใส่ ${pt} ไม่ได้ครับ`);render();return;}
+ cardConfirm(code,lv,pt);render();
+}
+function cardConfirm(code,lv,pt){
+ const t=tp(code),cur=t.levels[lv-1].raw;
+ const gainT=(()=>{const bak=t.levels.map(l=>l.raw),b0=byLevel();
+  t.levels[lv-1].raw=pt;recalc(t);const b1=byLevel();
+  t.levels.forEach((l,i)=>l.raw=bak[i]);recalc(t);
+  return b1[2]-b0[2];})();
+ push('ai',`<div class="ccard hi"><h4>ยืนยันคะแนนที่ส่ง</h4>
+  <div class="mono">${code} · ${esc(t.name)} · Level ${lv}</div>
+  <div class="delta"><span class="old">${cur}</span> → <span>${pt}</span>
+   <span class="sub">/ ${t.points}</span></div>
+  ${gainT>0?`<div class="sub">ผลต่อคะแนนรวมระดับ 3: <b style="color:var(--ok)">+${gainT}</b>
+   (ปลดล็อกคะแนนที่ติดกฎ cliff)</div>`:''}
+  <div class="pending">⚠ ยังไม่มีผลจนกว่าจะกดยืนยัน — ตอนนี้เป็นแถว pending เท่านั้น (AC-17)</div>
+  <button class="mini prim" onclick="doConfirm('${code}',${lv},${pt})">ยืนยัน</button>
+  <button class="mini ghost">แก้ค่า</button></div>`);
+}
+function doConfirm(code,lv,pt){
+ const t=tp(code),b0=byLevel();t.levels[lv-1].raw=pt;recalc(t);const b1=byLevel();
+ push('sys','— บันทึกแล้ว · audit_log.actor = ผู้ใช้ (ไม่ใช่ ai) —');
+ const d=b1[2]-b0[2];
+ push('ai',`บันทึกแล้วครับ · <b>${code}</b> Level ${lv} = ${pt}/${t.points}
+  ${d>0?`<div class="pending">คะแนนรวม <b>ระดับ 3</b> ขยับ ${b0[2]} → <b>${b1[2]}</b> (+${d})
+   — เพราะปิดช่องว่างระดับล่างแล้ว คะแนนระดับบนที่ทำไว้จึงถูกนับ</div>`
+   :'<div class="pending">คะแนนรวมยังไม่ขยับ — ระดับที่ต่ำกว่ายังไม่เต็ม</div>'}`);
+ S.flash++;render();
+}
+function dropEvidence(){
+ push('me','📎 (ร่าง) แผนดำเนินการลดพลังงาน 2570.docx → T16 ระดับ 4');
+ push('sys','ผู้ช่วยกำลังอ่านเอกสาร…');render();
+ setTimeout(()=>{S.chat.pop();
+  push('ai',`<div class="ccard"><h4>ผลประเมินหลักฐาน · E-010</h4>
+   ${badge('C')} <b>ร่าง/แผน — ไม่นับเข้าคะแนน</b>
+   <div class="sub" style="margin:5px 0">เหตุผล: เป็นแผนที่ตั้งใจจะทำในอนาคต ยังไม่มีการดำเนินการจริงและไม่มีผลการวัด
+   · เกณฑ์ระดับ 4 ต้องการผลที่วัดได้</div>
+   <div class="sub"><b>ยังขาด:</b></div>
+   <label class="gap"><input type="checkbox">ผลการวัดการใช้พลังงานจริงเทียบปีฐาน</label>
+   <label class="gap"><input type="checkbox">เอกสารที่ผ่านการอนุมัติ ไม่ใช่ร่าง</label>
+   <div class="pending">“แผนไม่ใช่หลักฐานผลลัพธ์” — คะแนนจึงไม่ขึ้น (AC-02)</div></div>`);
+  render();},900);
+}
+function confirmEv(code,id){const t=tp(code);const e=t.evidence.find(x=>x.id===id);if(e)e.confirmed=true;S.flash++;render();}
+
+/* ── ศูนย์ตรวจสอบ / เอกสาร ── */
+function scReview(){
+ const q=[];TOPICS.forEach(t=>t.evidence.forEach(e=>{if(!e.confirmed)q.push([t,e])}));
+ return `<h1>ศูนย์ตรวจสอบ</h1>
+ <div class="tabs"><button class="on">รอยืนยันชั้น ${q.length}</button><button>ร่างคำตอบ 3</button>
+ <button>รออนุมัติ 2</button></div>
+ <div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>หัวข้อ</th><th>ระดับ</th>
+ <th>เอกสาร</th><th>ชั้นที่ agent เสนอ</th><th>เหตุผล</th><th></th></tr></thead><tbody>
+ ${q.slice(0,10).map(([t,e])=>`<tr><td class="mono">${t.code}</td><td class="num-c">L${e.level}</td>
+  <td class="mono">${e.id}</td><td>${badge(e.expectedTier)}</td>
+  <td class="sm">${esc(e.why).slice(0,54)}</td>
+  <td><button class="mini prim" onclick="confirmEv('${t.code}','${e.id}')">ยืนยัน</button></td></tr>`).join('')}
+ </tbody></table></div>`;
+}
+function scDocs(){
+ const rem=TOPICS.filter(t=>!t.evidence.length||t.blockedPoints>0);
+ return `<h1>เอกสารส่งผู้ตรวจ · รอบ ${D.cycle}</h1>
+ <p class="sub">CANSO กำหนดว่า <b>ต้องระบุหน้า/หัวข้อ/ย่อหน้าที่หลักฐานอยู่ ไม่งั้นจะไม่นับหลักฐานชิ้นนั้น</b>
+ — ระบบบังคับกฎนี้ก่อน export (AC-10)</p>
+ <button class="prim">Export Word</button> <button>Export PDF</button>
+ <div class="card" style="margin-top:11px"><h3>ตัวอย่างคำตอบ · T06 CDO — รูปแบบ Point / Evidence / Explain</h3>
+ <div style="font-size:13.5px;line-height:1.95">
+ <b>Point</b> — AEROTHAI measures CDO performance at VTBS and reports it quarterly.<br>
+ <b>Evidence</b> — ${badge('A')} <span class="mono">[E-005 p.3, Table 2]</span> ·
+  ${badge('A')} <span class="mono">[E-023 p.1]</span><br>
+ <b>Explain</b> — The measurement covers 12,480 flights over three months and was
+  independently verified; scope is limited to VTBS, which is stated in the report.<br>
+ <span class="zeroed">⛔ ย่อหน้าที่ยังไม่มีตัวอ้างอิง: 1 — ส่งไม่ได้จนกว่าจะเป็น 0</span></div></div>
+ <div class="reg"><h3>⚠ ทะเบียนหมายเหตุ — ${rem.length} หัวข้อ · ห้ามซ่อน</h3>
+ <table style="background:transparent"><thead><tr><th>หัวข้อ</th><th class="num-c">เต็ม</th>
+ <th>สาเหตุ</th></tr></thead><tbody>
+ ${rem.map(t=>`<tr><td class="mono">${t.code}</td><td class="num-c">${t.points}</td>
+  <td>${!t.evidence.length?'ไม่มีหลักฐานแนบเลย':'ทำไว้ '+t.blockedPoints+' คะแนนแต่ติดกฎ cliff'}</td></tr>`).join('')}
+ </tbody></table></div>`;
+}
+
+
+/* ── เครื่องคำนวณการแจ้งเตือน (โค้ดล้วน ไม่ใช่โมเดล) ── */
+const DAY=86400000, ASOF=new Date(D.asOfDate);
+const days=(a,b)=>Math.round((new Date(b)-new Date(a))/DAY);
+const SET=D.app_setting;
+function alerts(){
+ const out=[];
+ TOPICS.forEach(t=>{
+  const over=days(t.dueDate,D.asOfDate);
+  // ① กำหนดส่งรอบนี้
+  if(!t.submittedOn){
+   if(over>0) out.push({id:'A-OVERDUE',sev:'crit',to:['owner','mod'],topic:t,
+     head:`ยังไม่ส่งข้อมูลรอบนี้ · เลยกำหนด ${over} วัน`,
+     body:`${t.code} ${t.name} — กำหนดส่ง ${t.dueDate} (วันที่ ${SET.monthly_due_day} ของเดือน)`,
+     verb:'ESCALATE'});
+   else if(-over<=SET.alert_lead_days) out.push({id:'A-DUE',sev:'warn',to:['owner'],topic:t,
+     head:`ใกล้ครบกำหนดส่ง · เหลือ ${-over} วัน`,body:`${t.code} ${t.name}`,verb:'NOTE'});
+  }
+  // ② ไม่มีหลักฐานเลย
+  if(!t.evidence.length) out.push({id:'A-NOEV',sev:'warn',to:['owner'],topic:t,
+    head:'ยังไม่มีหลักฐานแนบเลย',
+    body:`${t.code} ${t.name} — ${t.points} คะแนนนี้พิสูจน์ไม่ได้ถ้าไม่มีเอกสาร`,verb:'ASK'});
+  // ③ หลักฐานล้าสมัย
+  t.evidence.forEach(e=>{ if(!e.documentDate) return;
+   const m=days(e.documentDate,D.asOfDate)/30.4;
+   if(m>SET.evidence_stale_months) out.push({id:'A-STALE',sev:'warn',to:['owner'],topic:t,
+     head:`หลักฐานล้าสมัย · เก่ากว่า ${SET.evidence_stale_months} เดือน`,
+     body:`${e.id} ${e.file} ลงวันที่ ${e.documentDate} (${Math.round(m)} เดือนก่อน) — ถูกลดชั้นอัตโนมัติ`,
+     verb:'ASK'});});
+  // ④ เอกสารไม่มีวันที่ → ต้องถาม
+  t.evidence.forEach(e=>{ if(e.expectedTier==='ASK') out.push({id:'A-NODATE',sev:'warn',to:['owner'],topic:t,
+    head:'ต้องการวันที่ของเอกสาร',
+    body:`${e.id} ${e.file} — ไม่พบวันที่ในตัวเอกสาร ระบบไม่เดาจากวันอัปโหลด`,verb:'ASK'});});
+  // ⑤ คะแนนติดกฎ cliff
+  if(t.blockedPoints>0){const stuck=t.levels.findIndex(l=>l.raw<t.points)+1;
+   out.push({id:'A-BLOCKED',sev:'crit',to:['owner','mod'],topic:t,
+    head:`${t.blockedPoints} คะแนนที่ทำแล้วแต่ได้ 0`,
+    body:`${t.code} — ระดับ ${stuck} ได้ ${t.levels[stuck-1].raw}/${t.points} · ปิดช่องว่างนี้แล้วได้คืนทันที`,
+    verb:'ESCALATE'});}
+  // ⑥ แผนเลื่อนซ้ำ → ยกระดับตามจำนวนครั้ง
+  if(t.plan&&t.plan.slips.length){const n=t.plan.slips.length;
+   out.push({id:'A-SLIP',sev:n>=SET.slip_escalate_after?'crit':'warn',to:n>=2?['owner','mod']:['owner'],topic:t,
+    head:`เลื่อนแผนครั้งที่ ${n}${n>=SET.slip_escalate_after?' — ติดเชิงโครงสร้าง':''}`,
+    body:`${t.plan.name} · เดิม ${t.plan.slips[0][0]} → ตอนนี้ ${t.plan.revisedDate}`+
+      (n>=SET.slip_escalate_after?` · เหตุผลเดิมทุกครั้ง: “${t.plan.slips[0][2]}”`:''),
+    verb:n>=SET.slip_escalate_after?'ESCALATE':(n>=2?'ASK':'NOTE'),slips:t.plan.slips});}
+ });
+ const rank={crit:0,warn:1,info:2};
+ return out.sort((a,b)=>rank[a.sev]-rank[b.sev]);
+}
+const VERB={NOTE:['แจ้งให้ทราบ','s-part'],ASK:['ขอข้อมูลเพิ่ม','s-part'],
+ ESCALATE:['ยกให้ผู้ดูแลตัดสิน','s-no']};
+function scAlerts(){
+ const A=alerts(), forMe=S.role==='central'?A.filter(a=>a.to.indexOf('mod')>=0):A.filter(a=>a.to.indexOf('owner')>=0);
+ const crit=forMe.filter(a=>a.sev==='crit').length;
+ const box=a=>`<div class="ev"><div class="evh">
+   <span class="chip ${a.sev==='crit'?'s-no':'s-part'}">${a.sev==='crit'?'⛔':'⚠'} ${a.id}</span>
+   <span class="chip ${VERB[a.verb][1]}">${VERB[a.verb][0]}</span>
+   <b>${esc(a.head)}</b></div>
+  <div class="evn">${esc(a.body)}</div>
+  ${a.slips&&a.slips.length>1?`<div class="evr">ประวัติการเลื่อน: ${
+    a.slips.map(x=>`${x[0]}→${x[1]}`).join(' · ')}</div>`:''}
+  <div><button class="mini" onclick="go('topics','${a.topic.code}')">เปิดหัวข้อ</button>
+   <button class="mini ghost" onclick="draftMsg('${a.id}','${a.topic.code}')">ร่างข้อความ</button></div></div>`;
+ return `<h1>แจ้งเตือน / Outbox</h1>
+ <p class="sub">โค้ดคำนวณทั้งหมดจากกำหนดส่ง · วันที่เอกสาร · ประวัติการเลื่อน —
+ <b>โมเดลไม่ได้ตัดสินว่าอะไรเป็นปัญหา</b> · ระบบ<b>ร่าง</b>ข้อความ <b>คนกดส่งเอง</b> ไม่ออกนอกระบบ</p>
+ <div class="dbox"><h3>📋 ${S.role==='central'?'ถึงผู้ดูแล (moderator)':'ถึงเจ้าของข้อมูล'}
+  — ${forMe.length} รายการ · ต้องจัดการด่วน ${crit}</h3>
+  <div class="sm">กติกายกระดับ: ครั้งที่ 1 แจ้งให้ทราบ → ครั้งที่ 2 ขอข้อมูลเพิ่ม →
+  ครั้งที่ ${SET.slip_escalate_after} ยกให้ผู้ดูแล <b>พร้อมประวัติทั้งหมด</b></div></div>
+ <div class="card">${forMe.length?forMe.map(box).join(''):'<div class="empty">ไม่มีรายการค้าง</div>'}</div>
+ <div class="card"><h3>📤 Outbox — ร่างข้อความที่รอส่ง (${S.outbox.length})</h3>
+ ${S.outbox.length?S.outbox.map((m,i)=>`<div class="ev"><div class="evh">
+   <b>ถึง ${esc(m.to)}</b> <span class="dim sm">· ${m.id}</span>
+   ${m.sent?'<span class="ok-tag">✓ ส่งแล้ว</span>':''}</div>
+   <div class="evn" style="white-space:pre-wrap">${esc(m.body)}</div>
+   ${m.sent?'':`<div><button class="mini prim" onclick="sendMsg(${i})">ส่ง</button>
+    <button class="mini ghost">แก้ข้อความ</button></div>`}</div>`).join('')
+  :'<div class="empty">ยังไม่มีร่างข้อความ — กด “ร่างข้อความ” จากรายการด้านบน</div>'}
+ <div class="pending" style="margin-top:9px">⚠ ต้นแบบนี้ <b>ไม่ส่งอีเมล/LINE จริง</b> ·
+ กดส่งแล้วข้อความไปแสดงในแอปของผู้รับเท่านั้น</div></div>`;
+}
+function draftMsg(id,code){
+ const t=tp(code), a=alerts().find(x=>x.id===id&&x.topic.code===code); if(!a)return;
+ const to=a.to.indexOf('mod')>=0&&S.role==='central'?'ผู้ดูแลส่วนกลาง':'เจ้าของหัวข้อ '+t.code;
+ S.outbox.push({id:id,to:to,sent:false,body:
+  `เรื่อง: ${a.head}\n\n${a.body}\n\n`+
+  (a.slips&&a.slips.length>=SET.slip_escalate_after
+   ? `ประวัติการเลื่อน ${a.slips.length} ครั้ง:\n`+a.slips.map((x,i)=>`  ${i+1}. ${x[0]} → ${x[1]} — ${x[2]}`).join('\n')+
+     `\n\nข้อสังเกต: เหตุผลเดิมซ้ำทุกครั้ง — น่าจะเป็นปัญหาเชิงโครงสร้าง ไม่ใช่เรื่องการเร่งงาน\n`
+   : '')+
+  `\nกรุณาดำเนินการภายในรอบถัดไป (ภายในวันที่ ${SET.monthly_due_day})`});
+ S.screen='alerts';render();
+}
+function sendMsg(i){S.outbox[i].sent=true;render();}
+
+/* ── shell ── */
+function setRole(r){S.role=r;document.getElementById('role').value=r;
+ const a=NAV.find(n=>n[0]===S.screen);
+ if(a&&a[2]&&a[2].split(',').indexOf(r)<0)S.screen='home';render();}
+function go(s,c){if(c)S.topic=c;S.screen=s;render();window.scrollTo(0,0);}
+function toggleDown(){S.down=!S.down;render();}
+function render(){
+ document.getElementById('cycle').textContent='รอบ '+D.cycle+' · ข้อมูล ณ '+D.asOfDate;
+ document.getElementById('roleinfo').textContent=S.role==='submitter'?'กองสิ่งแวดล้อม':'';
+ document.getElementById('downbar').style.display=S.down?'block':'none';
+ document.getElementById('downbtn').textContent=S.down?'จำลอง: เปิด endpoint':'จำลอง: ปิด endpoint';
+ document.getElementById('nav').innerHTML=NAV.map(n=>{
+  const off=n[2]&&n[2].split(',').indexOf(S.role)<0;
+  return `<a class="${S.screen===n[0]?'on':''} ${off?'off':''}" onclick="${off?'':`go('${n[0]}')`}">${n[1]}</a>`}).join('');
+ const map={home:scHome,chat:scChat,topics:()=>S.topic?scTopic():scTopics(),alerts:scAlerts,review:scReview,docs:scDocs};
+ let h=(map[S.screen]||scHome)();
+ if(S.screen==='topics'&&S.topic)h=`<button class="mini ghost" onclick="S.topic=null;render()">← หัวข้อทั้งหมด</button>`+h;
+ if(S.screen==='chat'&&S.down)
+  h=`<h1>แชตกับผู้ช่วย</h1><div class="card" style="border:2px solid var(--late)">
+   <h3 style="color:var(--late)">⛔ เชื่อมต่อผู้ช่วย AI ไม่ได้</h3>
+   <p>ข้อความเก่ายังอ่านได้ · <b>กรอกข้อมูลผ่านฟอร์มได้ตามปกติ</b> — ระบบส่วนอื่นไม่กระทบ (AC-12)</p>
+   <button class="prim">ไปหน้าฟอร์มกรอกมือ →</button></div>
+   <div class="card"><div class="chat">${S.chat.map(m=>`<div class="msg m-${m.t}">${m.h}</div>`).join('')}</div></div>`;
+ document.getElementById('main').innerHTML=h;
+ const cb=document.getElementById('chatbox');if(cb)cb.scrollTop=cb.scrollHeight;
+}
+
+/* ── สคริปต์เดโม ── */
+const STEPS=[
+ ['0:00','<b>เปิดด้วยตัวเลขจริง</b> — วันนี้ใช้คน 5 คน เต็มเวลา 2 เดือน ต่อรอบการประเมิน',()=>{setRole('submitter');go('chat')}],
+ ['0:20','เปิดจาก<b>ฝั่งกอง</b> — ผู้ช่วยบอกว่ารอบนี้ควรทำอะไรก่อน และ<b>ทำไม</b>',()=>{setRole('submitter');S.chat=[];go('chat')}],
+ ['0:40','⭐ <b>ลากไฟล์ร่างแผนเข้าไป</b> → ตอบทันทีว่าเป็นชั้น C · “แผนไม่ใช่หลักฐานผลลัพธ์” (AC-02)',()=>{go('chat');dropEvidence()}],
+ ['1:05','⭐ <b>พิมพ์ “T13 ระดับ 2 เป็น 8”</b> → การ์ดยืนยันขึ้น <b>ยังไม่เปลี่ยนอะไร</b> (AC-17)',
+  ()=>{go('chat');push('me','T13 ระดับ 2 เป็น 8');cardConfirm('T13',2,8);render()}],
+ ['1:20','<b>กดยืนยัน</b> → คะแนนระดับ 3 ขยับ <b>+8 ทันที</b> ทั้งที่ไม่ได้ทำงานเพิ่ม — เพราะปลดล็อกกฎ cliff',
+  ()=>{go('chat');doConfirm('T13',2,8)}],
+ ['1:45','<b>ดูภาพรวม</b> → บันไดระดับ · ขาดกี่คะแนน · เติมจากระดับบนได้เท่าไร',()=>{setRole('exec');go('home')}],
+ ['2:10','<b>เอกสารส่งผู้ตรวจ</b> — รูปแบบ Point/Evidence/Explain + ทะเบียนหมายเหตุ (AC-10, AC-15)',()=>{setRole('central');go('docs')}],
+ ['2:35','<b>ปิด endpoint สด ๆ</b> → ฟอร์มสำรองยังกรอกได้ ระบบส่วนอื่นเดินต่อ (AC-12)',()=>{setRole('submitter');S.down=true;go('chat')}],
+];
+function demoShow(){const b=document.getElementById('dstep'),t=document.getElementById('dtext');
+ if(!S.demo){b.textContent='เดโม 0/'+STEPS.length;
+  t.innerHTML='กด <b>เริ่มเดโม</b> เพื่อเดินตามสคริปต์ 3 นาที · หรือกดเมนูซ้ายดูเอง';
+  document.getElementById('dnext').textContent='เริ่มเดโม ▶';}
+ else{const s=STEPS[S.demo-1];b.textContent=s[0]+' · '+S.demo+'/'+STEPS.length;t.innerHTML=s[1];
+  document.getElementById('dnext').textContent=S.demo>=STEPS.length?'จบแล้ว':'ถัดไป ▶';}
+ document.getElementById('dprev').disabled=!S.demo;
+ document.getElementById('dnext').disabled=S.demo>=STEPS.length;}
+function demoNext(){if(S.demo>=STEPS.length)return;S.demo++;STEPS[S.demo-1][2]();demoShow();}
+function demoPrev(){if(S.demo<=1){demoReset();return;}S.demo--;STEPS[S.demo-1][2]();demoShow();}
+function demoReset(){TOPICS.forEach(t=>{t.levels.forEach((l,i)=>l.raw=t.raw0[i]);recalc(t);
+ t.evidence.forEach(e=>e.confirmed=false)});
+ S.chat=[];S.outbox=[];S.down=false;S.demo=0;S.role='submitter';S.screen='chat';S.topic=null;render();demoShow();}
+TOPICS.forEach(recalc);demoReset();
+</script></body></html>

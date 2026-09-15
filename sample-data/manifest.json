@@ -1,0 +1,1409 @@
+{
+  "_synthetic": true,
+  "_warning": "ชื่อหัวข้อ · คะแนน · objective = ของจริงจาก CANSO GreenATM · คะแนน raw · หลักฐาน · เจ้าของ = SYNTHETIC สร้างขึ้นเพื่อสาธิตเท่านั้น",
+  "_note_for_implementers": "expectedTier / blockedPoints มีไว้สำหรับ verify.py เท่านั้น ห้ามส่งเข้า context ของโมเดล",
+  "source": "GreenATM_TopicsandLevelObjectives.pdf · GreenATM_AccreditationGuide_2026.pdf (CANSO, v2.0 ส.ค. 2026)",
+  "asOfDate": "2026-09-15",
+  "cycle": "ก.ย. 2569",
+  "scoring": {
+    "totalPoints": 100,
+    "passMark": 80,
+    "levels": 5,
+    "rule": "awarded ให้ถึงระดับต่ำสุดที่ยังไม่เต็ม · ระดับที่สูงกว่าได้ 0",
+    "flowDown": "คะแนนเกินจากระดับสูงเติมระดับล่างได้ 'ระดับเดียว' เท่านั้น",
+    "currentAccreditation": 2,
+    "targetAccreditation": 3,
+    "awardedByLevel": [
+      100,
+      93,
+      58,
+      8,
+      0
+    ],
+    "awardedByCategory": {
+      "Governance": [
+        14,
+        14,
+        10,
+        2,
+        0
+      ],
+      "Improved ATM": [
+        69,
+        65,
+        40,
+        4,
+        0
+      ],
+      "Business Operations": [
+        17,
+        14,
+        8,
+        2,
+        0
+      ]
+    },
+    "summary": [
+      {
+        "level": 1,
+        "total": 100,
+        "required": 80,
+        "short": 0,
+        "availableAbove": 159,
+        "achievedOwnRight": true,
+        "achievedWithContribution": false,
+        "achieved": true
+      },
+      {
+        "level": 2,
+        "total": 93,
+        "required": 80,
+        "short": 0,
+        "availableAbove": 66,
+        "achievedOwnRight": true,
+        "achievedWithContribution": false,
+        "achieved": true
+      },
+      {
+        "level": 3,
+        "total": 58,
+        "required": 80,
+        "short": 22,
+        "availableAbove": 8,
+        "achievedOwnRight": false,
+        "achievedWithContribution": false,
+        "achieved": false
+      },
+      {
+        "level": 4,
+        "total": 8,
+        "required": 80,
+        "short": 72,
+        "availableAbove": 0,
+        "achievedOwnRight": false,
+        "achievedWithContribution": false,
+        "achieved": false
+      },
+      {
+        "level": 5,
+        "total": 0,
+        "required": 80,
+        "short": 80,
+        "availableAbove": 0,
+        "achievedOwnRight": false,
+        "achievedWithContribution": false,
+        "achieved": false
+      }
+    ]
+  },
+  "divisions": [
+    {
+      "id": "d-gov",
+      "name": "สำนักนโยบายและแผน"
+    },
+    {
+      "id": "d-ops",
+      "name": "กองปฏิบัติการจราจรทางอากาศ"
+    },
+    {
+      "id": "d-env",
+      "name": "กองสิ่งแวดล้อมและวิศวกรรม"
+    }
+  ],
+  "users": [
+    {
+      "id": "u-gov",
+      "name": "ผู้ส่งข้อมูล สำนักนโยบายและแผน",
+      "division_id": "d-gov",
+      "role": "submitter"
+    },
+    {
+      "id": "u-ops",
+      "name": "ผู้ส่งข้อมูล กองปฏิบัติการ",
+      "division_id": "d-ops",
+      "role": "submitter"
+    },
+    {
+      "id": "u-env",
+      "name": "ผู้ส่งข้อมูล กองสิ่งแวดล้อม",
+      "division_id": "d-env",
+      "role": "submitter"
+    },
+    {
+      "id": "u-cen",
+      "name": "ทีมกลาง",
+      "division_id": "d-gov",
+      "role": "central"
+    },
+    {
+      "id": "u-exe",
+      "name": "ผู้บริหาร",
+      "division_id": "d-gov",
+      "role": "executive"
+    }
+  ],
+  "app_setting": {
+    "pass_mark": 80,
+    "evidence_stale_months": 12,
+    "agent_max_tool_calls": 10,
+    "agent_timeout_seconds": 60,
+    "monthly_due_day": 5,
+    "alert_lead_days": 15,
+    "slip_escalate_after": 3,
+    "stale_update_days": 30
+  },
+  "cycleDue": "2026-09-05",
+  "topics": [
+    {
+      "code": "T01",
+      "ref": "1.1.1",
+      "category": "Governance",
+      "categoryTh": "การกำกับดูแล",
+      "name": "Policy and plan",
+      "nameTh": "นโยบายและแผนด้านสิ่งแวดล้อม",
+      "points": 4,
+      "owner": "u-gov",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The business has an environmental policy.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 2,
+          "objective": "The environmental policy is clearly endorsed at senior levels and has been proactively communicated to all staff.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 3,
+          "objective": "The organisation has developed an environmental management strategy or plan, which shows how the aims and objectives included in the environmental policy will be achieved.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 4,
+          "objective": "The environmental policy is subject to review at least once every five years to ensure it remains aligned with the latest thinking and best practice.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 5,
+          "objective": "The organisation has delivered on its environmental policy over a period of at least five years, demonstrated by the actions within its environmental strategy or plan having been delivered and the benefits achieved.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-03",
+      "lastUpdate": "2026-09-03",
+      "plan": null,
+      "evidence": [
+        {
+          "id": "E-001",
+          "level": 2,
+          "file": "บันทึกการประชุมคณะกรรมการ 2-2569.pdf",
+          "documentDate": "2026-03-12",
+          "expectedTier": "B",
+          "why": "เอกสารภายในที่ผ่านการรับรองและลงนามแล้ว",
+          "path": "evidence/E-001.md"
+        }
+      ]
+    },
+    {
+      "code": "T02",
+      "ref": "1.1.2",
+      "category": "Governance",
+      "categoryTh": "การกำกับดูแล",
+      "name": "Environmental Management System",
+      "nameTh": "ระบบจัดการสิ่งแวดล้อม",
+      "points": 3,
+      "owner": "u-gov",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The organisation has evaluated if it should develop an environmental management system (e.g. ISO14001 or Environmental Management & Audit Scheme (EMAS)): · \u0007If the answer is yes, then planning is progressing · \u0007If the answer is no, then the ANSP needs to expla",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 2,
+          "objective": "The scope of the EMS includes the organisation’s business operations, infrastructure and ATC service provisions.",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 3,
+          "objective": "The work to implement the EMS has commenced and supporting documentation has been or is being written.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 4,
+          "objective": "The ANSP can provide examples where the EMS has been used to identify and make reductions in environmental impacts.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "The organisation maintains a third-party certified EMS (e.g. ISO 14001 or has fully implemented EMAS), covering all operational activities, infrastructure and service provision.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-08-30",
+      "lastUpdate": "2026-08-30",
+      "plan": null,
+      "evidence": [
+        {
+          "id": "E-003",
+          "level": 3,
+          "file": "บันทึกประชุมติดตามงาน 6-2569.pdf",
+          "documentDate": "2026-08-28",
+          "expectedTier": "C",
+          "why": "บันทึกการประชุม ยังไม่ผ่านการรับรอง และไม่มีผลการตรวจติดตาม",
+          "path": "evidence/E-003.md"
+        },
+        {
+          "id": "E-004",
+          "level": 3,
+          "file": "สไลด์ความคืบหน้า EMS.pptx",
+          "documentDate": "2026-08-30",
+          "expectedTier": "C",
+          "why": "สไลด์นำเสนอภายใน ไม่มีเอกสารอ้างอิงประกอบ",
+          "path": "evidence/E-004.md"
+        }
+      ]
+    },
+    {
+      "code": "T03",
+      "ref": "1.1.3",
+      "category": "Governance",
+      "categoryTh": "การกำกับดูแล",
+      "name": "Environmental Culture",
+      "nameTh": "วัฒนธรรมองค์กรด้านสิ่งแวดล้อม",
+      "points": 4,
+      "owner": "u-gov",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "There is a plan or ongoing initiatives to develop a suite of communication, engagement and/or training programmes for environmental management and sustainability.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 2,
+          "objective": "Environmental communication, awareness initiatives and training programmes have been developed and introduced at some sites or for certain groups. There are systems and processes in place to encourage staff to share environmental learning with other groups.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 3,
+          "objective": "Environmental communication, awareness initiatives and training programmes are now in place and consistently delivered across the entire organisation. The environmental training and initiatives are tailored to the receiving team/department and span all levels ",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 4,
+          "objective": "The value of environmental responsibility in the organisation is promoted internally and externally (e.g. airlines/airspace users, passengers, regulators, elected bodies, general public).",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "An action plan has been developed to address identified gaps, and performance indicators are used to monitor progress and ensure effective implementation.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": null,
+      "lastUpdate": "2025-07-15",
+      "plan": {
+        "name": "จัดอบรมความตระหนักรอบปี 2570",
+        "plannedDate": "2027-03-31",
+        "revisedDate": null,
+        "percent": 0,
+        "slips": []
+      },
+      "evidence": [
+        {
+          "id": "E-017",
+          "level": 3,
+          "file": "รายงานสรุปผลการอบรม HR-2568-214.pdf",
+          "documentDate": "2025-07-15",
+          "expectedTier": "B",
+          "why": "อนุมัติแล้ว แต่ลงวันที่เกิน 12 เดือน",
+          "path": "evidence/E-017.md"
+        },
+        {
+          "id": "E-018",
+          "level": 4,
+          "file": "(ร่าง) กำหนดการอบรม 2570.docx",
+          "documentDate": "2026-08-12",
+          "expectedTier": "C",
+          "why": "ร่าง ยังไม่ยืนยันงบประมาณ",
+          "path": "evidence/E-018.md"
+        },
+        {
+          "id": "E-019",
+          "level": 2,
+          "file": "รายงานต่อผู้มีส่วนได้เสีย ENV-2569-012.pdf",
+          "documentDate": "2026-02-20",
+          "expectedTier": "B",
+          "why": "เอกสารภายในที่อนุมัติเผยแพร่แล้ว",
+          "path": "evidence/E-019.md"
+        },
+        {
+          "id": "E-020",
+          "level": 3,
+          "file": "บันทึกประชุมหารือแนวทางรายงาน 2569.docx",
+          "documentDate": "2026-07-18",
+          "expectedTier": "C",
+          "why": "ยังไม่ได้ข้อสรุป",
+          "path": "evidence/E-020.md"
+        }
+      ]
+    },
+    {
+      "code": "T04",
+      "ref": "1.1.4",
+      "category": "Governance",
+      "categoryTh": "การกำกับดูแล",
+      "name": "Environmental Targets",
+      "nameTh": "เป้าหมายด้านสิ่งแวดล้อม",
+      "points": 3,
+      "owner": "u-gov",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The organisation has committed to defining environmental targets.",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 2,
+          "objective": "Environmental targets have been set, including details as to how they will be measured, the baseline against which they will be assessed, and the mechanisms that will be used to monitor compliance against the targets.",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 3,
+          "objective": "The organisation monitors progress against its environmental targets, as part of its ongoing management and review procedures. Progress is reported to staff at least once a year.",
+          "raw": 1,
+          "awarded": 1
+        },
+        {
+          "level": 4,
+          "objective": "The progress against targets is formally reported publicly at least on an annual basis, with a documented and transparent explanation for changes in progress.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "Over 65 per cent of the targets have been fully achieved for two or more consecutive years, and new targets have been defined, including a stretch element.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-04",
+      "lastUpdate": "2026-09-04",
+      "plan": null,
+      "evidence": [
+        {
+          "id": "E-002",
+          "level": 3,
+          "file": "(ร่าง) เป้าหมายระหว่างทาง.docx",
+          "documentDate": "2026-08-05",
+          "expectedTier": "C",
+          "why": "ร่าง ยังไม่ผ่านความเห็นชอบ",
+          "path": "evidence/E-002.md"
+        },
+        {
+          "id": "E-024",
+          "level": 4,
+          "file": "(ร่าง) โครงร่างรายงานความยั่งยืน 2569.docx",
+          "documentDate": "2026-08-28",
+          "expectedTier": "C",
+          "why": "ร่างโครงร่าง ยังไม่มีเนื้อหา",
+          "path": "evidence/E-024.md"
+        }
+      ]
+    },
+    {
+      "code": "T05",
+      "ref": "1.2.1",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Flexible Use of Airspace (FUA)",
+      "nameTh": "การใช้ห้วงอากาศแบบยืดหยุ่น (FUA)",
+      "points": 8,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has identified one or more examples within their airspace where FUA could deliver more efficient flight trajectories and has planned discussions with accountable authorities on its flexible use.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 2,
+          "objective": "Discussions between the ANSP and other stakeholders have occurred. Stakeholders have agreed to implementing FUA as a part of strategic Air Space Management (ASM).",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 3,
+          "objective": "The ANSP has quantified the track miles/flight time that might be saved per flight for different occurrences of FUA.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 4,
+          "objective": "FUA is operated on a tactical basis, i.e. requests for and decisions on flexible use are made within the day of operation, in response to short-notice changes in airspace requirements. Benefits realisation (improvements in track miles/flight time) from the use",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "There is an automated process with advanced, real-time management of airspace configurations. Airspace allocation is dynamically updated, and information is constantly being shared between all ATM partners and airspace users.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-02",
+      "lastUpdate": "2026-09-02",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T06",
+      "ref": "1.2.2",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Meteorological Information",
+      "nameTh": "ข้อมูลอุตุนิยมวิทยา",
+      "points": 4,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "(MET information is available and briefed to those in operational ATC and flow management positions.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 2,
+          "objective": "There are established procedures for integrating MET information into strategic and pre-tactical operational planning, covering planning horizons from 3 days to the day of operations. ATCOs and flow managers have access to MET information appropriate to their ",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 3,
+          "objective": "MET information is systematically translated into impact assessments that support ATM and capacity determination decisions, and/or plays an important role in ATM decision support tools designed around how controllers and flow managers make decisions in time-pr",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 4,
+          "objective": "MET information, supported by AI/ML-enhanced numerical weather prediction and high-resolution nowcasting, has reached a level of accuracy, resolution and frequency that supports fully integrated strategic, pre-tactical and tactical ATM planning in high-traffic",
+          "raw": 1,
+          "awarded": 1
+        },
+        {
+          "level": 5,
+          "objective": "MET information, supported by AI/ML-enhanced numerical weather prediction and high-resolution nowcasting, has reached a level of accuracy, resolution and frequency that supports fully integrated strategic, pre-tactical and tactical ATM planning in high-traffic",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-01",
+      "lastUpdate": "2026-09-01",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T07",
+      "ref": "1.2.3",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Improved Surveillance and Communications",
+      "nameTh": "การปรับปรุงการเฝ้าตรวจและการสื่อสาร",
+      "points": 8,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has identified areas of airspace where efficiency is constrained by the current surveillance and communication performance capability.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 2,
+          "objective": "Analysis has been conducted to assess if airspace efficiency (routing or capacity), for those areas identified at Level 1, could benefit from reduced separation standards.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 3,
+          "objective": "Actions to improve airspace efficiency by improving surveillance or communications have been started.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 4,
+          "objective": "Improvements to communication and surveillance have been implemented, allowing separation distances to be reduced.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "The organisation can demonstrate ≤5 NM separation standards across applicable airspace, with 3 NM in appropriate terminal areas, or provide justification where larger separation standards are required (e.g., oceanic operations or specific operational needs) an",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": null,
+      "lastUpdate": "2026-06-20",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T08",
+      "ref": "1.2.4",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Airport Collaborative Decision Making (A-CDM)",
+      "nameTh": "A-CDM ที่ท่าอากาศยาน",
+      "points": 3,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The organisation has engaged with the airport to understand the potential benefits of A-CDM.",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 2,
+          "objective": "In collaboration with aviation stakeholders, an A-CDM Performance Framework for the airport has been defined.",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 3,
+          "objective": "An agreement has been reached on the data that will be shared and the source (both manual and automated).",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 4,
+          "objective": "Variable taxi-times (VTT) and pre-departure sequencing are in operation if benefits were identified. Monitoring of performance improvements from implementing VTT and pre-departure sequencing is on-going. A target for improving surface departure efficiency has ",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 5,
+          "objective": "A-CDM has been enhanced to interface with ATFM systems, and this interaction may occur at local or/and at regional level, depending on the regional ATM setup.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-04",
+      "lastUpdate": "2026-09-04",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T09",
+      "ref": "1.2.5",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Continuous Climb Operations (CCO)",
+      "nameTh": "การไต่ระดับต่อเนื่อง (CCO)",
+      "points": 5,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The organisation has made commitments to growing the opportunities for CCO.",
+          "raw": 5,
+          "awarded": 5
+        },
+        {
+          "level": 2,
+          "objective": "There is/has been ad-hoc assessment or trials have been conducted to understand the ability of facilitating CCOs to top of ascent.",
+          "raw": 5,
+          "awarded": 5
+        },
+        {
+          "level": 3,
+          "objective": "Assessment of CCO performance across a range of airport sizes (main/regional, international/ domestic) has been conducted, and differences in performance understood.",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 4,
+          "objective": "Departure procedures and associated airspace, within the area of responsibility, have been redesigned to enable CCO to top of ascent under normal traffic conditions. Where altitude constraints are embedded within departure procedures or sector entry level rest",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "CCO rate improvement goals have been set for all airports with greater than 40,000 departure movements.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-03",
+      "lastUpdate": "2026-09-03",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T10",
+      "ref": "1.2.6",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Continuous Descent Operations (CDO)",
+      "nameTh": "การร่อนลงต่อเนื่อง (CDO)",
+      "points": 8,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The organisation has an objective to increase the opportunities for CDO, from top of descent to runway.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 2,
+          "objective": "There have been assessments or trials conducted to understand the ability of delivering CDOs from top of descent.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 3,
+          "objective": "Specific awareness or training initiatives with air traffic controllers have been undertaken with the aim of encouraging CDO wherever possible.",
+          "raw": 5,
+          "awarded": 5
+        },
+        {
+          "level": 4,
+          "objective": "Descent and arrival procedures and associated airspace, within the area of responsibility, have been redesigned to enable CDO from top of descent under normal traffic conditions. Where altitude constraints are embedded within arrival procedures or sector entry",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "CDO rate improvement goals have been set for all airports with more than 40,000 arrival movements.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-08-20",
+      "lastUpdate": "2026-08-20",
+      "plan": {
+        "name": "ขยายการวัด CDO ไปยัง VTBD",
+        "plannedDate": "2027-01-31",
+        "revisedDate": null,
+        "percent": 10,
+        "slips": []
+      },
+      "evidence": [
+        {
+          "id": "E-005",
+          "level": 3,
+          "file": "รายงานผลการทดลองวัด ENV-2569-041.pdf",
+          "documentDate": "2026-06-18",
+          "expectedTier": "A",
+          "why": "ลงนามรับรอง มีข้อมูลที่วัดได้ ระบุขอบเขตชัดเจน",
+          "path": "evidence/E-005.md"
+        },
+        {
+          "id": "E-006",
+          "level": 2,
+          "file": "บันทึกอนุมัติวิธีคำนวณ ENV-2569-033.pdf",
+          "documentDate": "2026-05-02",
+          "expectedTier": "B",
+          "why": "เอกสารภายในที่อนุมัติแล้ว",
+          "path": "evidence/E-006.md"
+        },
+        {
+          "id": "E-007",
+          "level": 4,
+          "file": "(ร่าง) แผนขยายไป VTBD.docx",
+          "documentDate": "2026-08-20",
+          "expectedTier": "C",
+          "why": "ร่าง ยังไม่มีผู้รับผิดชอบและงบประมาณ",
+          "path": "evidence/E-007.md"
+        },
+        {
+          "id": "E-023",
+          "level": 3,
+          "file": "หนังสือรับรองผลการทวนสอบ EXT-2569-009.pdf",
+          "documentDate": "2026-08-05",
+          "expectedTier": "A",
+          "why": "ผ่านการทวนสอบจากหน่วยงานภายนอก",
+          "path": "evidence/E-023.md"
+        }
+      ]
+    },
+    {
+      "code": "T11",
+      "ref": "1.2.7",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Performance Based Navigation (PBN)",
+      "nameTh": "การเดินอากาศตามสมรรถนะ (PBN)",
+      "points": 7,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "There is a written commitment to commence planning activities for PBN implementation within the country/ area of accountability.",
+          "raw": 7,
+          "awarded": 7
+        },
+        {
+          "level": 2,
+          "objective": "The ANSP has an up-to-date PBN implementation strategy and/or plan. Some PBN routes have been implemented.",
+          "raw": 7,
+          "awarded": 7
+        },
+        {
+          "level": 3,
+          "objective": "Multiple PBN implementations are occurring/have been completed, spanning Terminal Manoeuvring Areas and the en-route environment, in alignment with the PBN Implementation Strategy/Plan.",
+          "raw": 7,
+          "awarded": 7
+        },
+        {
+          "level": 4,
+          "objective": "The ANSP has calculated the percentage of en-route routes that are PBN and the percentage of airports that have PBN-enabled SID/STAR procedures.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "Over 75 per cent of both en-route routes and airports with SID/STAR procedures are PBN-enabled.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-05",
+      "lastUpdate": "2026-09-05",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T12",
+      "ref": "1.2.8",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Runway Capacity",
+      "nameTh": "ความจุทางวิ่ง",
+      "points": 4,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has identified airports where approach delays or runway holding delays exist.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 2,
+          "objective": "Feasibility studies focused on how ATM runway operations can be improved to reduce delays have been completed.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 3,
+          "objective": "Planning and pre-deployment work are underway to implement improved runway operations.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 4,
+          "objective": "The airports identified at previous levels have deployed revised runway operations. Improved throughput on runways has been seen, and there is evidence that optimisation efforts are reducing delays and improving capacity. Benefits tracking (reduced delay and e",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "Benefits are regularly monitored (both in terms of reduced delays and emissions) and shared with stakeholders.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-02",
+      "lastUpdate": "2026-09-02",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T13",
+      "ref": "1.2.9",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Trajectory Optimisation",
+      "nameTh": "การปรับวิถีการบินให้เหมาะสม",
+      "points": 8,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has identified potential improvements to its en-route airspace design or operation that could deliver more efficient trajectories.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 2,
+          "objective": "There is a strategy or plan for how the ANSP will improve en-route airspace design and/or ATC operational practices to facilitate airspace users to optimise their en-route trajectories.",
+          "raw": 6,
+          "awarded": 6
+        },
+        {
+          "level": 3,
+          "objective": "The initial stages of the en-route airspace improvement strategy have been implemented.",
+          "raw": 8,
+          "awarded": 0
+        },
+        {
+          "level": 4,
+          "objective": "There is widespread implementation of free-route airspace (FRA) or direct-routes within the domestic airspace on a 24-hour basis.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "Cross-border trajectory optimisation (if beneficial and possible) has been implemented and is fully operational.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 8,
+      "dueDate": "2026-09-05",
+      "submittedOn": null,
+      "lastUpdate": "2026-04-03",
+      "plan": {
+        "name": "ปิดช่องว่างระดับ 2 — จัดทำรายงานผลการใช้งานจริง",
+        "plannedDate": "2026-08-15",
+        "revisedDate": "2026-10-31",
+        "percent": 45,
+        "slips": [
+          [
+            "2026-08-15",
+            "2026-09-15",
+            "รอข้อมูลจากกองปฏิบัติการ"
+          ],
+          [
+            "2026-09-15",
+            "2026-09-30",
+            "รอข้อมูลจากกองปฏิบัติการ"
+          ],
+          [
+            "2026-09-30",
+            "2026-10-31",
+            "รอข้อมูลจากกองปฏิบัติการ"
+          ]
+        ]
+      },
+      "evidence": [
+        {
+          "id": "E-021",
+          "level": 3,
+          "file": "รายงานผลการศึกษาการลดเวลาวิ่งบนทางขับ.pdf",
+          "documentDate": null,
+          "expectedTier": "ASK",
+          "why": "ไม่มีวันที่ในตัวเอกสาร → ระบบต้องถาม ห้ามเดาจากวันอัปโหลด",
+          "path": "evidence/E-021.md"
+        },
+        {
+          "id": "E-022",
+          "level": 2,
+          "file": "บันทึกอนุมัติแนวปฏิบัติ OPS-2569-078.pdf",
+          "documentDate": "2026-04-03",
+          "expectedTier": "B",
+          "why": "เอกสารภายในที่อนุมัติแล้ว",
+          "path": "evidence/E-022.md"
+        }
+      ]
+    },
+    {
+      "code": "T14",
+      "ref": "1.2.10",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Air Traffic Flow Management (ATFM)",
+      "nameTh": "การบริหารความคล่องตัวจราจร (ATFM)",
+      "points": 8,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has undertaken and documented an assessment to determine the operational need and potential benefits of ATFM, both domestically and cross-border. Where a need has been identified, the organisation has committed and started engagement with airspace use",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 2,
+          "objective": "Opportunities to implement an appropriate level of ATFM, aligned with the organisation’s operational needs, have been identified.",
+          "raw": 8,
+          "awarded": 8
+        },
+        {
+          "level": 3,
+          "objective": "The detailed design for ATFM operations has been completed (people, process & technology).",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 4,
+          "objective": "ATFM has been implemented and there is an efficient and frequent system of post-operations analysis, involving the relevant stakeholders evaluating the operations against agreed performance indicators.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "An evaluation of ATFM benefits possible in a regional environment has been completed, and a specific time-bound commitment to expand ATFM was agreed by the majority of regional ANSPs.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-01",
+      "lastUpdate": "2026-09-01",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T15",
+      "ref": "1.2.11",
+      "category": "Improved ATM",
+      "categoryTh": "การปรับปรุงการจราจรทางอากาศ",
+      "name": "Research and Development",
+      "nameTh": "การวิจัยและพัฒนา",
+      "points": 6,
+      "owner": "u-ops",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "There is a general awareness of research that is ongoing and some effort to stay abreast of developments in the field.",
+          "raw": 6,
+          "awarded": 6
+        },
+        {
+          "level": 2,
+          "objective": "The ANSP can demonstrate membership of international bodies that share industry best-practice, developments in ATC research and results from trials.",
+          "raw": 4,
+          "awarded": 4
+        },
+        {
+          "level": 3,
+          "objective": "There is evidence of the ANSP conducting ATM trials or participating in trials that will lead to environmental benefits within their organisation.",
+          "raw": 6,
+          "awarded": 0
+        },
+        {
+          "level": 4,
+          "objective": "The ANSP can demonstrate an active involvement in ATM research or trials with other aviation stakeholders by providing at least three examples within the last 10 years.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "The ANSP can demonstrate being an early adopter, within their region, of an ATM development with environmental benefits within the last 10 years.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 6,
+      "dueDate": "2026-09-05",
+      "submittedOn": null,
+      "lastUpdate": "2026-05-12",
+      "plan": {
+        "name": "ปิดช่องว่างระดับ 2 — สรุปผลโครงการวิจัยที่ปิดแล้ว",
+        "plannedDate": "2026-09-10",
+        "revisedDate": "2026-10-15",
+        "percent": 30,
+        "slips": [
+          [
+            "2026-09-10",
+            "2026-10-15",
+            "ผู้รับผิดชอบติดภารกิจอื่น"
+          ]
+        ]
+      },
+      "evidence": []
+    },
+    {
+      "code": "T16",
+      "ref": "1.3.1",
+      "category": "Business Operations",
+      "categoryTh": "การดำเนินธุรกิจ",
+      "name": "Greenhouse Gas Management",
+      "nameTh": "การจัดการก๊าซเรือนกระจก",
+      "points": 7,
+      "owner": "u-env",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has committed to systematically identifying and measuring all scope 1 and scope 2 greenhouse gas emissions within its control.",
+          "raw": 7,
+          "awarded": 7
+        },
+        {
+          "level": 2,
+          "objective": "The ANSP has completed a full scope 1 and scope 2 GHG inventory for a defined baseline year, quantifying total emissions in CO2 equivalent disaggregated by source category.",
+          "raw": 7,
+          "awarded": 7
+        },
+        {
+          "level": 3,
+          "objective": "The ANSP has developed an improvement (reduction) plan for at least the next one to three years, which includes: · Targeted reductions per initiative implemented · A reduction measurement plan · An implementation timeline.",
+          "raw": 5,
+          "awarded": 5
+        },
+        {
+          "level": 4,
+          "objective": "The organisation has a systemised approach to the identification, measurement and management of its scope 1 and scope 2 emissions, encompassing a Plan-Do-Check-Act (PDCA) cycle. Annual audits of energy identify: · Changes in emissions overall and by activity/u",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "The ANSP has successfully achieved its annual scope 1 and scope 2 emissions reduction targets for five consecutive years.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-08-31",
+      "lastUpdate": "2026-08-31",
+      "plan": {
+        "name": "ติดตั้งระบบผลิตไฟฟ้าพลังงานแสงอาทิตย์ 120 kWp",
+        "plannedDate": "2026-09-30",
+        "revisedDate": "2026-12-15",
+        "percent": 35,
+        "slips": [
+          [
+            "2026-09-30",
+            "2026-10-31",
+            "รอหน้าต่างหยุดจ่ายไฟ"
+          ],
+          [
+            "2026-10-31",
+            "2026-11-30",
+            "รอหน้าต่างหยุดจ่ายไฟ"
+          ],
+          [
+            "2026-11-30",
+            "2026-12-15",
+            "รอหน้าต่างหยุดจ่ายไฟ"
+          ]
+        ]
+      },
+      "evidence": [
+        {
+          "id": "E-008",
+          "level": 3,
+          "file": "สรุปการคัดกรอง Scope 3.docx",
+          "documentDate": "2026-07-15",
+          "expectedTier": "C",
+          "why": "เอกสารภายในเพื่อหารือ ไม่มีข้อมูลเชิงปริมาณประกอบ",
+          "path": "evidence/E-008.md"
+        },
+        {
+          "id": "E-009",
+          "level": 3,
+          "file": "บันทึกช่วยจำการรายงานด้วยวาจา.docx",
+          "documentDate": "2026-08-22",
+          "expectedTier": "D",
+          "why": "เป็นการรายงานด้วยวาจา ไม่มีเอกสารประกอบ",
+          "path": "evidence/E-009.md"
+        },
+        {
+          "id": "E-010",
+          "level": 4,
+          "file": "(ร่าง) แผนดำเนินการลดพลังงาน 2570.docx",
+          "documentDate": "2026-09-01",
+          "expectedTier": "C",
+          "why": "เป็นแผนที่ตั้งใจจะทำในอนาคต ไม่มีผลการวัดใด ๆ",
+          "path": "evidence/E-010.md"
+        },
+        {
+          "id": "E-011",
+          "level": 2,
+          "file": "รายงานผลตรวจวัดหลังปรับปรุง ENG-2569-118.pdf",
+          "documentDate": "2026-07-30",
+          "expectedTier": "A",
+          "why": "ตรวจวัดโดยหน่วยงานภายนอก มีผลสอบเทียบเครื่องมือแนบ",
+          "path": "evidence/E-011.md"
+        },
+        {
+          "id": "E-012",
+          "level": 2,
+          "file": "บันทึกส่งมอบงาน ENG-2569-121.pdf",
+          "documentDate": "2026-08-08",
+          "expectedTier": "B",
+          "why": "เอกสารภายในที่อนุมัติรับมอบงานแล้ว",
+          "path": "evidence/E-012.md"
+        },
+        {
+          "id": "E-013",
+          "level": 4,
+          "file": "บันทึกอนุมัติแผนงาน ENG-2569-055.pdf",
+          "documentDate": "2026-02-14",
+          "expectedTier": "B",
+          "why": "อนุมัติแผน ไม่ใช่ผลลัพธ์",
+          "path": "evidence/E-013.md"
+        },
+        {
+          "id": "E-014",
+          "level": 4,
+          "file": "รายงานความคืบหน้า ส.ค. 2569.docx",
+          "documentDate": "2026-08-31",
+          "expectedTier": "C",
+          "why": "รายงานภายใน ยังไม่ผ่านการรับรอง · ระบุการขอเลื่อนครั้งที่ 3",
+          "path": "evidence/E-014.md"
+        },
+        {
+          "id": "E-015",
+          "level": 3,
+          "file": "รายงานความครอบคลุมมิเตอร์ ENG-2569-097.pdf",
+          "documentDate": "2026-06-25",
+          "expectedTier": "A",
+          "why": "ผ่านการตรวจสอบและรับรองจากหน่วยตรวจสอบภายใน · ระบุความครอบคลุม 60%",
+          "path": "evidence/E-015.md"
+        },
+        {
+          "id": "E-016",
+          "level": 3,
+          "file": "บันทึกอนุมัติแผนระยะที่ 2 ENG-2569-103.pdf",
+          "documentDate": "2026-07-10",
+          "expectedTier": "B",
+          "why": "เอกสารภายในที่อนุมัติแล้ว",
+          "path": "evidence/E-016.md"
+        }
+      ]
+    },
+    {
+      "code": "T17",
+      "ref": "1.3.2",
+      "category": "Business Operations",
+      "categoryTh": "การดำเนินธุรกิจ",
+      "name": "CNS Inspection",
+      "nameTh": "การบินตรวจสอบ CNS",
+      "points": 2,
+      "owner": "u-env",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has made a commitment to measure the carbon footprint of CNS inspections and improve the efficiency of flight inspection operations.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 2,
+          "objective": "The ANSP has calculated the carbon footprint of CNS inspections for at least the past two years and set a baseline against which to measure improvements.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 3,
+          "objective": "The CO2 emissions from flight inspection have been reduced by 5 to 10 per cent compared to the five-year average.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 4,
+          "objective": "The CO2 emissions from flight inspection have been reduced by 25 per cent over the baseline. The ANSP can explain how these reductions have been made.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 5,
+          "objective": "The CO2 emissions from flight inspection have been reduced by 50 per cent over the baseline. Where possible, zero-emission technology is utilised, and 100 per cent of inspections that cannot utilise zero-emission technology are operated with the maximum permit",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-04",
+      "lastUpdate": "2026-09-04",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T18",
+      "ref": "1.3.3",
+      "category": "Business Operations",
+      "categoryTh": "การดำเนินธุรกิจ",
+      "name": "Sustainable Procurement",
+      "nameTh": "การจัดซื้อจัดจ้างที่ยั่งยืน",
+      "points": 3,
+      "owner": "u-env",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP has made a commitment to improve the sustainability of its procurement. There is evidence of ad-hoc sustainable procurement initiatives within the organisation.",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 2,
+          "objective": "The ANSP includes sustainability in its procurement policy or guidelines.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 3,
+          "objective": "Sustainable procurement is implemented across the organisation, applying sustainable procurement criteria systematically to priority categories.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 4,
+          "objective": "Measurement of the KPIs for at least 12 months is available and the ANSP has set targets for improvements in some of the KPIs.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "There is a Plan-Do-Check-Act (PDCA) cycle in place to ensure the organisation regularly reassesses which sectors/commodities should become priorities and a focus for sustainable procurement. At least one complete cycle has been completed.",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": null,
+      "lastUpdate": "2026-03-11",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T19",
+      "ref": "1.3.4",
+      "category": "Business Operations",
+      "categoryTh": "การดำเนินธุรกิจ",
+      "name": "Airspace Change Process",
+      "nameTh": "กระบวนการเปลี่ยนแปลงห้วงอากาศ",
+      "points": 2,
+      "owner": "u-env",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "Either existing policies already require, or a commitment exists to update policies to require, consideration of environmental and community impacts alongside safety and operational requirements when making airspace changes.",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 2,
+          "objective": "The airspace change procedure requires a qualitative assessment of airspace change options for noise (if the change is in lower airspace) and fuel burn. The ANSP is able to explain how the assessment is considered in (or has influenced) airspace change decisio",
+          "raw": 2,
+          "awarded": 2
+        },
+        {
+          "level": 3,
+          "objective": "The change process requires a quantitative comparison of noise (if the change is in lower airspace) and fuel burn estimates for a baseline and the design options. The ANSP is able to explain and demonstrate with examples how the evaluation is considered in the",
+          "raw": 1,
+          "awarded": 1
+        },
+        {
+          "level": 4,
+          "objective": "The change process requires public consultation on the preferred airspace design if the airspace change is in the lower airspace. The consultation process allows the consultee to submit feedback, suggestions, and reasons for objection. The consultation feedbac",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "The final stage of the change process requires a benefits realisation assessment of the airspace change to be completed to understand if the actual noise (if the change is in the lower airspace) and fuel burn impacts are aligned with the pre-implementation est",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": "2026-09-03",
+      "lastUpdate": "2026-09-03",
+      "plan": null,
+      "evidence": []
+    },
+    {
+      "code": "T20",
+      "ref": "1.3.5",
+      "category": "Business Operations",
+      "categoryTh": "การดำเนินธุรกิจ",
+      "name": "Mobility Management",
+      "nameTh": "การบริหารการเดินทาง",
+      "points": 3,
+      "owner": "u-env",
+      "levels": [
+        {
+          "level": 1,
+          "objective": "The ANSP recognises the need to reduce emissions associated with its mobility activities and increase the sustainability of its mobility management practices. There are plans to: a) quantify the CO2 footprint from both employees’ business travel and commuting,",
+          "raw": 3,
+          "awarded": 3
+        },
+        {
+          "level": 2,
+          "objective": "The emissions from both staff commuting and business travel have been quantified. The best practice benchmarking has enabled the organisation to identify mobility management improvement opportunities, and work on an implementation plan has commenced. Work is u",
+          "raw": 1,
+          "awarded": 1
+        },
+        {
+          "level": 3,
+          "objective": "The mobility management improvement plan has been approved, and implementation has commenced.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 4,
+          "objective": "Some of the mobility management improvements have been embedded for at least 12 months, and performance against the emission reduction targets is measured regularly, with progress communicated to staff.",
+          "raw": 0,
+          "awarded": 0
+        },
+        {
+          "level": 5,
+          "objective": "The organisation has fully embedded all mobility management improvements and carries out a Plan-Do-Check-Act (PDCA) cycle at least every three years. Continuous improvement of mobility aspects is demonstrated and assured, and the environmental achievements fro",
+          "raw": 0,
+          "awarded": 0
+        }
+      ],
+      "blockedPoints": 0,
+      "dueDate": "2026-09-05",
+      "submittedOn": null,
+      "lastUpdate": "2026-02-28",
+      "plan": null,
+      "evidence": []
+    }
+  ]
+}

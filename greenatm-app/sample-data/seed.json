@@ -1,0 +1,1445 @@
+{
+  "meta": {
+    "synthetic": true,
+    "note": "ข้อมูลสังเคราะห์เพื่อการสาธิตเท่านั้น ไม่ใช่สถานะจริงขององค์กร",
+    "today": "2026-09-15",
+    "cycle": "2026-09",
+    "cycleDue": "2026-09-20",
+    "formRef": "วว.นบ209_2569-14"
+  },
+  "settings": {
+    "at_risk_threshold_points": 30,
+    "alert_lead_days": 15,
+    "monthly_due_day": 5,
+    "evidence_stale_months": 12,
+    "slip_escalate_after": 3,
+    "agent_max_tool_calls": 10,
+    "agent_timeout_seconds": 60
+  },
+  "divisions": [
+    {
+      "id": "div1",
+      "name": "สำนักนโยบายและแผน",
+      "nameEn": "Policy & Planning Bureau",
+      "category": 1
+    },
+    {
+      "id": "div2",
+      "name": "กองปฏิบัติการจราจรทางอากาศ",
+      "nameEn": "ATC Operations Division",
+      "category": 2
+    },
+    {
+      "id": "div3",
+      "name": "กองวิศวกรรมและซ่อมบำรุง",
+      "nameEn": "Engineering & Maintenance Division",
+      "category": 3
+    },
+    {
+      "id": "div4",
+      "name": "กองสื่อสารองค์กร",
+      "nameEn": "Corporate Communications",
+      "category": 4
+    }
+  ],
+  "categories": [
+    {
+      "num": 1,
+      "name": "นโยบายและการกำกับดูแล",
+      "divisionId": "div1"
+    },
+    {
+      "num": 2,
+      "name": "ปฏิบัติการจราจรทางอากาศ",
+      "divisionId": "div2"
+    },
+    {
+      "num": 3,
+      "name": "โครงสร้างพื้นฐานและพลังงาน",
+      "divisionId": "div3"
+    },
+    {
+      "num": 4,
+      "name": "สื่อสารองค์กรและวัฒนธรรม",
+      "divisionId": "div4"
+    }
+  ],
+  "users": [
+    {
+      "id": "u-owner1",
+      "title": "หัวหน้าส่วนนโยบายสิ่งแวดล้อม",
+      "role": "owner",
+      "divisionId": "div1"
+    },
+    {
+      "id": "u-owner2",
+      "title": "หัวหน้าส่วนบริหารจัดการห้วงอากาศ",
+      "role": "owner",
+      "divisionId": "div2"
+    },
+    {
+      "id": "u-owner3",
+      "title": "หัวหน้าส่วนพลังงานและสาธารณูปโภค",
+      "role": "owner",
+      "divisionId": "div3"
+    },
+    {
+      "id": "u-mod",
+      "title": "ผู้ประสานงานระบบ GreenATM",
+      "role": "central",
+      "divisionId": null
+    },
+    {
+      "id": "u-exec",
+      "title": "ผู้บริหารที่รับผิดชอบงาน GreenATM",
+      "role": "executive",
+      "divisionId": null
+    }
+  ],
+  "items": [
+    {
+      "code": "1.1",
+      "name": "นโยบายสิ่งแวดล้อมที่ผ่านความเห็นชอบระดับบริหาร",
+      "category": 1,
+      "divisionId": "div1",
+      "ownerUserId": "u-owner1",
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 30,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 30
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "1.2",
+      "name": "เป้าหมายระหว่างทางสู่ Net Zero พร้อมตัวชี้วัด",
+      "category": 1,
+      "divisionId": "div1",
+      "ownerUserId": "u-owner1",
+      "achievedLevel": 1,
+      "lastYearLevel": 0,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 45,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 45
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "1.3",
+      "name": "ระบบจัดการสิ่งแวดล้อมและรอบการตรวจภายใน",
+      "category": 1,
+      "divisionId": "div1",
+      "ownerUserId": "u-owner1",
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 20,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 20
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "1.4",
+      "name": "การรายงานผลด้านสิ่งแวดล้อมต่อคณะกรรมการ",
+      "category": 1,
+      "divisionId": "div1",
+      "ownerUserId": "u-owner1",
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": false,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-08-05",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.1",
+      "name": "การลดระยะทางบินจากการปรับปรุงโครงสร้างเส้นทาง",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 25,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 25
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.2",
+      "name": "การใช้ Continuous Climb Operations (CCO)",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-07-07",
+          "plannedEnd": "2026-09-03",
+          "actualStart": "2026-07-12",
+          "actualEnd": null,
+          "percentComplete": 40
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.3",
+      "name": "การใช้ Continuous Descent Operations (CDO)",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 2,
+      "lastYearLevel": 1,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 60,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 60
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.4",
+      "name": "การลดเวลาวิ่งบนทางขับ (taxi time)",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": false,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-08-05",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.5",
+      "name": "การจัดการการรอคอยในอากาศ (holding)",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 2,
+      "lastYearLevel": 1,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 15,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 15
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": [
+        {
+          "from": "2026-06-30",
+          "to": "2026-07-31",
+          "reason": "รอเอกสารจากผู้รับเหมา",
+          "by": "owner",
+          "at": "2026-06-20"
+        }
+      ]
+    },
+    {
+      "code": "2.6",
+      "name": "การประสานงานการไหลจราจรกับสนามบิน",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": false,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-08-05",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.7",
+      "name": "การวัดผลประโยชน์ด้านเชื้อเพลิงจากการปรับปรุงเส้นทางบิน",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 2,
+      "lastYearLevel": 1,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 70,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 70
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.8",
+      "name": "วิธีคำนวณผลประโยชน์ที่เป็นของ ANSP ตกลงร่วมกับผู้มีส่วนได้เสีย",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 35,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 35
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.9",
+      "name": "การใช้ข้อมูลเรดาร์ย้อนหลังเพื่อวิเคราะห์ประสิทธิภาพเส้นทาง",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 10,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-07-07",
+          "plannedEnd": "2026-09-03",
+          "actualStart": "2026-07-12",
+          "actualEnd": null,
+          "percentComplete": 40
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.10",
+      "name": "การรายงานผลการดำเนินงานด้านสิ่งแวดล้อมรายไตรมาส",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": [
+        {
+          "from": "2026-05-30",
+          "to": "2026-06-30",
+          "reason": "รอผลการพิจารณางบประมาณ",
+          "by": "owner",
+          "at": "2026-05-20"
+        },
+        {
+          "from": "2026-06-30",
+          "to": "2026-07-31",
+          "reason": "รอผลการพิจารณางบประมาณ",
+          "by": "owner",
+          "at": "2026-06-25"
+        },
+        {
+          "from": "2026-07-31",
+          "to": "2026-09-30",
+          "reason": "รอผลการพิจารณางบประมาณ",
+          "by": "owner",
+          "at": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "code": "2.11",
+      "name": "การฝึกอบรมผู้ควบคุมจราจรด้านการบินประหยัดเชื้อเพลิง",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 5,
+      "lastYearLevel": 5,
+      "targetLevel": 5,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "2.12",
+      "name": "การทบทวนขั้นตอนปฏิบัติให้สอดคล้องแนวทาง CANSO",
+      "category": 2,
+      "divisionId": "div2",
+      "ownerUserId": "u-owner2",
+      "achievedLevel": 5,
+      "lastYearLevel": 5,
+      "targetLevel": 5,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "3.1",
+      "name": "การติดตั้งมิเตอร์วัดพลังงานแยกอาคารและแยกวงจร",
+      "category": 3,
+      "divisionId": "div3",
+      "ownerUserId": "u-owner3",
+      "achievedLevel": 2,
+      "lastYearLevel": 1,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 55,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 55
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": [
+        {
+          "from": "2026-06-30",
+          "to": "2026-07-31",
+          "reason": "รอเอกสารจากผู้รับเหมา",
+          "by": "owner",
+          "at": "2026-06-20"
+        }
+      ]
+    },
+    {
+      "code": "3.2",
+      "name": "โครงการเพิ่มประสิทธิภาพระบบปรับอากาศ",
+      "category": 3,
+      "divisionId": "div3",
+      "ownerUserId": "u-owner3",
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "3.3",
+      "name": "การจัดทำบัญชีก๊าซเรือนกระจก Scope 1 และ 2",
+      "category": 3,
+      "divisionId": "div3",
+      "ownerUserId": "u-owner3",
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 40,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 40
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": [
+        {
+          "from": "2026-05-30",
+          "to": "2026-06-30",
+          "reason": "รอผลการพิจารณางบประมาณ",
+          "by": "owner",
+          "at": "2026-05-20"
+        },
+        {
+          "from": "2026-06-30",
+          "to": "2026-07-31",
+          "reason": "รอผลการพิจารณางบประมาณ",
+          "by": "owner",
+          "at": "2026-06-25"
+        },
+        {
+          "from": "2026-07-31",
+          "to": "2026-09-30",
+          "reason": "รอผลการพิจารณางบประมาณ",
+          "by": "owner",
+          "at": "2026-07-28"
+        }
+      ]
+    },
+    {
+      "code": "3.4",
+      "name": "การใช้พลังงานหมุนเวียนในสถานีภูมิภาค",
+      "category": 3,
+      "divisionId": "div3",
+      "ownerUserId": "u-owner3",
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "4.1",
+      "name": "การสื่อสารนโยบายสิ่งแวดล้อมภายในองค์กร",
+      "category": 4,
+      "divisionId": "div4",
+      "ownerUserId": null,
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 100,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": "2026-11-20",
+          "percentComplete": 100
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "4.2",
+      "name": "การมีส่วนร่วมของพนักงานในโครงการสิ่งแวดล้อม",
+      "category": 4,
+      "divisionId": "div4",
+      "ownerUserId": null,
+      "achievedLevel": 1,
+      "lastYearLevel": 1,
+      "targetLevel": 2,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": false,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-08-05",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "4.3",
+      "name": "การเปิดเผยข้อมูลด้านสิ่งแวดล้อมต่อสาธารณะ",
+      "category": 4,
+      "divisionId": "div4",
+      "ownerUserId": null,
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 20,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": "2026-09-25",
+          "actualEnd": null,
+          "percentComplete": 20
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    },
+    {
+      "code": "4.4",
+      "name": "ความร่วมมือด้านสิ่งแวดล้อมกับสายการบินและสนามบิน",
+      "category": 4,
+      "divisionId": "div4",
+      "ownerUserId": null,
+      "achievedLevel": 2,
+      "lastYearLevel": 2,
+      "targetLevel": 3,
+      "percentWithinNextLevel": 0,
+      "submittedThisCycle": true,
+      "dueDate": "2026-09-20",
+      "lastUpdated": "2026-09-12",
+      "milestones": [
+        {
+          "seq": 1,
+          "name": "ขั้นที่ 1",
+          "weight": 33.33,
+          "plannedStart": "2026-05-01",
+          "plannedEnd": "2026-06-25",
+          "actualStart": "2026-05-01",
+          "actualEnd": "2026-06-25",
+          "percentComplete": 100
+        },
+        {
+          "seq": 2,
+          "name": "ขั้นที่ 2",
+          "weight": 33.33,
+          "plannedStart": "2026-09-25",
+          "plannedEnd": "2026-11-20",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        },
+        {
+          "seq": 3,
+          "name": "ขั้นที่ 3",
+          "weight": 33.33,
+          "plannedStart": "2026-12-01",
+          "plannedEnd": "2027-01-31",
+          "actualStart": null,
+          "actualEnd": null,
+          "percentComplete": 0
+        }
+      ],
+      "slipHistory": []
+    }
+  ],
+  "evidence": [
+    {
+      "id": "E-001",
+      "itemCode": "1.1",
+      "title": "มติคณะกรรมการอนุมัตินโยบายสิ่งแวดล้อม",
+      "documentDate": "2026-02-18",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "B",
+      "proposedReason": "เอกสารภายในที่อนุมัติแล้ว",
+      "confirmedTier": "B",
+      "confirmedBy": "u-mod"
+    },
+    {
+      "id": "E-002",
+      "itemCode": "1.2",
+      "title": "(ร่าง) เป้าหมายระหว่างทาง ฉบับหารือ",
+      "documentDate": "2026-07-02",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "C",
+      "proposedReason": "เป็นร่าง ยังไม่ผ่านความเห็นชอบ",
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-003",
+      "itemCode": "1.3",
+      "title": "รายงานผลการตรวจภายใน รอบ 1/2569 ลงนาม",
+      "documentDate": "2026-04-11",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "A",
+      "proposedReason": "รายงานที่ผ่านการตรวจและลงนาม",
+      "confirmedTier": "A",
+      "confirmedBy": "u-mod"
+    },
+    {
+      "id": "E-004",
+      "itemCode": "2.3",
+      "title": "รายงานอัตราการใช้ CDO ราย 3 เดือน ลงนาม",
+      "documentDate": "2026-06-30",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "A",
+      "proposedReason": "ผลวัดจริงพร้อมผู้ลงนาม",
+      "confirmedTier": "A",
+      "confirmedBy": "u-mod"
+    },
+    {
+      "id": "E-005",
+      "itemCode": "2.3",
+      "title": "สไลด์นำเสนอผลเบื้องต้น",
+      "documentDate": "2026-05-12",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "C",
+      "proposedReason": "สไลด์นำเสนอ ไม่ใช่ผลที่รับรอง",
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-006",
+      "itemCode": "2.5",
+      "title": "บันทึกการประชุมทบทวนการจัดการ holding",
+      "documentDate": "2026-06-02",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "B",
+      "proposedReason": "บันทึกภายในที่อนุมัติแล้ว",
+      "confirmedTier": "B",
+      "confirmedBy": "u-mod"
+    },
+    {
+      "id": "E-007",
+      "itemCode": "2.7",
+      "title": "รายงานผลการทดลอง ลงนาม 12 มิ.ย. 2569",
+      "documentDate": "2026-06-12",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "A",
+      "proposedReason": "ผลวัดจริง ลงนามรับรอง ระบุขอบเขตชัด",
+      "confirmedTier": "A",
+      "confirmedBy": "u-mod"
+    },
+    {
+      "id": "E-008",
+      "itemCode": "2.7",
+      "title": "(ร่าง) แผนดำเนินการปี 2570",
+      "documentDate": "2026-08-02",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "C",
+      "proposedReason": "เป็นแผนล่วงหน้า ยังไม่มีผลการดำเนินการ",
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-009",
+      "itemCode": "2.8",
+      "title": "(ร่าง) วิธีคำนวณผลประโยชน์ ฉบับหารือ",
+      "documentDate": "2026-08-20",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "C",
+      "proposedReason": "ยังไม่ผ่านความเห็นชอบผู้มีส่วนได้เสีย",
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-010",
+      "itemCode": "2.9",
+      "title": "รายงานวิเคราะห์เส้นทาง ปี 2568",
+      "documentDate": "2025-07-30",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "B",
+      "proposedReason": "เอกสารภายใน แต่เก่ากว่า 12 เดือน",
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-011",
+      "itemCode": "2.10",
+      "title": "รายงานผลการดำเนินงานรายไตรมาส (ไม่ระบุวันที่ในเอกสาร)",
+      "documentDate": null,
+      "uploadDate": "2026-08-26",
+      "proposedTier": null,
+      "proposedReason": null,
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-012",
+      "itemCode": "3.2",
+      "title": "(ร่าง) แผนปรับปรุงระบบปรับอากาศ ระยะที่ 1",
+      "documentDate": "2025-08-14",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "C",
+      "proposedReason": "เป็นแผน ไม่ใช่ผลลัพธ์ · และเก่ากว่า 12 เดือน",
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-013",
+      "itemCode": "3.2",
+      "title": "(ร่าง) แผนปรับปรุงระบบปรับอากาศ ระยะที่ 2",
+      "documentDate": "2026-05-09",
+      "uploadDate": "2026-08-26",
+      "proposedTier": "C",
+      "proposedReason": "เป็นแผน ยังไม่มีผลการดำเนินการ",
+      "confirmedTier": null,
+      "confirmedBy": null
+    },
+    {
+      "id": "E-014",
+      "itemCode": "3.3",
+      "title": "ตารางคำนวณ Scope 1-2 (ไม่ระบุวันที่ในเอกสาร)",
+      "documentDate": null,
+      "uploadDate": "2026-08-26",
+      "proposedTier": null,
+      "proposedReason": null,
+      "confirmedTier": null,
+      "confirmedBy": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Design tokens — FRONTEND.md §3
+  สีสถานะสองค่าถูกปรับจาก mockup เดิมเพราะวัดแล้วแยกจากกันยากเกินไป
+  (#c4453a ↔ #e07a3f วัดได้ ΔE 13.1 ต่ำกว่าพื้น 15)
+  ค่าใหม่ #d03b3b ↔ #ec835a วัดได้ 15.7 ผ่านพื้น — กฎ ไอคอน+ข้อความ ยังต้องคงไว้เสมอ
+*/
+:root {
+  color-scheme: light;
+  --page: #f6f8f5;
+  --card: #ffffff;
+  --ink: #152922;
+  --ink2: #5c6b62;
+  --muted: #7c8a80;
+  --line: #e2e6e0;
+  --accent: #1f6f4a;   /* สีแบรนด์/chrome — chroma ต่ำ ห้ามใช้ถมเป็นสีข้อมูล */
+  --accent2: #2a78d6;  /* ตัวเลขที่นับจริง */
+  --ok: #1f8a4c;
+  --warn: #e8a020;
+  --late: #d03b3b;
+  --ret: #ec835a;
+  /* ordinal ramp ชั้นหลักฐาน A→C (สีเดียว ไล่เข้ม-อ่อน · ผ่าน validator) */
+  --tier-a: #184f95;
+  --tier-b: #2a78d6;
+  --tier-c: #86b6ef;
+  --tier-d: #898781;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --card: #1a1a19;
+    --ink: #ffffff;
+    --ink2: #c3c2b7;
+    --muted: #898781;
+    --line: #2c2c2a;
+    --accent2: #3987e5;
+    --tier-a: #184f95;
+    --tier-b: #3987e5;
+    --tier-c: #9ec5f4;
+  }
+}
+
+html,
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+table tbody td {
+  font-variant-numeric: tabular-nums;
+}

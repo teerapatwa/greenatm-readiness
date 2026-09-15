@@ -1,0 +1,49 @@
+# ── ของที่ build ขึ้นมาใหม่ได้ ────────────────────────────────────────────────
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# ── ความลับและค่าเฉพาะเครื่อง ────────────────────────────────────────────────
+# .env.local ของรอบนี้ไม่มี API key (DGX ไม่ต้อง auth) แต่กันไว้ถาวร
+# เพราะรอบหน้าถ้ามี key จริงจะไม่ต้องมานึกว่าเคยกันไว้หรือยัง
+.env
+.env.local
+.env.*.local
+
+# ── ฐานข้อมูลของแต่ละเครื่อง ─────────────────────────────────────────────────
+# สร้างเองจาก seed ตอนเปิดครั้งแรก · ถ้า commit จะทับงานที่คนอื่นกรอกไว้
+greenatm-app/data/
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+sample-data/uploads/
+
+# ── งานของเพื่อนในทีม — ไม่เอาขึ้น repo ──────────────────────────────────────
+# PLAN_Ken / PLAN_Gift / PLAN_Panuwat / PLAN_zng เป็นงานเขียนของคนอื่น
+# และ COMPARE-plans เป็นการวิเคราะห์รายคนที่ยังไม่ได้ขออนุญาตเจ้าตัว
+archive/
+
+# ── เอกสาร CANSO — ลิขสิทธิ์ของคนอื่น และไฟล์ใหญ่ ────────────────────────────
+# ทุกคนในทีมได้ไฟล์เดียวกันจาก facilitator อยู่แล้ว · รวม 26MB ถ้า commit
+# จะทำให้ clone ช้าโดยไม่จำเป็น · tools/build_sample_data.py ต้องใช้ไฟล์เหล่านี้
+# ให้วางไว้ที่ราก repo เอง (ดู README)
+GreenATM_*.pdf
+GreenATM*Scoring*Template*.xlsx
+# ข้อความที่สกัดจาก PDF ด้วย pdftotext — ลิขสิทธิ์เดียวกับตัว PDF
+# และ tools/build_sample_data.py สร้างใหม่ได้เมื่อมี PDF อยู่
+tools/_gatm.txt
+
+# ── ไฟล์ชั่วคราวของ dev ──────────────────────────────────────────────────────
+srv.log
+srv.err
+.ck
+.ck2
+.t
+.before.json
+_*.py
+_*.mjs
+Thumbs.db
+desktop.ini
+.DS_Store

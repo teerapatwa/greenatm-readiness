@@ -1,0 +1,555 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mockup สำหรับพิตช์ · GreenATM Evidence &amp; Readiness Platform</title><style>
+:root{--page:#f9f9f7;--card:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#898781;
+--grid:#e1e0d9;--line:rgba(11,11,11,.10);--accent:#2a78d6;
+--a:#184f95;--b:#2a78d6;--c:#86b6ef;--d:#898781;
+--ok:#0ca30c;--risk:#fab219;--late:#d03b3b;--ret:#ec835a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);
+font:15px/1.6 "Noto Sans Thai","Leelawadee UI",Tahoma,system-ui,sans-serif}
+.mock{background:#2b2a26;color:#fff;font-size:12.5px;padding:6px 16px;text-align:center}
+.mock b{color:#fab219}
+.demo{position:sticky;top:0;z-index:50;background:#12305c;color:#eaf1fb;padding:9px 16px;
+display:flex;gap:12px;align-items:center;flex-wrap:wrap;border-bottom:2px solid #0a1f3d}
+.demo .st{font-weight:700;font-size:13px;background:#eaf1fb;color:#12305c;border-radius:999px;padding:2px 10px}
+.demo .tx{flex:1;font-size:13.5px;min-width:250px}.demo .tx b{color:#ffd98a}
+.demo button{background:#eaf1fb;color:#12305c;border:0;border-radius:7px;padding:5px 13px;font:inherit;font-weight:700;cursor:pointer}
+.demo button:disabled{opacity:.35;cursor:not-allowed}
+.demo .ghostb{background:transparent;color:#eaf1fb;border:1px solid #4a6a9c;font-weight:400}
+header{background:var(--card);border-bottom:1px solid var(--line);padding:9px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.logo{font-weight:700}.spacer{flex:1}
+select,button{font:inherit;background:var(--card);color:var(--ink);border:1px solid var(--grid);border-radius:7px;padding:5px 11px;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+.mini{font-size:12.5px;padding:3px 9px}.ghost{color:var(--ink2)}
+.prim{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.warn{background:#fdf6e3;border-bottom:1px solid #f0e2b8;color:#6b5514;font-size:13px;padding:5px 18px;text-align:center}
+.down{background:#fbe9e9;border-bottom:1px solid #f0c4c4;color:#a02020;font-size:13px;padding:5px 18px;text-align:center;font-weight:700}
+.wrap{display:flex;min-height:72vh}
+nav{width:200px;background:var(--card);border-right:1px solid var(--line);padding:12px 0;flex:none}
+nav a{display:block;padding:8px 18px;color:var(--ink2);text-decoration:none;font-size:14px;cursor:pointer;border-left:3px solid transparent}
+nav a:hover{background:var(--page)}
+nav a.on{color:var(--ink);font-weight:700;border-left-color:var(--accent);background:var(--page)}
+nav a.off{opacity:.25;cursor:not-allowed;text-decoration:line-through}
+main{flex:1;padding:18px 22px;max-width:1180px}
+h1{font-size:21px;margin:0 0 4px}h2{font-size:18px;margin:0}
+h3{font-size:13px;color:var(--ink2);margin:0 0 9px;font-weight:700}
+.sub{color:var(--ink2);font-size:13px}.dim{color:var(--muted)}.sm{font-size:12.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-bottom:13px}
+.dbox{border:2px solid var(--risk);border-radius:10px;background:#fdf9ee;padding:11px 14px;margin-bottom:15px}
+.dbox h3{color:#6b5514}
+.drow{display:flex;gap:10px;align-items:center;padding:6px 0;border-top:1px solid #f0e2b8}
+.drow:first-of-type{border-top:0}.dic{width:20px}.dtx{flex:1;font-size:13.5px}
+table{width:100%;border-collapse:collapse;background:var(--card);font-size:13.5px}
+th,td{border-bottom:1px solid var(--grid);padding:7px 9px;text-align:left;vertical-align:middle}
+th{font-size:12.5px;color:var(--ink2);border-bottom:2px solid var(--grid)}
+.num-c{text-align:right;font-variant-numeric:tabular-nums}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12.5px}
+.chip{display:inline-flex;gap:4px;align-items:center;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px}
+.s-ok{background:#e6f4e6;color:#046604}.s-no{background:#fbe9e9;color:#a02020}
+.s-part{background:#fdf2d8;color:#6b5514}
+.tier{display:inline-flex;gap:4px;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;color:#fff;white-space:nowrap}
+.t-A{background:var(--a)}.t-B{background:var(--b)}.t-C{background:var(--c);color:#12314f}
+.t-D{background:var(--d)}.t-STALE{background:var(--ret);color:#3a1a0a}.t-ASK{background:#6b5514}
+/* level ladder */
+.ladder{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:13px}
+.lrow{display:flex;align-items:center;gap:11px;margin:7px 0}
+.lname{width:62px;font-weight:700;font-size:13.5px}
+.ltrack{flex:1;height:26px;background:var(--grid);border-radius:6px;position:relative;overflow:hidden}
+.lfill{height:100%;background:var(--accent);transition:width .55s ease}
+.lfill.pass{background:var(--ok)}.lfill.fail{background:var(--late)}
+.lboost{height:100%;background:repeating-linear-gradient(45deg,#fab219,#fab219 5px,#f6c454 5px,#f6c454 10px);
+position:absolute;top:0;transition:all .55s ease}
+.lmark{position:absolute;top:-3px;bottom:-3px;width:2px;background:#0b0b0b;left:80%}
+.lval{width:118px;text-align:right;font-variant-numeric:tabular-nums;font-size:13.5px}
+.lval b{font-size:16px}
+.lstat{width:86px;text-align:right}
+.hero{font-size:15px;margin:3px 0 10px}
+.hero b{font-size:27px;color:var(--accent)}
+.cliff{border:2px solid var(--risk);background:#fdf9ee;border-radius:10px;padding:12px 14px;margin:13px 0}
+.cliff h3{color:#6b5514}
+.lv{display:flex;gap:9px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--grid)}
+.lv:first-of-type{border-top:0}
+.lvn{width:58px;font-weight:700;font-size:13px}
+.lvo{flex:1;font-size:12.8px;color:var(--ink2);line-height:1.55}
+.lvp{width:96px;text-align:right;font-variant-numeric:tabular-nums;font-size:13px}
+.zeroed{color:var(--late);font-weight:700}
+.ev{border-top:1px solid var(--grid);padding:8px 0}.ev:first-of-type{border-top:0}
+.evh{display:flex;gap:7px;align-items:center;font-size:13px}
+.evn{font-size:12.5px;color:var(--ink2)}.evr{font-size:12.5px;color:var(--muted);margin:2px 0 6px}
+.ok-tag{color:#046604;font-size:12px;font-weight:700}
+.empty{padding:15px;text-align:center;color:var(--muted);font-size:13px}
+/* chat */
+.chat{display:flex;flex-direction:column;gap:11px;min-height:330px;padding:4px 0 10px}
+.msg{max-width:80%;padding:9px 13px;border-radius:12px;font-size:13.5px;line-height:1.65}
+.m-ai{background:var(--card);border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:3px}
+.m-me{background:#e7f0fb;border:1px solid #c9ddf5;align-self:flex-end;border-bottom-right-radius:3px}
+.m-sys{align-self:center;font-size:12.5px;color:var(--muted)}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:8px}
+.ccard.hi{border:2px solid var(--accent);background:#f4f9ff}
+.ccard h4{margin:0 0 7px;font-size:13px;color:var(--ink2)}
+.delta{display:flex;gap:10px;align-items:center;font-size:19px;font-weight:700;margin:5px 0}
+.delta .old{color:var(--muted);text-decoration:line-through;font-size:16px}
+.pending{font-size:12.5px;color:#6b5514;background:#fdf2d8;border-radius:6px;padding:5px 9px;margin:7px 0}
+.gap{display:flex;gap:7px;font-size:13px;padding:4px 0;align-items:flex-start}
+.composer{display:flex;gap:8px;border-top:1px solid var(--grid);padding-top:10px}
+.composer input{flex:1;font:inherit;border:1px solid var(--grid);border-radius:8px;padding:8px 11px;background:var(--card)}
+.drawer{background:#1f1e1b;color:#e8e6df;border-radius:10px;padding:13px 15px;margin-top:13px}
+.drawer .dh{font-weight:700;margin-bottom:7px}.drawer .dim{color:#9a978c;font-weight:400;font-size:12.5px}
+pre{margin:0;font:12.5px/1.75 ui-monospace,Consolas,monospace;white-space:pre-wrap;color:#cfe3ff}
+.drawer .note{color:#9a978c;margin-top:8px;font-size:12.5px}
+.drawer code{background:#33312c;padding:1px 5px;border-radius:4px}
+.reg{border:2px solid var(--risk);border-radius:10px;padding:11px 13px;background:#fdf9ee;margin-top:13px}
+.reg h3{color:#6b5514}
+.tabs{display:flex;gap:6px;margin-bottom:11px;flex-wrap:wrap}
+.tabs button.on{background:var(--ink);color:var(--card);border-color:var(--ink)}
+footer{padding:13px 22px;color:var(--muted);font-size:12.5px;border-top:1px solid var(--line)}
+@media(max-width:900px){nav{display:none}}
+</style></head><body>
+
+<div class="mock">MOCKUP สำหรับพิตช์ — <b>ไม่ใช่แอปจริง · ไม่มี backend · ไม่เรียกโมเดล</b> ·
+หัวข้อ · คะแนน · objective = <b>ของจริงจากเอกสาร CANSO</b> · คะแนนที่ทำได้ · หลักฐาน = สมมติ</div>
+
+<div class="demo">
+  <span class="st" id="dstep">เดโม 0/8</span>
+  <span class="tx" id="dtext">กด <b>เริ่มเดโม</b> เพื่อเดินตามสคริปต์ 3 นาที · หรือกดเมนูซ้ายดูเอง</span>
+  <button class="ghostb" id="dprev" onclick="demoPrev()">◀</button>
+  <button id="dnext" onclick="demoNext()">เริ่มเดโม ▶</button>
+  <button class="ghostb" onclick="demoReset()">รีเซ็ต</button>
+</div>
+
+<header><span class="logo">⬤ GreenATM Readiness</span>
+<select id="role" onchange="setRole(this.value)">
+  <option value="submitter">บทบาท: เจ้าของข้อมูล</option>
+  <option value="central">บทบาท: ทีมกลาง</option>
+  <option value="exec">บทบาท: ผู้บริหาร</option></select>
+<span class="sub" id="roleinfo"></span><span class="spacer"></span>
+<button class="mini ghost" onclick="toggleDown()" id="downbtn">จำลอง: ปิด endpoint</button>
+<span class="sub" id="cycle"></span></header>
+<div class="warn">⚠ ข้อมูลตัวอย่าง (Mockup) — ไม่ใช่สถานะจริงขององค์กร · ซ่อนไม่ได้</div>
+<div class="down" id="downbar" style="display:none">⛔ เชื่อมต่อผู้ช่วย AI ไม่ได้ — ระบบส่วนอื่นยังใช้งานได้ตามปกติ</div>
+
+<div class="wrap"><nav id="nav"></nav><main id="main"></main></div>
+<footer>สร้างจาก <code>sample-data/manifest.json</code> ด้วย <code>tools/build_mockup.py</code> ·
+โครงคะแนนตาม <code>GreenATM Scoring Template (July 2026)</code> และ <code>GreenATM_AccreditationGuide_2026</code> ·
+<b>ไม่ใช่แอปพลิเคชัน</b></footer>
+
+<script>
+const D = /*@@DATA@@*/;
+const PASS = D.scoring.passMark, TOPICS = D.topics;
+const TIER={A:['◆','A'],B:['◇','B'],C:['○','C'],D:['✕','D'],STALE:['◇','ล้าสมัย'],ASK:['?','รอวันที่']};
+const NAV=[['home','ภาพรวมความพร้อม',null],['chat','แชตกับผู้ช่วย','submitter,central'],
+ ['topics','หัวข้อทั้งหมด',null],['alerts','แจ้งเตือน / Outbox','submitter,central'],
+ ['review','ศูนย์ตรวจสอบ','central,exec'],
+ ['docs','เอกสารส่งผู้ตรวจ','central,exec']];
+let S={role:'submitter',screen:'chat',topic:'T13',chat:[],outbox:[],down:false,flash:0,demo:0};
+TOPICS.forEach(t=>{t.raw0=t.levels.map(l=>l.raw)});
+
+const esc=s=>String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+const tp=c=>TOPICS.find(x=>x.code===c);
+const badge=t=>`<span class="tier t-${t}">${TIER[t][0]} ${TIER[t][1]}</span>`;
+function recalc(t){ // กฎ cliff
+ let stop=false;
+ t.levels.forEach(l=>{ if(stop){l.awarded=0;} else {l.awarded=l.raw; if(l.raw<t.points)stop=true;} });
+ t.blockedPoints=t.levels.filter(l=>l.awarded===0&&l.raw>0).reduce((a,l)=>a+l.raw,0);
+}
+const byLevel=()=>[0,1,2,3,4].map(L=>TOPICS.reduce((a,t)=>a+t.levels[L].awarded,0));
+function summary(){
+ const b=byLevel(); const out=[];
+ for(let T=1;T<=5;T++){
+  const short=[];for(let L=0;L<T;L++) if(b[L]<PASS) short.push(L);
+  let ok;
+  if(!short.length) ok=true;
+  else if(short.length>1) ok=false;
+  else{const L=short[0];let pool=0;for(let x=L+1;x<5;x++)pool+=b[x];ok=pool>=PASS-b[L];}
+  out.push({level:T,total:b[T-1],short:Math.max(0,PASS-b[T-1]),
+   above:b.slice(T).reduce((a,v)=>a+v,0),own:short.length===0,ok:ok});
+ }
+ return out;
+}
+const current=()=>{const s=summary().filter(x=>x.ok);return s.length?Math.max(...s.map(x=>x.level)):0;};
+
+/* ── หน้าแรก: ตรงกับชีต Summary ของฟอร์ม CANSO ── */
+function scHome(){
+ const b=byLevel(), sm=summary(), cur=current(), tgt=cur+1, t3=sm[tgt-1]||sm[4];
+ const blocked=TOPICS.filter(t=>t.blockedPoints>0).sort((a,b)=>b.blockedPoints-a.blockedPoints);
+ const blkTot=blocked.reduce((a,t)=>a+t.blockedPoints,0);
+ const remain=Math.max(0,t3.short-t3.above);
+ const cats=['Governance','Improved ATM','Business Operations'];
+ return `<h1>ภาพรวมความพร้อม GreenATM</h1>
+ <p class="sub">คำนวณตามกติกาของ CANSO — ต้องได้ ≥ ${PASS}/100 ที่ระดับนั้น <b>และทุกระดับที่ต่ำกว่า</b>
+ · คะแนนเกินจากระดับบนเติมลงล่างได้ <b>ระดับเดียว</b></p>
+
+ <div class="dbox"><h3>📋 สิ่งที่ต้องตัดสิน</h3>
+  <div class="drow"><span class="dic">⬜</span><b class="mono">Level ${tgt}</b>
+   <span class="dtx">ได้ ${t3.total}/100 · ขาด ${t3.short} · เติมจากระดับบนได้ ${t3.above}
+   → <b>ยังขาดอีก ${remain} คะแนน</b></span></div>
+  <div class="drow"><span class="dic">🛑</span><b class="mono">${blkTot} คะแนน</b>
+   <span class="dtx">ทำงานไว้แล้วแต่ได้ <b>0 คะแนน</b> เพราะระดับที่ต่ำกว่ายังไม่เต็ม</span>
+   <button class="mini" onclick="go('topics','${blocked[0]?blocked[0].code:'T01'}')">ดูว่าหัวข้อไหน</button></div>
+  <div class="drow"><span class="dic">⚠</span><b class="mono">E-021</b>
+   <span class="dtx">เอกสารไม่มีวันที่ในตัวเอกสาร — ระบบรอคำตอบจากเจ้าของ</span></div></div>
+
+ <div class="hero">ระดับที่ได้ตอนนี้ <b>Level ${cur}</b> <span class="sub">· เป้าหมาย Level ${tgt}</span></div>
+
+ <div class="ladder">
+ ${sm.slice().reverse().map(s=>{
+   const w=Math.min(100,s.total);
+   const boost=(!s.own&&s.ok)?Math.min(100,PASS)-w:0;
+   return `<div class="lrow"><div class="lname">Level ${s.level}</div>
+    <div class="ltrack"><div class="lfill ${s.total>=PASS?'pass':(s.ok?'':'fail')}" style="width:${w}%"></div>
+     ${boost>0?`<div class="lboost" style="left:${w}%;width:${boost}%"></div>`:''}
+     <div class="lmark"></div></div>
+    <div class="lval"><b>${s.total}</b>/100 ${s.short?`<span class="dim">ขาด ${s.short}</span>`:''}</div>
+    <div class="lstat">${s.ok?`<span class="chip s-ok">✓ ${s.own?'ได้':'ได้ (เติม)'}</span>`
+      :`<span class="chip s-no">✕ ยังไม่ได้</span>`}</div></div>`}).join('')}
+ <div class="sub" style="margin-top:8px">เส้นดำแนวตั้ง = เกณฑ์ ${PASS} คะแนน · แถบลาย = คะแนนที่เติมลงมาจากระดับบน</div></div>
+
+ <div class="cliff"><h3>⚠ กฎ cliff — งานที่ทำแล้วแต่ยังไม่ได้คะแนน</h3>
+ <p class="sm" style="margin:0 0 7px">CANSO ให้คะแนน <b>ถึงระดับต่ำสุดที่ยังทำไม่เต็มเท่านั้น</b>
+ ระดับที่สูงกว่านั้นได้ 0 แม้จะทำเสร็จแล้ว</p>
+ <table style="background:transparent"><thead><tr><th>หัวข้อ</th><th class="num-c">เต็ม</th>
+ <th>ติดที่ระดับ</th><th class="num-c">คะแนนที่หายไป</th><th></th></tr></thead><tbody>
+ ${blocked.map(t=>{const stuck=t.levels.findIndex(l=>l.raw<t.points)+1;
+   return `<tr><td><b class="mono">${t.code}</b> ${esc(t.name)}</td><td class="num-c">${t.points}</td>
+   <td>L${stuck} ได้ ${t.levels[stuck-1].raw}/${t.points}</td>
+   <td class="num-c zeroed">−${t.blockedPoints}</td>
+   <td><button class="mini" onclick="go('topics','${t.code}')">เปิด</button></td></tr>`}).join('')}
+ </tbody></table>
+ <p class="sm" style="margin:8px 0 0"><b>ปิดช่องว่างที่ระดับล่างของ ${blocked.length} หัวข้อนี้
+ → ได้คืน ${blkTot} คะแนน ซึ่งพอดีกับที่ยังขาด ${remain} คะแนน</b></p></div>
+
+ <div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>หมวด</th>
+ ${[1,2,3,4,5].map(L=>`<th class="num-c">L${L}</th>`).join('')}<th class="num-c">เต็ม</th></tr></thead><tbody>
+ ${cats.map(c=>{const ts=TOPICS.filter(t=>t.category===c);
+   return `<tr><td>${c}</td>${[0,1,2,3,4].map(L=>
+    `<td class="num-c">${ts.reduce((a,t)=>a+t.levels[L].awarded,0)}</td>`).join('')}
+   <td class="num-c dim">${ts.reduce((a,t)=>a+t.points,0)}</td></tr>`}).join('')}
+ <tr style="font-weight:700"><td>รวม</td>${b.map(v=>`<td class="num-c">${v}</td>`).join('')}
+ <td class="num-c">100</td></tr>
+ <tr><td class="dim">เกณฑ์</td>${b.map(()=>`<td class="num-c dim">${PASS}</td>`).join('')}<td></td></tr>
+ </tbody></table></div>
+ <p class="sub">▲ ตารางนี้คือชีต <b>Summary</b> ของฟอร์มให้คะแนน CANSO — ต่างกันแค่คำนวณสดและคลิกกลับไปถึงหลักฐานได้</p>`;
+}
+
+/* ── หัวข้อทั้งหมด ── */
+function scTopics(){
+ return `<h1>หัวข้อทั้งหมด · ${TOPICS.length} หัวข้อ · 100 คะแนน</h1>
+ <p class="sub">ชื่อและคะแนนตามเอกสาร CANSO · แถว <b>awarded</b> คือคะแนนที่นับจริงหลังกฎ cliff</p>
+ <div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>รหัส</th><th>หัวข้อ</th>
+ <th>หมวด</th><th class="num-c">เต็ม</th>${[1,2,3,4,5].map(L=>`<th class="num-c">L${L}</th>`).join('')}
+ <th class="num-c">หาย</th></tr></thead><tbody>
+ ${TOPICS.map(t=>`<tr style="cursor:pointer" onclick="go('topics','${t.code}')">
+  <td class="mono">${t.code}</td><td>${esc(t.name)}<div class="dim sm">${esc(t.nameTh)}</div></td>
+  <td class="sm">${t.category}</td><td class="num-c">${t.points}</td>
+  ${t.levels.map(l=>`<td class="num-c ${l.awarded===0&&l.raw>0?'zeroed':''}">${l.awarded}${
+    l.awarded===0&&l.raw>0?`<span class="dim sm"> (${l.raw})</span>`:''}</td>`).join('')}
+  <td class="num-c ${t.blockedPoints?'zeroed':'dim'}">${t.blockedPoints?'−'+t.blockedPoints:'—'}</td></tr>`).join('')}
+ </tbody></table></div>`;
+}
+function scTopic(){
+ const t=tp(S.topic); const stuck=t.levels.findIndex(l=>l.raw<t.points)+1;
+ return `<div style="margin-bottom:10px"><h2>${t.code} · ${esc(t.name)}</h2>
+ <div class="sub">${esc(t.nameTh)} · หมวด ${t.category} · เต็ม <b>${t.points}</b> คะแนน
+ · อ้างอิงเอกสาร ${t.ref}</div></div>
+ ${t.blockedPoints?`<div class="cliff"><h3>⚠ เสียไป ${t.blockedPoints} คะแนนเพราะกฎ cliff</h3>
+  <p class="sm" style="margin:0">ระดับ ${stuck} ยังได้ ${t.levels[stuck-1].raw}/${t.points}
+  — ระดับที่สูงกว่าจึงได้ 0 แม้จะทำไว้แล้ว <b>ปิดช่องว่างที่ระดับ ${stuck} ก่อน คุ้มที่สุด</b></p></div>`:''}
+ <div class="card"><h3>เกณฑ์รายระดับ (ข้อความจริงจากเอกสาร CANSO)</h3>
+ ${t.levels.map(l=>`<div class="lv"><div class="lvn">Level ${l.level}</div>
+  <div class="lvo">${esc(l.objective)||'<span class="dim">—</span>'}</div>
+  <div class="lvp">${l.awarded}/${t.points}
+   ${l.awarded===0&&l.raw>0?`<div class="zeroed sm">ทำไว้ ${l.raw} แต่ได้ 0</div>`:''}</div></div>`).join('')}</div>
+ <div class="card"><h3>หลักฐานที่แนบ</h3>
+ ${t.evidence.length?t.evidence.map(e=>`<div class="ev">
+   <div class="evh">${badge(e.expectedTier)} <b>${e.id}</b> <span class="dim sm">· ระดับ ${e.level}</span></div>
+   <div class="evn">${esc(e.file)}</div><div class="evr">${esc(e.why)}</div>
+   <div>${e.confirmed?'<span class="ok-tag">✓ ยืนยันแล้ว</span>':
+     (S.role==='central'?`<button class="mini prim" onclick="confirmEv('${t.code}','${e.id}')">ยืนยันชั้น</button>`
+      :'<span class="dim sm">รอทีมกลางยืนยัน</span>')}</div></div>`).join('')
+  :'<div class="empty">ยังไม่มีหลักฐานแนบ — หัวข้อนี้จึงยังพิสูจน์ไม่ได้</div>'}</div>
+ ${t.code==='T13'?agentDrawer(t):''}`;
+}
+function agentDrawer(t){
+ return `<div class="drawer"><div class="dh">แผง “agent ทำอะไรไปบ้าง” · ${t.code}
+ <span class="dim">ใช้ 5 จาก ${D.app_setting.agent_max_tool_calls} call · 19 วินาที</span></div>
+ <pre>1  get_topic("${t.code}")            → เต็ม ${t.points} คะแนน · เกณฑ์ 5 ระดับ
+2  get_scores("${t.code}")           → L1 ${t.levels[0].raw} · L2 ${t.levels[1].raw} · L3 ${t.levels[2].raw}
+3  list_evidence("${t.code}")        → ${t.evidence.length} ชิ้น
+4  read_evidence("E-021")          → ไม่พบวันที่ในตัวเอกสาร
+5  propose_gap("${t.code}", ["ปิดช่องว่างระดับ 2 ก่อน — ระดับ 3 ที่ทำไว้ ${t.levels[2].raw} คะแนนจะได้คืนทันที",
+                        "ขอวันที่ของ E-021 จากเจ้าของ"])</pre>
+ <div class="note">agent อ่าน <code>get_scores</code> แล้ว<b>ตัดสินเองว่าควรบอกให้ไปปิดระดับล่างก่อน</b>
+ — เป็นข้อสรุปที่สูตรคำนวณไม่ได้ · ข้อเสนอเข้าสถานะ pending ไม่เปลี่ยนคะแนนใด ๆ</div></div>`;
+}
+
+/* ── แชต (บทบาทเจ้าของข้อมูล) ── */
+function scChat(){
+ if(!S.chat.length){
+  const mine=TOPICS.filter(t=>t.owner===(S.role==='central'?'u-env':'u-env'));
+  const need=mine.filter(t=>t.blockedPoints>0||t.evidence.some(e=>e.expectedTier==='ASK')).slice(0,3);
+  S.chat=[{t:'ai',h:`สวัสดีครับ · รอบ ${D.cycle} · เป้าหมาย <b>Level ${current()+1}</b>
+   <div class="ccard"><h4>สิ่งที่ควรทำก่อนในรอบนี้</h4>
+   <div class="drow"><span class="dic">1</span><span class="dtx"><b class="mono">T13</b>
+    Trajectory Optimisation — ปิดช่องว่าง <b>ระดับ 2</b> แล้วจะได้คืน <b>8 คะแนน</b> ที่ทำไว้แล้ว</span></div>
+   <div class="drow"><span class="dic">2</span><span class="dtx"><b class="mono">T15</b>
+    Research and Development — เหมือนกัน ได้คืน <b>6 คะแนน</b></span></div>
+   <div class="drow"><span class="dic">3</span><span class="dtx"><b class="mono">E-021</b>
+    ต้องการวันที่ของเอกสาร — ระบบไม่เดาจากวันอัปโหลด</span></div>
+   </div>
+   รวมสองหัวข้อแรกได้คืน <b>14 คะแนน</b> ซึ่งพอดีกับที่ยังขาดเพื่อไป Level ${current()+1} ครับ`}];
+ }
+ return `<h1>แชตกับผู้ช่วย</h1>
+ <p class="sub">กองสิ่งแวดล้อม · รอบ ${D.cycle} ·
+ <a href="#" onclick="alert('ฟอร์มกรอกมืออยู่ที่ /my/form — ทางสำรองเมื่อโมเดลล่ม (AC-12)');return false">ใช้ฟอร์มแทน →</a></p>
+ <div class="card"><div class="chat" id="chatbox">
+ ${S.chat.map(m=>`<div class="msg m-${m.t}">${m.h}</div>`).join('')}</div>
+ <div class="composer">
+ <input id="ci" placeholder='${S.down?"ผู้ช่วยไม่พร้อมใช้งาน":"พิมพ์… เช่น “T13 ระดับ 2 เป็น 8”"}' ${S.down?'disabled':''}
+  onkeydown="if(event.key==='Enter')sendChat()">
+ <button class="mini ghost" onclick="dropEvidence()" ${S.down?'disabled':''}>📎 แนบไฟล์</button>
+ <button class="mini prim" onclick="sendChat()" ${S.down?'disabled':''}>ส่ง</button></div></div>`;
+}
+function push(t,h){S.chat.push({t:t,h:h})}
+function sendChat(){
+ const el=document.getElementById('ci'),v=(el&&el.value||'').trim();if(!v)return;el.value='';
+ push('me',esc(v));
+ const m=v.match(/(T\d\d)[^0-9]*(\d)[^0-9]+(\d{1,2})/i);
+ if(!m){push('ai','ผมยังไม่แน่ใจว่าหมายถึงหัวข้อไหน ระดับไหน และกี่คะแนนครับ '+
+  '<b>ช่วยระบุให้ชัดหน่อยได้ไหม</b> เช่น “T13 ระดับ 2 เป็น 8”'+
+  '<div class="pending">⚠ ตีความไม่ชัด → ถามกลับ ไม่เดา ไม่ขึ้นการ์ด (AC-19)</div>');render();return;}
+ const code=m[1].toUpperCase(),lv=+m[2],pt=+m[3],t=tp(code);
+ if(!t){push('ai',`ไม่พบหัวข้อ ${code} ในระบบครับ`);render();return;}
+ if(pt>t.points){push('ai',`${code} เต็ม ${t.points} คะแนน ใส่ ${pt} ไม่ได้ครับ`);render();return;}
+ cardConfirm(code,lv,pt);render();
+}
+function cardConfirm(code,lv,pt){
+ const t=tp(code),cur=t.levels[lv-1].raw;
+ const gainT=(()=>{const bak=t.levels.map(l=>l.raw),b0=byLevel();
+  t.levels[lv-1].raw=pt;recalc(t);const b1=byLevel();
+  t.levels.forEach((l,i)=>l.raw=bak[i]);recalc(t);
+  return b1[2]-b0[2];})();
+ push('ai',`<div class="ccard hi"><h4>ยืนยันคะแนนที่ส่ง</h4>
+  <div class="mono">${code} · ${esc(t.name)} · Level ${lv}</div>
+  <div class="delta"><span class="old">${cur}</span> → <span>${pt}</span>
+   <span class="sub">/ ${t.points}</span></div>
+  ${gainT>0?`<div class="sub">ผลต่อคะแนนรวมระดับ 3: <b style="color:var(--ok)">+${gainT}</b>
+   (ปลดล็อกคะแนนที่ติดกฎ cliff)</div>`:''}
+  <div class="pending">⚠ ยังไม่มีผลจนกว่าจะกดยืนยัน — ตอนนี้เป็นแถว pending เท่านั้น (AC-17)</div>
+  <button class="mini prim" onclick="doConfirm('${code}',${lv},${pt})">ยืนยัน</button>
+  <button class="mini ghost">แก้ค่า</button></div>`);
+}
+function doConfirm(code,lv,pt){
+ const t=tp(code),b0=byLevel();t.levels[lv-1].raw=pt;recalc(t);const b1=byLevel();
+ push('sys','— บันทึกแล้ว · audit_log.actor = ผู้ใช้ (ไม่ใช่ ai) —');
+ const d=b1[2]-b0[2];
+ push('ai',`บันทึกแล้วครับ · <b>${code}</b> Level ${lv} = ${pt}/${t.points}
+  ${d>0?`<div class="pending">คะแนนรวม <b>ระดับ 3</b> ขยับ ${b0[2]} → <b>${b1[2]}</b> (+${d})
+   — เพราะปิดช่องว่างระดับล่างแล้ว คะแนนระดับบนที่ทำไว้จึงถูกนับ</div>`
+   :'<div class="pending">คะแนนรวมยังไม่ขยับ — ระดับที่ต่ำกว่ายังไม่เต็ม</div>'}`);
+ S.flash++;render();
+}
+function dropEvidence(){
+ push('me','📎 (ร่าง) แผนดำเนินการลดพลังงาน 2570.docx → T16 ระดับ 4');
+ push('sys','ผู้ช่วยกำลังอ่านเอกสาร…');render();
+ setTimeout(()=>{S.chat.pop();
+  push('ai',`<div class="ccard"><h4>ผลประเมินหลักฐาน · E-010</h4>
+   ${badge('C')} <b>ร่าง/แผน — ไม่นับเข้าคะแนน</b>
+   <div class="sub" style="margin:5px 0">เหตุผล: เป็นแผนที่ตั้งใจจะทำในอนาคต ยังไม่มีการดำเนินการจริงและไม่มีผลการวัด
+   · เกณฑ์ระดับ 4 ต้องการผลที่วัดได้</div>
+   <div class="sub"><b>ยังขาด:</b></div>
+   <label class="gap"><input type="checkbox">ผลการวัดการใช้พลังงานจริงเทียบปีฐาน</label>
+   <label class="gap"><input type="checkbox">เอกสารที่ผ่านการอนุมัติ ไม่ใช่ร่าง</label>
+   <div class="pending">“แผนไม่ใช่หลักฐานผลลัพธ์” — คะแนนจึงไม่ขึ้น (AC-02)</div></div>`);
+  render();},900);
+}
+function confirmEv(code,id){const t=tp(code);const e=t.evidence.find(x=>x.id===id);if(e)e.confirmed=true;S.flash++;render();}
+
+/* ── ศูนย์ตรวจสอบ / เอกสาร ── */
+function scReview(){
+ const q=[];TOPICS.forEach(t=>t.evidence.forEach(e=>{if(!e.confirmed)q.push([t,e])}));
+ return `<h1>ศูนย์ตรวจสอบ</h1>
+ <div class="tabs"><button class="on">รอยืนยันชั้น ${q.length}</button><button>ร่างคำตอบ 3</button>
+ <button>รออนุมัติ 2</button></div>
+ <div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>หัวข้อ</th><th>ระดับ</th>
+ <th>เอกสาร</th><th>ชั้นที่ agent เสนอ</th><th>เหตุผล</th><th></th></tr></thead><tbody>
+ ${q.slice(0,10).map(([t,e])=>`<tr><td class="mono">${t.code}</td><td class="num-c">L${e.level}</td>
+  <td class="mono">${e.id}</td><td>${badge(e.expectedTier)}</td>
+  <td class="sm">${esc(e.why).slice(0,54)}</td>
+  <td><button class="mini prim" onclick="confirmEv('${t.code}','${e.id}')">ยืนยัน</button></td></tr>`).join('')}
+ </tbody></table></div>`;
+}
+function scDocs(){
+ const rem=TOPICS.filter(t=>!t.evidence.length||t.blockedPoints>0);
+ return `<h1>เอกสารส่งผู้ตรวจ · รอบ ${D.cycle}</h1>
+ <p class="sub">CANSO กำหนดว่า <b>ต้องระบุหน้า/หัวข้อ/ย่อหน้าที่หลักฐานอยู่ ไม่งั้นจะไม่นับหลักฐานชิ้นนั้น</b>
+ — ระบบบังคับกฎนี้ก่อน export (AC-10)</p>
+ <button class="prim">Export Word</button> <button>Export PDF</button>
+ <div class="card" style="margin-top:11px"><h3>ตัวอย่างคำตอบ · T06 CDO — รูปแบบ Point / Evidence / Explain</h3>
+ <div style="font-size:13.5px;line-height:1.95">
+ <b>Point</b> — AEROTHAI measures CDO performance at VTBS and reports it quarterly.<br>
+ <b>Evidence</b> — ${badge('A')} <span class="mono">[E-005 p.3, Table 2]</span> ·
+  ${badge('A')} <span class="mono">[E-023 p.1]</span><br>
+ <b>Explain</b> — The measurement covers 12,480 flights over three months and was
+  independently verified; scope is limited to VTBS, which is stated in the report.<br>
+ <span class="zeroed">⛔ ย่อหน้าที่ยังไม่มีตัวอ้างอิง: 1 — ส่งไม่ได้จนกว่าจะเป็น 0</span></div></div>
+ <div class="reg"><h3>⚠ ทะเบียนหมายเหตุ — ${rem.length} หัวข้อ · ห้ามซ่อน</h3>
+ <table style="background:transparent"><thead><tr><th>หัวข้อ</th><th class="num-c">เต็ม</th>
+ <th>สาเหตุ</th></tr></thead><tbody>
+ ${rem.map(t=>`<tr><td class="mono">${t.code}</td><td class="num-c">${t.points}</td>
+  <td>${!t.evidence.length?'ไม่มีหลักฐานแนบเลย':'ทำไว้ '+t.blockedPoints+' คะแนนแต่ติดกฎ cliff'}</td></tr>`).join('')}
+ </tbody></table></div>`;
+}
+
+
+/* ── เครื่องคำนวณการแจ้งเตือน (โค้ดล้วน ไม่ใช่โมเดล) ── */
+const DAY=86400000, ASOF=new Date(D.asOfDate);
+const days=(a,b)=>Math.round((new Date(b)-new Date(a))/DAY);
+const SET=D.app_setting;
+function alerts(){
+ const out=[];
+ TOPICS.forEach(t=>{
+  const over=days(t.dueDate,D.asOfDate);
+  // ① กำหนดส่งรอบนี้
+  if(!t.submittedOn){
+   if(over>0) out.push({id:'A-OVERDUE',sev:'crit',to:['owner','mod'],topic:t,
+     head:`ยังไม่ส่งข้อมูลรอบนี้ · เลยกำหนด ${over} วัน`,
+     body:`${t.code} ${t.name} — กำหนดส่ง ${t.dueDate} (วันที่ ${SET.monthly_due_day} ของเดือน)`,
+     verb:'ESCALATE'});
+   else if(-over<=SET.alert_lead_days) out.push({id:'A-DUE',sev:'warn',to:['owner'],topic:t,
+     head:`ใกล้ครบกำหนดส่ง · เหลือ ${-over} วัน`,body:`${t.code} ${t.name}`,verb:'NOTE'});
+  }
+  // ② ไม่มีหลักฐานเลย
+  if(!t.evidence.length) out.push({id:'A-NOEV',sev:'warn',to:['owner'],topic:t,
+    head:'ยังไม่มีหลักฐานแนบเลย',
+    body:`${t.code} ${t.name} — ${t.points} คะแนนนี้พิสูจน์ไม่ได้ถ้าไม่มีเอกสาร`,verb:'ASK'});
+  // ③ หลักฐานล้าสมัย
+  t.evidence.forEach(e=>{ if(!e.documentDate) return;
+   const m=days(e.documentDate,D.asOfDate)/30.4;
+   if(m>SET.evidence_stale_months) out.push({id:'A-STALE',sev:'warn',to:['owner'],topic:t,
+     head:`หลักฐานล้าสมัย · เก่ากว่า ${SET.evidence_stale_months} เดือน`,
+     body:`${e.id} ${e.file} ลงวันที่ ${e.documentDate} (${Math.round(m)} เดือนก่อน) — ถูกลดชั้นอัตโนมัติ`,
+     verb:'ASK'});});
+  // ④ เอกสารไม่มีวันที่ → ต้องถาม
+  t.evidence.forEach(e=>{ if(e.expectedTier==='ASK') out.push({id:'A-NODATE',sev:'warn',to:['owner'],topic:t,
+    head:'ต้องการวันที่ของเอกสาร',
+    body:`${e.id} ${e.file} — ไม่พบวันที่ในตัวเอกสาร ระบบไม่เดาจากวันอัปโหลด`,verb:'ASK'});});
+  // ⑤ คะแนนติดกฎ cliff
+  if(t.blockedPoints>0){const stuck=t.levels.findIndex(l=>l.raw<t.points)+1;
+   out.push({id:'A-BLOCKED',sev:'crit',to:['owner','mod'],topic:t,
+    head:`${t.blockedPoints} คะแนนที่ทำแล้วแต่ได้ 0`,
+    body:`${t.code} — ระดับ ${stuck} ได้ ${t.levels[stuck-1].raw}/${t.points} · ปิดช่องว่างนี้แล้วได้คืนทันที`,
+    verb:'ESCALATE'});}
+  // ⑥ แผนเลื่อนซ้ำ → ยกระดับตามจำนวนครั้ง
+  if(t.plan&&t.plan.slips.length){const n=t.plan.slips.length;
+   out.push({id:'A-SLIP',sev:n>=SET.slip_escalate_after?'crit':'warn',to:n>=2?['owner','mod']:['owner'],topic:t,
+    head:`เลื่อนแผนครั้งที่ ${n}${n>=SET.slip_escalate_after?' — ติดเชิงโครงสร้าง':''}`,
+    body:`${t.plan.name} · เดิม ${t.plan.slips[0][0]} → ตอนนี้ ${t.plan.revisedDate}`+
+      (n>=SET.slip_escalate_after?` · เหตุผลเดิมทุกครั้ง: “${t.plan.slips[0][2]}”`:''),
+    verb:n>=SET.slip_escalate_after?'ESCALATE':(n>=2?'ASK':'NOTE'),slips:t.plan.slips});}
+ });
+ const rank={crit:0,warn:1,info:2};
+ return out.sort((a,b)=>rank[a.sev]-rank[b.sev]);
+}
+const VERB={NOTE:['แจ้งให้ทราบ','s-part'],ASK:['ขอข้อมูลเพิ่ม','s-part'],
+ ESCALATE:['ยกให้ผู้ดูแลตัดสิน','s-no']};
+function scAlerts(){
+ const A=alerts(), forMe=S.role==='central'?A.filter(a=>a.to.indexOf('mod')>=0):A.filter(a=>a.to.indexOf('owner')>=0);
+ const crit=forMe.filter(a=>a.sev==='crit').length;
+ const box=a=>`<div class="ev"><div class="evh">
+   <span class="chip ${a.sev==='crit'?'s-no':'s-part'}">${a.sev==='crit'?'⛔':'⚠'} ${a.id}</span>
+   <span class="chip ${VERB[a.verb][1]}">${VERB[a.verb][0]}</span>
+   <b>${esc(a.head)}</b></div>
+  <div class="evn">${esc(a.body)}</div>
+  ${a.slips&&a.slips.length>1?`<div class="evr">ประวัติการเลื่อน: ${
+    a.slips.map(x=>`${x[0]}→${x[1]}`).join(' · ')}</div>`:''}
+  <div><button class="mini" onclick="go('topics','${a.topic.code}')">เปิดหัวข้อ</button>
+   <button class="mini ghost" onclick="draftMsg('${a.id}','${a.topic.code}')">ร่างข้อความ</button></div></div>`;
+ return `<h1>แจ้งเตือน / Outbox</h1>
+ <p class="sub">โค้ดคำนวณทั้งหมดจากกำหนดส่ง · วันที่เอกสาร · ประวัติการเลื่อน —
+ <b>โมเดลไม่ได้ตัดสินว่าอะไรเป็นปัญหา</b> · ระบบ<b>ร่าง</b>ข้อความ <b>คนกดส่งเอง</b> ไม่ออกนอกระบบ</p>
+ <div class="dbox"><h3>📋 ${S.role==='central'?'ถึงผู้ดูแล (moderator)':'ถึงเจ้าของข้อมูล'}
+  — ${forMe.length} รายการ · ต้องจัดการด่วน ${crit}</h3>
+  <div class="sm">กติกายกระดับ: ครั้งที่ 1 แจ้งให้ทราบ → ครั้งที่ 2 ขอข้อมูลเพิ่ม →
+  ครั้งที่ ${SET.slip_escalate_after} ยกให้ผู้ดูแล <b>พร้อมประวัติทั้งหมด</b></div></div>
+ <div class="card">${forMe.length?forMe.map(box).join(''):'<div class="empty">ไม่มีรายการค้าง</div>'}</div>
+ <div class="card"><h3>📤 Outbox — ร่างข้อความที่รอส่ง (${S.outbox.length})</h3>
+ ${S.outbox.length?S.outbox.map((m,i)=>`<div class="ev"><div class="evh">
+   <b>ถึง ${esc(m.to)}</b> <span class="dim sm">· ${m.id}</span>
+   ${m.sent?'<span class="ok-tag">✓ ส่งแล้ว</span>':''}</div>
+   <div class="evn" style="white-space:pre-wrap">${esc(m.body)}</div>
+   ${m.sent?'':`<div><button class="mini prim" onclick="sendMsg(${i})">ส่ง</button>
+    <button class="mini ghost">แก้ข้อความ</button></div>`}</div>`).join('')
+  :'<div class="empty">ยังไม่มีร่างข้อความ — กด “ร่างข้อความ” จากรายการด้านบน</div>'}
+ <div class="pending" style="margin-top:9px">⚠ ต้นแบบนี้ <b>ไม่ส่งอีเมล/LINE จริง</b> ·
+ กดส่งแล้วข้อความไปแสดงในแอปของผู้รับเท่านั้น</div></div>`;
+}
+function draftMsg(id,code){
+ const t=tp(code), a=alerts().find(x=>x.id===id&&x.topic.code===code); if(!a)return;
+ const to=a.to.indexOf('mod')>=0&&S.role==='central'?'ผู้ดูแลส่วนกลาง':'เจ้าของหัวข้อ '+t.code;
+ S.outbox.push({id:id,to:to,sent:false,body:
+  `เรื่อง: ${a.head}\n\n${a.body}\n\n`+
+  (a.slips&&a.slips.length>=SET.slip_escalate_after
+   ? `ประวัติการเลื่อน ${a.slips.length} ครั้ง:\n`+a.slips.map((x,i)=>`  ${i+1}. ${x[0]} → ${x[1]} — ${x[2]}`).join('\n')+
+     `\n\nข้อสังเกต: เหตุผลเดิมซ้ำทุกครั้ง — น่าจะเป็นปัญหาเชิงโครงสร้าง ไม่ใช่เรื่องการเร่งงาน\n`
+   : '')+
+  `\nกรุณาดำเนินการภายในรอบถัดไป (ภายในวันที่ ${SET.monthly_due_day})`});
+ S.screen='alerts';render();
+}
+function sendMsg(i){S.outbox[i].sent=true;render();}
+
+/* ── shell ── */
+function setRole(r){S.role=r;document.getElementById('role').value=r;
+ const a=NAV.find(n=>n[0]===S.screen);
+ if(a&&a[2]&&a[2].split(',').indexOf(r)<0)S.screen='home';render();}
+function go(s,c){if(c)S.topic=c;S.screen=s;render();window.scrollTo(0,0);}
+function toggleDown(){S.down=!S.down;render();}
+function render(){
+ document.getElementById('cycle').textContent='รอบ '+D.cycle+' · ข้อมูล ณ '+D.asOfDate;
+ document.getElementById('roleinfo').textContent=S.role==='submitter'?'กองสิ่งแวดล้อม':'';
+ document.getElementById('downbar').style.display=S.down?'block':'none';
+ document.getElementById('downbtn').textContent=S.down?'จำลอง: เปิด endpoint':'จำลอง: ปิด endpoint';
+ document.getElementById('nav').innerHTML=NAV.map(n=>{
+  const off=n[2]&&n[2].split(',').indexOf(S.role)<0;
+  return `<a class="${S.screen===n[0]?'on':''} ${off?'off':''}" onclick="${off?'':`go('${n[0]}')`}">${n[1]}</a>`}).join('');
+ const map={home:scHome,chat:scChat,topics:()=>S.topic?scTopic():scTopics(),alerts:scAlerts,review:scReview,docs:scDocs};
+ let h=(map[S.screen]||scHome)();
+ if(S.screen==='topics'&&S.topic)h=`<button class="mini ghost" onclick="S.topic=null;render()">← หัวข้อทั้งหมด</button>`+h;
+ if(S.screen==='chat'&&S.down)
+  h=`<h1>แชตกับผู้ช่วย</h1><div class="card" style="border:2px solid var(--late)">
+   <h3 style="color:var(--late)">⛔ เชื่อมต่อผู้ช่วย AI ไม่ได้</h3>
+   <p>ข้อความเก่ายังอ่านได้ · <b>กรอกข้อมูลผ่านฟอร์มได้ตามปกติ</b> — ระบบส่วนอื่นไม่กระทบ (AC-12)</p>
+   <button class="prim">ไปหน้าฟอร์มกรอกมือ →</button></div>
+   <div class="card"><div class="chat">${S.chat.map(m=>`<div class="msg m-${m.t}">${m.h}</div>`).join('')}</div></div>`;
+ document.getElementById('main').innerHTML=h;
+ const cb=document.getElementById('chatbox');if(cb)cb.scrollTop=cb.scrollHeight;
+}
+
+/* ── สคริปต์เดโม ── */
+const STEPS=[
+ ['0:00','<b>เปิดด้วยตัวเลขจริง</b> — วันนี้ใช้คน 5 คน เต็มเวลา 2 เดือน ต่อรอบการประเมิน',()=>{setRole('submitter');go('chat')}],
+ ['0:20','เปิดจาก<b>ฝั่งกอง</b> — ผู้ช่วยบอกว่ารอบนี้ควรทำอะไรก่อน และ<b>ทำไม</b>',()=>{setRole('submitter');S.chat=[];go('chat')}],
+ ['0:40','⭐ <b>ลากไฟล์ร่างแผนเข้าไป</b> → ตอบทันทีว่าเป็นชั้น C · “แผนไม่ใช่หลักฐานผลลัพธ์” (AC-02)',()=>{go('chat');dropEvidence()}],
+ ['1:05','⭐ <b>พิมพ์ “T13 ระดับ 2 เป็น 8”</b> → การ์ดยืนยันขึ้น <b>ยังไม่เปลี่ยนอะไร</b> (AC-17)',
+  ()=>{go('chat');push('me','T13 ระดับ 2 เป็น 8');cardConfirm('T13',2,8);render()}],
+ ['1:20','<b>กดยืนยัน</b> → คะแนนระดับ 3 ขยับ <b>+8 ทันที</b> ทั้งที่ไม่ได้ทำงานเพิ่ม — เพราะปลดล็อกกฎ cliff',
+  ()=>{go('chat');doConfirm('T13',2,8)}],
+ ['1:45','<b>ดูภาพรวม</b> → บันไดระดับ · ขาดกี่คะแนน · เติมจากระดับบนได้เท่าไร',()=>{setRole('exec');go('home')}],
+ ['2:10','<b>เอกสารส่งผู้ตรวจ</b> — รูปแบบ Point/Evidence/Explain + ทะเบียนหมายเหตุ (AC-10, AC-15)',()=>{setRole('central');go('docs')}],
+ ['2:35','<b>ปิด endpoint สด ๆ</b> → ฟอร์มสำรองยังกรอกได้ ระบบส่วนอื่นเดินต่อ (AC-12)',()=>{setRole('submitter');S.down=true;go('chat')}],
+];
+function demoShow(){const b=document.getElementById('dstep'),t=document.getElementById('dtext');
+ if(!S.demo){b.textContent='เดโม 0/'+STEPS.length;
+  t.innerHTML='กด <b>เริ่มเดโม</b> เพื่อเดินตามสคริปต์ 3 นาที · หรือกดเมนูซ้ายดูเอง';
+  document.getElementById('dnext').textContent='เริ่มเดโม ▶';}
+ else{const s=STEPS[S.demo-1];b.textContent=s[0]+' · '+S.demo+'/'+STEPS.length;t.innerHTML=s[1];
+  document.getElementById('dnext').textContent=S.demo>=STEPS.length?'จบแล้ว':'ถัดไป ▶';}
+ document.getElementById('dprev').disabled=!S.demo;
+ document.getElementById('dnext').disabled=S.demo>=STEPS.length;}
+function demoNext(){if(S.demo>=STEPS.length)return;S.demo++;STEPS[S.demo-1][2]();demoShow();}
+function demoPrev(){if(S.demo<=1){demoReset();return;}S.demo--;STEPS[S.demo-1][2]();demoShow();}
+function demoReset(){TOPICS.forEach(t=>{t.levels.forEach((l,i)=>l.raw=t.raw0[i]);recalc(t);
+ t.evidence.forEach(e=>e.confirmed=false)});
+ S.chat=[];S.outbox=[];S.down=false;S.demo=0;S.role='submitter';S.screen='chat';S.topic=null;render();demoShow();}
+TOPICS.forEach(recalc);demoReset();
+</script></body></html>

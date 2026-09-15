@@ -1,0 +1,526 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GreenATM Evidence &amp; Readiness — Mockup</title><style>
+:root{--page:#f6f8f5;--card:#fff;--ink:#152922;--ink2:#5c6b62;--muted:#7c8a80;
+--grid:#e2e6e0;--line:#e2e6e0;--accent:#1f6f4a;--accent2:#2a78d6;
+--L1:#d8e0da;--L2:#a8c9b4;--L3:#6aa886;--L4:#3d8560;--L5:#1f6f4a;
+--ok:#1f8a4c;--warn:#e8a020;--late:#c4453a;--ret:#e07a3f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);
+font:14.5px/1.6 "Noto Sans Thai","Leelawadee UI",Tahoma,system-ui,sans-serif}
+.mock{background:#152922;color:#e9efe9;font-size:12px;padding:6px 16px;display:flex;gap:8px;align-items:center;justify-content:center}
+.dot{width:8px;height:8px;border-radius:50%;background:#e8c34a;flex:none}
+header{height:60px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;
+justify-content:space-between;padding:0 20px;gap:16px;flex-wrap:wrap}
+.brand{display:flex;gap:10px;align-items:center}
+.ga{width:32px;height:32px;border-radius:8px;background:var(--accent);color:#fff;display:flex;
+align-items:center;justify-content:center;font-weight:800;font-size:14px}
+.roles{display:flex;align-items:center;background:#f1f3ef;border-radius:8px;padding:4px 6px}
+.roles select{max-width:330px;font-size:13px;padding:4px 8px}
+.roles::before{content:'เข้าใช้เป็น';font-size:11px;color:var(--muted);font-weight:700;margin-right:8px}
+.roles button{border:0;background:transparent;padding:5px 13px;border-radius:6px;font:inherit;font-size:13px;cursor:pointer;color:var(--ink2)}
+.roles button.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.bell{position:relative;cursor:pointer;font-size:17px}
+.bell b{position:absolute;top:-6px;right:-9px;background:var(--late);color:#fff;font-size:10px;
+border-radius:999px;padding:1px 5px}
+.wrap{display:flex;min-height:76vh}
+nav{width:212px;background:#fff;border-right:1px solid var(--line);padding:14px 0;flex:none}
+nav .lbl{font-size:11px;color:var(--muted);font-weight:700;padding:0 18px 7px}
+nav a{display:flex;justify-content:space-between;padding:9px 18px;color:var(--ink2);font-size:13.5px;
+cursor:pointer;border-left:3px solid transparent}
+nav a:hover{background:var(--page)}
+nav a.on{color:var(--ink);font-weight:700;border-left-color:var(--accent);background:var(--page)}
+nav a.off{opacity:.3;cursor:not-allowed}
+nav a i{font-style:normal;font-size:11px;background:var(--late);color:#fff;border-radius:999px;padding:0 6px}
+main{flex:1;padding:20px 24px;max-width:1240px}
+h1{font-size:20px;font-weight:800;margin:0 0 4px}h2{font-size:17px;margin:0}
+h3{font-size:12px;color:var(--muted);font-weight:700;margin:0 0 8px}
+.sub{color:var(--ink2);font-size:13px}.dim{color:var(--muted)}.sm{font-size:12.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:14px}
+.row{display:flex;gap:13px;flex-wrap:wrap;margin-bottom:14px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 16px;flex:1;min-width:158px}
+.stat .k{font-size:11.5px;color:var(--muted);font-weight:600}
+.stat .v{font-size:26px;font-weight:800;margin-top:3px}
+.stat .n{font-size:12px;color:var(--ink2)}
+.dist{display:flex;gap:4px;height:30px;border-radius:7px;overflow:hidden;margin:9px 0 5px}
+.dist div{display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:700;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border-bottom:1px solid var(--grid);padding:8px 9px;text-align:left;vertical-align:top}
+th{font-size:11.5px;color:var(--muted);font-weight:700}
+.num-c{text-align:right;font-variant-numeric:tabular-nums}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12px}
+tr.click{cursor:pointer}tr.click:hover td{background:#f4f7f4}
+.dots{display:flex;gap:3px}
+.dots span{width:19px;height:19px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+font-size:10.5px;font-weight:700;color:#fff;background:var(--L1);color:#7c8a80}
+.dots span.f{color:#fff}
+.chip{display:inline-flex;gap:4px;align-items:center;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px}
+.c-ok{background:#e4f3e9;color:#166a3c}.c-warn{background:#fdf1dc;color:#8a5a09}
+.c-late{background:#fbe7e5;color:#a1322a}.c-info{background:#e8eef7;color:#1c4f8a}
+.c-grey{background:#eef1ee;color:#5c6b62}
+.tier{display:inline-flex;gap:3px;font-size:11.5px;font-weight:700;padding:1px 7px;border-radius:999px;color:#fff}
+.t-A{background:#14532d}.t-B{background:#2a78d6}.t-C{background:#9ec5f4;color:#123}
+.t-D{background:#8a948c}.t-STALE{background:var(--ret)}.t-ASK{background:#8a5a09}
+button,select,input{font:inherit;background:#fff;color:var(--ink);border:1px solid var(--grid);
+border-radius:8px;padding:6px 11px;cursor:pointer}
+.mini{font-size:12px;padding:3px 9px}.prim{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.ghost{color:var(--ink2)}button:disabled{opacity:.45;cursor:not-allowed}
+.bar{height:6px;background:var(--grid);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .5s}
+/* timeline */
+.tl{display:flex;align-items:flex-start;gap:0;margin:10px 0 4px}
+.tlstep{flex:1;position:relative;padding-top:20px;font-size:11.5px;color:var(--ink2)}
+.tlstep:before{content:'';position:absolute;top:6px;left:0;right:0;height:3px;background:var(--grid)}
+.tlstep.done:before{background:var(--ok)}.tlstep.late:before{background:var(--late)}
+.tlstep.now:before{background:linear-gradient(90deg,var(--warn) 50%,var(--grid) 50%)}
+.tlstep b{position:absolute;top:0;left:0;width:15px;height:15px;border-radius:50%;background:var(--grid);
+border:2px solid #fff;font-size:9px;display:flex;align-items:center;justify-content:center;color:#fff}
+.tlstep.done b{background:var(--ok)}.tlstep.late b{background:var(--late)}.tlstep.now b{background:var(--warn)}
+.tlmini{display:flex;gap:2px;align-items:center}
+.tlmini span{width:13px;height:6px;border-radius:2px;background:var(--grid)}
+.tlmini span.done{background:var(--ok)}.tlmini span.now{background:var(--warn)}.tlmini span.late{background:var(--late)}
+/* prediction */
+.pred{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin:10px 0}
+.pcol{text-align:center;flex:1;min-width:92px}
+.pcol .y{font-size:11.5px;color:var(--muted)}
+.pcol .lv{font-size:23px;font-weight:800}
+.pbar{height:96px;display:flex;align-items:flex-end;justify-content:center;gap:5px;margin-bottom:5px}
+.pbar i{width:20px;border-radius:4px 4px 0 0;display:block}
+.assume{background:#f4f7f4;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:9px 12px;font-size:12.5px;color:var(--ink2)}
+.ev{border-top:1px solid var(--grid);padding:9px 0}.ev:first-of-type{border-top:0}
+.sug{font-size:12.5px;line-height:1.5}
+.alert{border-top:1px solid var(--grid);padding:10px 0}.alert:first-of-type{border-top:0}
+.ahead{display:flex;gap:7px;align-items:center;flex-wrap:wrap;font-size:13px}
+.pending{font-size:12.5px;background:#fdf1dc;color:#8a5a09;border-radius:6px;padding:5px 9px;margin:7px 0}
+.empty{padding:16px;text-align:center;color:var(--muted);font-size:13px}
+footer{padding:14px 24px;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+@media(max-width:900px){nav{display:none}.cols{grid-template-columns:1fr!important}}
+.cols{display:grid;grid-template-columns:1.15fr 1fr;gap:14px}
+</style></head><body>
+
+<div class="mock"><span class="dot"></span>
+ข้อมูลตัวอย่าง (MOCKUP) — ไม่ใช่ข้อมูลจริงขององค์กร · เกณฑ์ ระดับ หลักฐาน ผู้รับผิดชอบ สร้างขึ้นเพื่อสาธิตระบบ</div>
+
+<header>
+ <div class="brand"><div class="ga">GA</div><div>
+  <div style="font-weight:700;font-size:15px">GreenATM Evidence &amp; Readiness</div>
+  <div style="font-size:11.5px;color:var(--muted)" id="formname"></div></div></div>
+ <div style="display:flex;align-items:center;gap:18px">
+  <div class="roles" id="roles"></div>
+  <div class="bell" id="bell" onclick="go('alerts')">🔔<b id="belln">0</b></div>
+ </div>
+</header>
+
+<div class="wrap"><nav id="nav"></nav><main id="main"></main></div>
+<footer id="foot"></footer>
+
+<script>
+const D = /*@@DATA@@*/;
+const IT=D.items, SET=D.settings;
+const NAV=[['home','หน้าแรก'],['my','งานของฉัน'],['item','รายละเอียดรายการ'],
+ ['alerts','แจ้งเตือน / Outbox'],['review','ศูนย์ตรวจสอบ'],['trend','แนวโน้มและคาดการณ์']];
+const USERS=D.users, PERMS=D.perms;
+let S={user:'u-mod',screen:'home',item:'2.10',outbox:[]};
+
+/* ───── ผู้ใช้และสิทธิ์ ─────
+   ทุกการกรองข้อมูลผ่าน 3 ฟังก์ชันนี้เท่านั้น — ไม่มีที่ไหนเช็ค role ตรง ๆ กระจัดกระจาย */
+const CU  = ()=>USERS.find(u=>u.id===S.user)||USERS[0];       // ผู้ใช้ปัจจุบัน
+const ROLE= ()=>CU().role;                                     // owner | mod | mgmt
+const PM  = ()=>PERMS[ROLE()];                                 // สิทธิ์ของบทบาทนี้
+const can = sc=>PM().screens.indexOf(sc)>=0;                   // เข้าหน้านี้ได้ไหม
+const isMine = i=>ROLE()==='owner' ? i.ownerUserId===CU().id : true;
+const myItems= ()=>ROLE()==='owner' ? IT.filter(i=>i.ownerUserId===CU().id) : IT;
+const ROLEC={owner:'c-info',mod:'c-warn',mgmt:'c-grey'};
+const esc=s=>String(s).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));
+const it=c=>IT.find(x=>x.code===c);
+const LC=['','var(--L1)','var(--L2)','var(--L3)','var(--L4)','var(--L5)'];
+const avg=a=>a.reduce((s,x)=>s+x,0)/a.length;
+
+function dots(i){let h='<div class="dots">';
+ for(let L=1;L<=5;L++)h+=`<span class="${L<=i.achieved?'f':''}" style="background:${L<=i.achieved?LC[L]:'var(--L1)'}">${L}</span>`;
+ return h+'</div>';}
+function tlmini(i){if(!i.milestones.length)return '<span class="dim sm">ไม่มีแผนงาน</span>';
+ return '<div class="tlmini">'+i.milestones.map(m=>
+  `<span class="${m.percent===100?'done':(m.late?'late':(m.percent>0?'now':''))}" title="${esc(m.name)} ${m.percent}%"></span>`).join('')+
+  `<span class="dim sm" style="margin-left:6px;background:none;width:auto">${
+   i.milestones.filter(m=>m.percent===100).length}/${i.milestones.length}</span></div>`;}
+const SUGC={complete:['c-ok','✓ ครบแล้ว'],near:['c-info','◗ ใกล้ถึง'],ok:['c-grey','— ตามแผน'],
+ act:['c-warn','⚠ ต้องแก้'],ask:['c-warn','? ขอข้อมูล'],escalate:['c-late','⛔ ยกระดับ']};
+
+/* ───── แจ้งเตือน ───── */
+function alerts(){const out=[];
+ IT.forEach(i=>{
+  if(!i.submitted&&i.overdue<=0&&i.daysToDue<=SET.alert_lead_days) out.push({
+   id:'A-DUESOON',sev:i.daysToDue<=7?'warn':'info',to:['owner','mod'],i:i,verb:'NOTE',
+   head:`ใกล้กำหนดส่ง · เหลือ ${i.daysToDue} วัน`,
+   body:`${i.code} ${i.name} — กำหนดส่ง ${i.due} · ยังไม่ส่งข้อมูลรอบนี้`});
+  if(!i.submitted&&i.overdue>0) out.push({id:'A-OVERDUE',sev:'late',to:['owner','mod'],i:i,verb:'ESCALATE',
+   head:`ยังไม่ส่งข้อมูลรอบนี้ · เลยกำหนด ${i.overdue} วัน`,body:`${i.code} ${i.name} — กำหนดส่ง ${i.due}`});
+  if(!i.evidence.length) out.push({id:'A-NOEV',sev:'warn',to:['owner'],i:i,verb:'ASK',
+   head:'ยังไม่มีหลักฐานแนบเลย',body:`${i.code} ${i.name} — ระดับ ${i.achieved} พิสูจน์ไม่ได้ถ้าไม่มีเอกสาร`});
+  i.evidence.forEach(e=>{
+   if(e.tier==='ASK') out.push({id:'A-NODATE',sev:'warn',to:['owner'],i:i,verb:'ASK',
+    head:'ต้องการวันที่ของเอกสาร',body:`${e.id} ${e.file} — ไม่พบวันที่ในตัวเอกสาร ระบบไม่เดาจากวันอัปโหลด`});
+   if(e.tier==='STALE') out.push({id:'A-STALE',sev:'warn',to:['owner'],i:i,verb:'ASK',
+    head:`หลักฐานล้าสมัย เก่ากว่า ${SET.evidence_stale_months} เดือน`,
+    body:`${e.id} ${e.file} ลงวันที่ ${e.date} — ถูกลดชั้นอัตโนมัติ`});});
+  i.milestones.forEach(m=>{ if(m.late) out.push({id:'A-MILESTONE',sev:'warn',to:['owner','mod'],i:i,verb:'ASK',
+   head:`milestone เลยกำหนด · ${m.name}`,body:`${i.code} — แผน ${m.planned} · ทำได้ ${m.percent}%`});});
+  if(i.slips.length){const n=i.slips.length;
+   out.push({id:'A-SLIP',sev:n>=SET.slip_escalate_after?'late':'warn',to:n>=2?['owner','mod']:['owner'],i:i,
+    verb:n>=SET.slip_escalate_after?'ESCALATE':(n>=2?'ASK':'NOTE'),
+    head:`เลื่อนแผนครั้งที่ ${n}${n>=SET.slip_escalate_after?' — ติดเชิงโครงสร้าง':''}`,
+    body:`${i.code} — เดิม ${i.slips[0].from} → ตอนนี้ ${i.slips[n-1].to}`+
+     (n>=SET.slip_escalate_after?` · เหตุผลเดิมทุกครั้ง: “${i.slips[0].reason}”`:''),slips:i.slips});}
+ });
+ const r={late:0,warn:1,info:2};return out.sort((a,b)=>r[a.sev]-r[b.sev]);}
+/* ผู้บริหารไม่รับแจ้งเตือนรายรายการ · เจ้าของข้อมูลได้เฉพาะของกองตัวเอง */
+function myAlerts(){const r=ROLE();
+ if(r==='mgmt') return [];
+ if(r==='mod')  return alerts().filter(a=>a.to.indexOf('mod')>=0);
+ return alerts().filter(a=>a.to.indexOf('owner')>=0 && a.i.ownerUserId===CU().id);}
+
+/* ───── 1 หน้าแรก ───── */
+function scHome(){
+ const dist=[1,2,3,4,5].map(L=>IT.filter(x=>x.achieved===L).length);
+ const A=alerts();
+ const mine=myItems(), R=ROLE();
+ const LEAD={owner:`เห็นภาพรวมทุกหมวดได้ แต่<b>แก้ได้เฉพาะ ${mine.length} รายการของ${esc(CU().division)}</b> (มีป้าย “ของกองคุณ”)`,
+  mod:'เห็นและตรวจได้ทุกหมวด · ค่า Verified ขยับจากการยืนยันของบทบาทนี้เท่านั้น',
+  mgmt:'มุมมองอ่านอย่างเดียว — ไม่มีปุ่มแก้ข้อมูลในทุกหน้า'};
+ return `<h1>หน้าแรก — ภาพรวมระดับ GreenATM ตามหมวดหมู่</h1>
+ <p class="sub">จัดกลุ่มตาม${D.form} · เทียบปีที่แล้ว เป้าที่ทีมกลางกำหนด และคาดการณ์
+ · <b>กดที่แถวเพื่อดู timeline และรายละเอียด</b></p>
+ <div class="pending" style="margin-bottom:14px">เข้าใช้งานเป็น <b>${esc(CU().name)}</b>
+  <span class="chip ${ROLEC[R]}">${esc(PM().label)}</span> — ${LEAD[R]}</div>
+ <div class="row">
+  <div class="stat"><div class="k">ข้อประเมินทั้งหมด</div><div class="v">${IT.length}</div><div class="n">ข้อ</div></div>
+  <div class="stat"><div class="k">Level เฉลี่ยทั้งองค์กร</div>
+   <div class="v">${avg(IT.map(x=>x.achieved)).toFixed(2)}</div>
+   <div class="n">ปีที่แล้ว ${avg(IT.map(x=>x.lastYear)).toFixed(2)} · <b style="color:var(--ok)">
+   +${(avg(IT.map(x=>x.achieved))-avg(IT.map(x=>x.lastYear))).toFixed(2)}</b></div></div>
+  <div class="stat"><div class="k">ยังไม่ส่งรอบนี้</div>
+   <div class="v" style="color:var(--late)">${IT.filter(x=>!x.submitted).length}</div>
+   <div class="n">กำหนด ${D.cycleDue}</div></div>
+  <div class="stat"><div class="k">ต้องจัดการ</div>
+   <div class="v" style="color:var(--warn)">${A.filter(a=>a.sev==='late').length}</div>
+   <div class="n">เรื่องด่วน จาก ${A.length} แจ้งเตือน</div></div>
+ </div>
+ <div class="card"><h3>การกระจายตัวของ Level (1–5) ทุกหมวดหมู่</h3>
+  <div class="dist">${dist.map((n,k)=>n?`<div style="flex:${n};background:${LC[k+1]}">L${k+1} · ${n}</div>`:'').join('')}</div>
+ </div>
+ ${D.categories.map(c=>{const list=IT.filter(x=>x.cat===c.num);
+  return `<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px">
+   <div><h2>หมวด ${c.num} · ${esc(c.name)}</h2>
+    <div class="sub">${esc(c.nameEn)} · ${list.length} ข้อ · ${esc(c.division)}
+    <br><span class="dim sm">ผู้กำกับดูแลหมวด: ${esc(c.owner)}</span>
+    ${c.division===D.unassignedDivision?'<br><span class="chip c-warn">หมวดนี้ยังไม่มีผู้ใช้เจ้าของข้อมูลในเดโม — จึงไม่มีใครมาอัปเดต</span>':''}</div></div>
+   <div style="text-align:right"><div class="k dim sm">Level เฉลี่ยหมวดนี้</div>
+    <div style="font-size:21px;font-weight:800">${avg(list.map(x=>x.achieved)).toFixed(2)}</div></div></div>
+  <table><thead><tr><th style="width:27%">รายการ</th><th>ผู้รับผิดชอบ</th><th>timeline / milestone</th>
+   <th>สถานะปัจจุบัน</th><th class="num-c">ปีที่แล้ว</th><th class="num-c">เป้าปีนี้</th>
+   <th class="num-c">คาดการณ์</th></tr></thead><tbody>
+  ${list.map(i=>{const f=forecast(i,1);
+   const own=ROLE()==='owner'&&i.ownerUserId===CU().id;
+   return `<tr class="click" onclick="go('item','${i.code}')"${own?' style="background:#f4f9f4"':''}>
+   <td><b class="mono">${i.code}</b> ${esc(i.name)}
+     ${own?'<span class="chip c-info" style="margin-left:5px">ของกองคุณ</span>':''}
+     ${!i.ownerUserId?'<span class="chip c-grey" style="margin-left:5px" title="กองนี้ไม่มีผู้ใช้ในเดโม">ไม่มีเจ้าของในระบบ</span>':''}
+     ${!i.submitted?'<span class="chip c-late" style="margin-left:5px">ยังไม่ส่ง</span>':''}</td>
+   <td class="sm">${esc(i.owner)}</td>
+   <td>${tlmini(i)}${i.slips.length>=3?'<div class="chip c-late" style="margin-top:4px">เลื่อน '+i.slips.length+' ครั้ง</div>':''}</td>
+   <td>${dots(i)}<div class="dim sm" style="margin-top:3px">ไประดับ ${i.frontier} แล้ว ${i.frontierPct}%</div></td>
+   <td class="num-c">${i.lastYear}</td>
+   <td class="num-c">${i.target}${i.target>i.lastYear?'<div class="dim sm">สูงกว่าปีที่แล้ว</div>':''}</td>
+   <td class="num-c"><b>${f.toFixed(1)}</b>${f<i.target?'<div class="chip c-warn">ต่ำกว่าเป้า</div>':''}</td></tr>`}).join('')}
+  </tbody></table></div>`}).join('')}`;
+}
+
+/* ───── 2 งานของฉัน ───── */
+function scMy(){
+ if(ROLE()!=='owner') return `<h1>งานของฉัน</h1>
+  <div class="card"><b>บทบาท “${esc(PM().label)}” ไม่มีรายการที่ต้องกรอกเอง</b>
+   <div class="sm" style="margin-top:6px">หน้านี้เป็นของเจ้าของข้อมูลรายกอง —
+   สลับผู้ใช้ที่มุมขวาบนเพื่อดูมุมมองของแต่ละกอง</div></div>`;
+ const mine=myItems();
+ return `<h1>งานของฉัน</h1>
+ <p class="sub"><b>${esc(CU().division)}</b> · ${esc(CU().name)} · ${mine.length} รายการ
+ · รอบปัจจุบัน ${D.cycle} · กำหนดส่ง ${D.cycleDue}</p>
+ <div class="pending" style="margin-bottom:14px">หน้านี้แสดง<b>เฉพาะรายการของกองคุณ</b>
+  — อีก ${IT.length-mine.length} รายการเป็นของกองอื่น เปิดดูได้แต่แก้ไม่ได้</div>
+ ${mine.filter(x=>!x.submitted).length?`<div class="card" style="border-color:var(--late);background:#fdf3f2">
+  <b style="color:var(--late)">มี ${mine.filter(x=>!x.submitted).length} รายการที่ยังไม่ส่งข้อมูลรอบนี้</b></div>`:''}
+ <div class="card" style="padding:0;overflow:hidden"><table><thead><tr>
+  <th style="width:24%">รายการ</th><th>กำหนดส่ง</th><th>สถานะ</th>
+  <th style="width:32%">Suggestion จาก agent</th><th>การดำเนินการ</th></tr></thead><tbody>
+ ${mine.map(i=>{const s=SUGC[i.suggestion.kind];
+  return `<tr><td><b class="mono">${i.code}</b> ${esc(i.name)}
+   <div class="dim sm">${esc(i.owner)}</div></td>
+  <td class="sm">${i.due}${!i.submitted&&i.overdue>0?`<div class="chip c-late">เลย ${i.overdue} วัน</div>`:''}</td>
+  <td>${dots(i)}</td>
+  <td><span class="chip ${s[0]}">${s[1]}</span>
+   <div class="sug" style="margin-top:4px">${esc(i.suggestion.text)}${
+    i.suggestion.also?`<div style="color:var(--late);margin-top:3px">${esc(i.suggestion.also)}</div>`:''}</div></td>
+  <td><button class="mini prim" onclick="go('item','${i.code}')">เปิด</button>
+   <button class="mini ghost">แนบหลักฐาน</button></td></tr>`}).join('')}
+ </tbody></table></div>
+ <div class="card"><h3>เกณฑ์ที่ agent ใช้ประเมิน Suggestion</h3>
+ <div class="sm" style="line-height:1.9">
+ <span class="chip c-ok">✓ ครบแล้ว</span> ถึงเป้าปีนี้ ·
+ <span class="chip c-info">◗ ใกล้ถึง</span> ความคืบหน้าในระดับถัดไป ≥ 80% ·
+ <span class="chip c-grey">— ตามแผน</span> ไม่มีข้อกังวล<br>
+ <span class="chip c-warn">⚠ ต้องแก้</span> ไม่มีหลักฐาน / มีแต่ชั้น C / หลักฐานล้าสมัย ·
+ <span class="chip c-warn">? ขอข้อมูล</span> ต้องการวันที่เอกสาร ·
+ <span class="chip c-late">⛔ ยกระดับ</span> เลื่อนแผน ≥ ${SET.slip_escalate_after} ครั้ง</div>
+ <div class="pending">agent <b>เสนอ</b>เท่านั้น — ไม่เปลี่ยนสถานะหรือคะแนนเอง คนเป็นคนตัดสิน</div></div>`;
+}
+
+/* ───── 3 รายละเอียดรายการ (มี dropdown) ───── */
+function scItem(){
+ const i=it(S.item)||IT[0];
+ const done=i.milestones.filter(m=>m.percent===100).length;
+ return `<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px">
+  <label class="sub">เลือกรายการ</label>
+  <select onchange="go('item',this.value)" style="min-width:360px">
+  ${ROLE()==='owner'?`
+   <optgroup label="★ รายการของ${esc(CU().division)} — แก้ได้">
+    ${myItems().map(x=>`<option value="${x.code}" ${x.code===i.code?'selected':''}>${x.code} · ${esc(x.name)}</option>`).join('')}</optgroup>
+   <optgroup label="รายการของกองอื่น — อ่านอย่างเดียว">
+    ${IT.filter(x=>x.ownerUserId!==CU().id).map(x=>`<option value="${x.code}" ${x.code===i.code?'selected':''}>${x.code} · ${esc(x.name)}</option>`).join('')}</optgroup>`
+  :D.categories.map(c=>`<optgroup label="หมวด ${c.num} · ${esc(c.name)}">
+   ${IT.filter(x=>x.cat===c.num).map(x=>`<option value="${x.code}" ${x.code===i.code?'selected':''}>
+    ${x.code} · ${esc(x.name)}</option>`).join('')}</optgroup>`).join('')}
+  </select>
+  <span class="dim sm">${ROLE()==='owner'?myItems().length+' ของกองคุณ · จาก '+IT.length:IT.length+' รายการ'}</span></div>
+ ${ROLE()==='owner'&&!isMine(i)?`<div class="card" style="border-color:var(--late);background:#fdf3f2;margin-bottom:12px">
+  <b style="color:var(--late)">403 — รายการนี้เป็นของ${esc(i.division)} ไม่ใช่กองของคุณ</b>
+  <div class="sm" style="margin-top:6px">ดูได้เพื่อความโปร่งใส แต่<b>ไม่มีปุ่มแก้ใด ๆ</b>
+   และถ้ายิง <code>POST /api/items/${i.code}/progress</code> ตรง backend จะตอบ <b>403</b>
+   — สิทธิ์อยู่ในโค้ดฝั่งเซิร์ฟเวอร์ ไม่ใช่การซ่อนปุ่ม</div></div>`:''}
+ ${ROLE()==='mgmt'?`<div class="pending" style="margin-bottom:12px">มุมมองผู้บริหาร —
+  <b>อ่านอย่างเดียว</b> ไม่มีปุ่มแก้ข้อมูลหรือยืนยันหลักฐานในหน้านี้</div>`:''}
+ <h2>${i.code} · ${esc(i.name)}</h2>
+ <div class="sub" style="margin-bottom:12px">หมวด ${i.cat} ${esc(i.catName)} · ${esc(i.division)}
+  · ผู้รับผิดชอบ <b>${esc(i.owner)}</b> · ผู้กำกับดูแล ${esc(i.catOwner)}</div>
+ <div class="row">
+  <div class="stat"><div class="k">ระดับที่ได้</div><div class="v">${i.achieved}</div>
+   <div class="n">ปีที่แล้ว ${i.lastYear} · เป้าปีนี้ ${i.target}</div></div>
+  <div class="stat"><div class="k">ความคืบหน้าไประดับ ${i.frontier}</div><div class="v">${i.frontierPct}%</div>
+   <div class="bar" style="margin-top:6px"><i style="width:${i.frontierPct}%"></i></div></div>
+  <div class="stat"><div class="k">milestone</div><div class="v">${done}/${i.milestones.length||'—'}</div>
+   <div class="n">${i.slips.length?'เลื่อนแผน '+i.slips.length+' ครั้ง':'ไม่เคยเลื่อนแผน'}</div></div>
+  <div class="stat"><div class="k">คาดการณ์ 3 ปี</div><div class="v">${forecast(i,3).toFixed(1)}</div>
+   <div class="n">ความเร็ว +${i.velocity}/ปี</div></div>
+ </div>
+ <div class="card"><h3>Timeline แผนงาน</h3>
+ ${i.milestones.length?`<div class="tl">${i.milestones.map((m,k)=>{
+   const cls=m.percent===100?'done':(m.late?'late':(m.percent>0?'now':''));
+   return `<div class="tlstep ${cls}"><b>${m.percent===100?'✓':k+1}</b>
+    <div style="font-weight:600">${esc(m.name)}</div>
+    <div class="dim">แผน ${m.planned}</div>
+    <div>${m.actual?`เสร็จจริง ${m.actual}`:(m.late?`<span style="color:var(--late)">เลยกำหนด · ทำได้ ${m.percent}%</span>`:`ทำได้ ${m.percent}%`)}</div>
+   </div>`}).join('')}</div>`:'<div class="empty">รายการนี้ยังไม่มีแผนงานย่อย</div>'}
+ ${i.slips.length?`<div class="pending" style="margin-top:12px"><b>ประวัติการเลื่อนแผน ${i.slips.length} ครั้ง</b><br>
+  ${i.slips.map((s,k)=>`${k+1}. ${s.from} → ${s.to} — ${esc(s.reason)}`).join('<br>')}
+  ${i.slips.length>=SET.slip_escalate_after?'<br><b>เหตุผลเดิมซ้ำทุกครั้ง — น่าจะเป็นปัญหาเชิงโครงสร้าง ไม่ใช่เรื่องการเร่งงาน</b>':''}</div>`:''}
+ </div>
+ <div class="cols">
+  <div class="card"><h3>หลักฐานที่แนบ · ข้อเสนอจาก Agent</h3>
+  ${i.evidence.length?i.evidence.map(e=>`<div class="ev">
+   <div style="display:flex;gap:7px;align-items:center"><span class="tier t-${e.tier}">${e.tier}</span>
+    <b class="mono">${e.id}</b></div>
+   <div class="sm">${esc(e.file)}</div>
+   <div class="dim sm">วันที่ในเอกสาร ${e.date||'<span style="color:var(--warn)">ไม่พบ — ต้องถาม</span>'}</div>
+   <div class="sm" style="margin:5px 0">เหตุผลจาก Agent: ${esc(e.why)}</div>
+   ${ROLE()==='mod'?`<button class="mini prim">ยืนยันชั้น</button>
+    <button class="mini ghost">แก้ไขพร้อมเหตุผล</button>`
+   :`<span class="dim sm">${ROLE()==='owner'?'รอผู้ดูแลยืนยัน — เจ้าของข้อมูลยืนยันชั้นหลักฐานเองไม่ได้':'ผู้บริหารไม่ยืนยันชั้นหลักฐาน'}</span>`}</div>`).join('')
+   :'<div class="empty">ยังไม่มีหลักฐานแนบ — ระดับนี้จึงยังพิสูจน์ไม่ได้</div>'}</div>
+  <div class="card"><h3>Suggestion จาก Agent</h3>
+   <span class="chip ${SUGC[i.suggestion.kind][0]}">${SUGC[i.suggestion.kind][1]}</span>
+   <p class="sm" style="margin:8px 0">${esc(i.suggestion.text)}${
+    i.suggestion.also?`<br><b style="color:var(--late)">${esc(i.suggestion.also)}</b>`:''}</p>
+   <h3 style="margin-top:14px">แจ้งเตือนที่เกี่ยวกับรายการนี้</h3>
+   ${alerts().filter(a=>a.i.code===i.code).map(a=>`<div class="sm" style="padding:4px 0">
+    <span class="chip c-${a.sev==='late'?'late':(a.sev==='info'?'info':'warn')}">${a.id}</span> ${esc(a.head)}</div>`).join('')||
+    '<div class="dim sm">ไม่มี</div>'}</div>
+ </div>`;
+}
+
+/* ───── 4 แจ้งเตือน ───── */
+function scAlerts(){
+ if(ROLE()==='mgmt') return `<h1>แจ้งเตือน / Outbox</h1>
+  <div class="card"><b>ผู้บริหารไม่รับแจ้งเตือนรายรายการ</b>
+   <div class="sm" style="margin-top:6px">ตั้งใจออกแบบไว้อย่างนี้ — ช่องทางที่ส่งทุกเรื่องถึงทุกคน
+   จะถูกเลิกอ่านภายในสัปดาห์เดียว ผู้บริหารอ่านภาพรวมที่<b>หน้าแรก</b>และ<b>หน้าแนวโน้ม</b>แทน</div></div>`;
+ const A=myAlerts();
+ const VERB={NOTE:['c-grey','แจ้งให้ทราบ'],ASK:['c-warn','ขอข้อมูลเพิ่ม'],ESCALATE:['c-late','ยกให้ผู้ดูแลตัดสิน']};
+ return `<h1>แจ้งเตือน / Outbox</h1>
+ <p class="sub">โค้ดคำนวณจากกำหนดส่ง · วันที่เอกสาร · แผนงาน · ประวัติการเลื่อน —
+ <b>โมเดลไม่ได้ตัดสินว่าอะไรเป็นปัญหา</b> · ระบบ<b>ร่าง</b>ข้อความ <b>คนกดส่งเอง</b></p>
+ <div class="card" style="border-color:var(--warn);background:#fefaf2">
+  <b>${ROLE()==='mod'?'คิวของผู้ดูแล (ทีมกลาง)':'ถึง '+esc(CU().division)} — ${A.length} รายการ ·
+  ด่วน ${A.filter(a=>a.sev==='late').length}</b>
+  <div class="sm" style="margin-top:5px">${ROLE()==='mod'
+   ?`ผู้ดูแลได้รับ <b>${alerts().filter(a=>a.to.indexOf('mod')>=0).length}</b> จากทั้งหมด
+     <b>${alerts().length}</b> — เรื่องหลักฐานรายเอกสารไม่ถูกส่งต่อมาที่นี่ <b>เพื่อไม่ให้คิวล้น</b>`
+   :`เห็นเฉพาะแจ้งเตือนของรายการในกองคุณ — เรื่องกองอื่นไม่ถูกส่งมาที่นี่`}</div>
+  <div class="sm" style="margin-top:5px">กติกายกระดับ: ครั้งที่ 1 แจ้งให้ทราบ → ครั้งที่ 2 ขอข้อมูลเพิ่ม →
+  ครั้งที่ ${SET.slip_escalate_after} ยกให้ผู้ดูแล <b>พร้อมประวัติทั้งหมด</b></div></div>
+ <div class="card">${A.length?A.map((a,k)=>`<div class="alert">
+  <div class="ahead"><span class="chip c-${a.sev==='late'?'late':(a.sev==='info'?'info':'warn')}">${
+   a.sev==='late'?'⛔':(a.sev==='info'?'⏱':'⚠')} ${a.id}</span>
+   <span class="chip ${VERB[a.verb][0]}">${VERB[a.verb][1]}</span><b>${esc(a.head)}</b></div>
+  <div class="sm" style="margin:4px 0">${esc(a.body)}</div>
+  <div class="dim sm">ผู้รับผิดชอบ: ${esc(a.i.owner)} · ${esc(a.i.division)}</div>
+  <div style="margin-top:6px"><button class="mini" onclick="go('item','${a.i.code}')">เปิดรายการ</button>
+   <button class="mini ghost" onclick="draft(${k})">ร่างข้อความ</button></div></div>`).join('')
+  :'<div class="empty">ไม่มีรายการค้าง</div>'}</div>
+ <div class="card"><h3>📤 Outbox — ร่างข้อความรอส่ง (${S.outbox.length})</h3>
+ ${S.outbox.length?S.outbox.map((m,k)=>`<div class="ev">
+  <b>ถึง ${esc(m.to)}</b> <span class="dim sm">· ${m.id}</span>
+  ${m.sent?'<span class="chip c-ok">✓ ส่งแล้ว</span>':''}
+  <pre style="white-space:pre-wrap;font:inherit;font-size:12.5px;margin:6px 0">${esc(m.body)}</pre>
+  ${m.sent?'':`<button class="mini prim" onclick="send(${k})">ตรวจแล้ว — กดส่ง</button>
+   <button class="mini ghost">แก้ข้อความ</button>`}</div>`).join('')
+  :'<div class="empty">ยังไม่มีร่างข้อความ — กด “ร่างข้อความ” จากรายการด้านบน</div>'}
+ <div class="pending">⚠ ต้นแบบนี้ <b>ไม่ส่งอีเมล/LINE จริง</b> — กดส่งแล้วข้อความไปแสดงในแอปของผู้รับเท่านั้น</div></div>`;
+}
+function draft(k){const a=myAlerts()[k];if(!a)return;
+ S.outbox.push({id:a.id,to:`${a.i.owner} · ${a.i.division}`,sent:false,
+  body:`เรื่อง: ${a.head}\n\n${a.body}\n`+
+   (a.slips&&a.slips.length>=SET.slip_escalate_after
+    ?`\nประวัติการเลื่อน ${a.slips.length} ครั้ง:\n`+a.slips.map((s,n)=>`  ${n+1}. ${s.from} → ${s.to} — ${s.reason}`).join('\n')+
+     `\n\nข้อสังเกต: เหตุผลเดิมซ้ำทุกครั้ง — น่าจะเป็นปัญหาเชิงโครงสร้าง ต้องการการตัดสินใจหรือทรัพยากร ไม่ใช่การเร่งงาน\n`:'')+
+   `\nกรุณาดำเนินการภายใน ${D.cycleDue}`});
+ S.screen='alerts';render();}
+function send(k){S.outbox[k].sent=true;render();}
+
+/* ───── 5 ศูนย์ตรวจสอบ ───── */
+function scReview(){
+ const q=[];IT.forEach(i=>i.evidence.forEach(e=>{if(!e.confirmed)q.push([i,e])}));
+ const ns=IT.filter(x=>!x.submitted);
+ return `<h1>ศูนย์ตรวจสอบ</h1>
+ <p class="sub">${esc(PM().label)} — ยืนยันข้อเสนอของ agent · ตรวจร่างคำตอบ · ติดตามกองที่ยังไม่ส่ง</p>
+ <div class="pending" style="margin-bottom:14px"><b>ค่า Verified ทั้งองค์กรขยับจากหน้านี้ที่เดียว</b>
+  — agent เสนอได้ เจ้าของข้อมูลแนบหลักฐานได้ แต่การยืนยันเป็นของ${esc(PM().label)}</div>
+ <div class="card"><h3>รอยืนยันชั้นหลักฐาน · ${q.length}</h3>
+ ${q.map(([i,e])=>`<div class="ev"><div class="ahead"><b class="mono">${i.code}</b>
+  <span class="tier t-${e.tier}">${e.tier}</span> <span class="mono">${e.id}</span></div>
+  <div class="sm">${esc(e.why)}</div>
+  <div style="margin-top:5px"><button class="mini prim">ยืนยัน</button>
+  <button class="mini ghost">แก้ไข</button></div></div>`).join('')}</div>
+ <div class="card"><h3>ยังไม่ส่งข้อมูลรอบนี้ · ${ns.length}</h3>
+ ${ns.map(i=>`<div class="ev"><b class="mono">${i.code}</b> ${esc(i.name)}
+  <div class="dim sm">${esc(i.division)} · ${esc(i.owner)} · เลยกำหนด ${i.overdue} วัน</div></div>`).join('')}
+ <button class="mini prim" style="margin-top:8px" onclick="go('alerts')">ไปหน้าแจ้งเตือนเพื่อร่างข้อความ</button></div>`;
+}
+
+/* ───── 6 แนวโน้มและคาดการณ์ ───── */
+function forecast(i,years){
+ const v=Math.max(0,i.velocity);
+ return Math.min(5, i.achieved + i.frontierPct/100 + v*years - i.frontierPct/100*(years?0:0));
+}
+function scTrend(){
+ const nowAvg=avg(IT.map(x=>x.achieved)), lastAvg=avg(IT.map(x=>x.lastYear));
+ const v=nowAvg-lastAvg;
+ const SC=[['same','เร็วเท่าเดิม',v,'var(--accent)'],['fast','เร็วขึ้น 50%',v*1.5,'var(--L3)'],['stop','หยุดพัฒนา',0,'var(--late)']];
+ const yrs=[0,1,3,5];
+ const stuck=IT.filter(x=>x.achieved===x.lastYear);
+ return `<h1>แนวโน้มและคาดการณ์</h1>
+ <p class="sub">คำนวณจาก<b>ความเร็วจริงที่วัดได้</b> — ระดับเฉลี่ยปีที่แล้ว ${lastAvg.toFixed(2)}
+ → ปีนี้ ${nowAvg.toFixed(2)} คือ <b>+${v.toFixed(2)} ระดับ/ปี</b></p>
+ <div class="card" style="border-color:var(--warn);background:#fefaf2">
+ <b>⚠ นี่คือการฉายภาพ ไม่ใช่คำมั่น</b>
+ <div class="sm" style="margin-top:5px">เส้นทั้งหมดตั้งอยู่บนสมมติฐานว่า<b>ความเร็วในอดีตจะคงเดิม</b>
+ ซึ่งมักไม่จริง เพราะระดับสูงขึ้นมักยากขึ้น · ตัวเลขนี้ใช้เพื่อ<b>เทียบทางเลือก</b> ไม่ใช่เพื่อสัญญากับใคร</div></div>
+ <div class="card"><h3>ระดับเฉลี่ยทั้งองค์กร — 3 ฉากทัศน์</h3>
+ <div class="pred">${yrs.map(y=>`<div class="pcol">
+   <div class="pbar">${SC.map(s=>{const val=Math.min(5,nowAvg+s[2]*y);
+     return `<i style="height:${val/5*96}px;background:${s[3]}" title="${s[1]} ปีที่ ${y}: ${val.toFixed(2)}"></i>`}).join('')}</div>
+   <div class="lv">${y===0?nowAvg.toFixed(2):''}</div>
+   <div class="y">${y===0?'ปีนี้':'อีก '+y+' ปี'}</div></div>`).join('')}</div>
+ <table style="margin-top:10px"><thead><tr><th>ฉากทัศน์</th><th>สมมติฐาน</th>
+  <th class="num-c">อีก 3 ปี</th><th class="num-c">อีก 5 ปี</th></tr></thead><tbody>
+ ${SC.map(s=>`<tr><td><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${s[3]}"></span>
+  <b>${s[1]}</b></td>
+  <td class="sm">${s[0]==='same'?'ทำงานเท่าเดิม ไม่เพิ่มไม่ลดทรัพยากร'
+   :s[0]==='fast'?'เพิ่มทรัพยากร/ปิดคอขวด → เร็วขึ้นครึ่งหนึ่ง'
+   :'ไม่มีความคืบหน้าเพิ่ม — ระดับค้างที่เดิม'}</td>
+  <td class="num-c"><b>${Math.min(5,nowAvg+s[2]*3).toFixed(2)}</b></td>
+  <td class="num-c"><b>${Math.min(5,nowAvg+s[2]*5).toFixed(2)}</b></td></tr>`).join('')}
+ </tbody></table>
+ <div class="assume" style="margin-top:11px"><b>สูตรที่ใช้</b> — ระดับคาดการณ์ = ระดับปีนี้ + (ความเร็ว × จำนวนปี) ·
+ จำกัดเพดานที่ 5 · ความเร็วรายข้อ = (ระดับปีนี้ − ระดับปีที่แล้ว) + ความคืบหน้าในระดับถัดไป
+ <br><b>ไม่ได้คิดรวม</b> ความยากที่เพิ่มขึ้นในระดับสูง · การเปลี่ยนเกณฑ์ · งบประมาณ · การเปลี่ยนผู้รับผิดชอบ</div></div>
+ <div class="card"><h3>รายข้อ — ข้อไหนจะถึงเป้า ข้อไหนไม่ถึง</h3>
+ <table><thead><tr><th>รายการ</th><th>ผู้รับผิดชอบ</th><th class="num-c">ปีที่แล้ว</th>
+  <th class="num-c">ปีนี้</th><th class="num-c">ความเร็ว</th><th class="num-c">อีก 3 ปี</th>
+  <th class="num-c">อีก 5 ปี</th><th>เทียบเป้า</th></tr></thead><tbody>
+ ${IT.slice().sort((a,b)=>a.velocity-b.velocity).map(i=>{
+  const f3=forecast(i,3),f5=forecast(i,5);
+  return `<tr class="click" onclick="go('item','${i.code}')">
+   <td><b class="mono">${i.code}</b> ${esc(i.name).slice(0,34)}</td>
+   <td class="sm">${esc(i.owner)}</td>
+   <td class="num-c">${i.lastYear}</td><td class="num-c">${i.achieved}</td>
+   <td class="num-c ${i.velocity<=0?'':''}" style="${i.velocity<=0?'color:var(--late);font-weight:700':''}">+${i.velocity}</td>
+   <td class="num-c">${f3.toFixed(1)}</td><td class="num-c">${f5.toFixed(1)}</td>
+   <td>${f3>=i.target?'<span class="chip c-ok">ถึงเป้าใน 3 ปี</span>'
+     :f5>=i.target?'<span class="chip c-warn">ถึงเป้าใน 5 ปี</span>'
+     :'<span class="chip c-late">ไม่ถึงเป้าใน 5 ปี</span>'}</td></tr>`}).join('')}
+ </tbody></table></div>
+ <div class="card" style="border-color:var(--late);background:#fdf3f2">
+ <b style="color:var(--late)">⛔ ${stuck.length} ข้อที่ระดับไม่ขยับเลยจากปีที่แล้ว</b>
+ <div class="sm" style="margin-top:6px">${stuck.map(i=>`<span class="mono">${i.code}</span> ${esc(i.name)}
+  <span class="dim">· ${esc(i.owner)}</span>`).join('<br>')}</div>
+ <div class="sm" style="margin-top:7px">ข้อเหล่านี้ทำให้ค่าเฉลี่ยทั้งองค์กรโตช้า —
+ <b>ถ้าปลดล็อกได้ ความเร็วรวมจะเปลี่ยนมากกว่าการเร่งข้อที่วิ่งอยู่แล้ว</b></div></div>`;
+}
+
+/* ───── shell ───── */
+function setUser(id){S.user=id;
+ if(!can(S.screen))S.screen='home';
+ if(ROLE()==='owner'){const m=myItems();if(m.length&&!m.find(x=>x.code===S.item))S.item=m[0].code;}
+ render();}
+function go(s,c){if(c)S.item=c;S.screen=s;render();window.scrollTo(0,0);}
+function render(){
+ document.getElementById('formname').textContent=D.form;
+ document.getElementById('foot').innerHTML='สร้างจาก <code>tools/build_dashboard.py</code> · โครงตาม'+
+  esc(D.form)+' · <b>Mockup ไม่ใช่แอปพลิเคชัน — ไม่มี backend ไม่เรียกโมเดล</b>';
+ document.getElementById('roles').innerHTML=
+  `<select onchange="setUser(this.value)" title="สลับผู้ใช้เพื่อดูสิทธิ์ของแต่ละบทบาท">
+   <optgroup label="เจ้าของข้อมูล (แต่ละกอง)">${USERS.filter(u=>u.role==='owner').map(u=>
+     `<option value="${u.id}" ${S.user===u.id?'selected':''}>${esc(u.division)} — ${esc(u.name)}</option>`).join('')}</optgroup>
+   <optgroup label="ผู้ดูแล">${USERS.filter(u=>u.role==='mod').map(u=>
+     `<option value="${u.id}" ${S.user===u.id?'selected':''}>${esc(u.name)}</option>`).join('')}</optgroup>
+   <optgroup label="ผู้บริหาร">${USERS.filter(u=>u.role==='mgmt').map(u=>
+     `<option value="${u.id}" ${S.user===u.id?'selected':''}>${esc(u.name)}</option>`).join('')}</optgroup>
+   </select>
+   <span class="chip ${ROLEC[ROLE()]}" style="margin-left:8px">${esc(PM().label)}</span>`;
+ document.getElementById('belln').textContent=myAlerts().length;
+ const nb=document.getElementById('bell'); if(nb)nb.style.opacity=ROLE()==='mgmt'?.3:1;
+ document.getElementById('nav').innerHTML=
+  `<div class="lbl">${esc(CU().division)}</div>
+   <div style="padding:0 18px 12px;font-size:12px;color:var(--muted);line-height:1.5">
+    ${esc(CU().name)}<br><span class="chip ${ROLEC[ROLE()]}">${esc(PM().label)}</span></div>
+   <div class="lbl">เมนู</div>`+NAV.map((n,k)=>{
+  const off=!can(n[0]);
+  const badge=n[0]==='alerts'&&!off?`<i>${myAlerts().length}</i>`:'';
+  return `<a class="${S.screen===n[0]?'on':''} ${off?'off':''}"
+   title="${off?'บทบาทนี้ไม่มีสิทธิ์เข้าหน้านี้':''}"
+   onclick="${off?'':`go('${n[0]}')`}"><span>${k+1} · ${n[1]}</span>${badge}</a>`}).join('')
+  +`<div class="lbl" style="margin-top:14px">สิทธิ์ของบทบาทนี้</div>
+    <div style="padding:0 18px;font-size:11.5px;line-height:1.75">
+     ${PM().can.map(x=>`<div style="color:var(--ok)">✓ ${esc(x)}</div>`).join('')}
+     ${PM().cannot.map(x=>`<div style="color:var(--muted)">✕ ${esc(x)}</div>`).join('')}</div>`;
+ const M={home:scHome,my:scMy,item:scItem,alerts:scAlerts,review:scReview,trend:scTrend};
+ document.getElementById('main').innerHTML = can(S.screen)
+  ? (M[S.screen]||scHome)()
+  : `<h1>ไม่มีสิทธิ์เข้าหน้านี้</h1>
+     <div class="card" style="border-color:var(--late);background:#fdf3f2">
+      <b style="color:var(--late)">403 — บทบาท “${esc(PM().label)}” ไม่มีสิทธิ์เข้าหน้านี้</b>
+      <div class="sm" style="margin-top:6px">ในระบบจริงการตรวจสิทธิ์อยู่ที่ backend
+      <b>ไม่ใช่การซ่อนปุ่ม</b> — ยิง request ตรงก็ได้ 403 เหมือนกัน</div></div>`;
+}
+render();
+</script></body></html>
