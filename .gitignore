@@ -47,3 +47,8 @@ _*.mjs
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# ไฟล์กลางที่สกัดจาก GreenATM Evidence Dashboard (standalone).html
+# สร้างใหม่ได้ด้วยการอ่าน <script type="__bundler/template"> จากไฟล์นั้น
+_tpl.html
+_theme.css
