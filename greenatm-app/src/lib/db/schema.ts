@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS evidence (
   document_date   TEXT,          -- null = ไม่พบวันที่ในเอกสาร → ระบบต้องถาม ห้ามเดา (AC-03)
   upload_date     TEXT NOT NULL,
   uploaded_by     TEXT REFERENCES app_user(id),
+  stored_path     TEXT,          -- ที่เก็บไฟล์จริงบนดิสก์ · null = ยังไม่แนบไฟล์ มีแต่ชื่อเรื่อง
   proposed_tier   TEXT CHECK (proposed_tier IN ('A','B','C','D')),
   proposed_reason TEXT,
   proposed_by     TEXT,          -- 'ai' ได้เฉพาะช่องนี้ เพราะเป็นข้อเสนอ ไม่ใช่การยืนยัน

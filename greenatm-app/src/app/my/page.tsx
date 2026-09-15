@@ -1,20 +1,29 @@
 import Link from "next/link";
 import { currentUser } from "@/lib/auth/session";
-import { canSee } from "@/lib/auth/perms";
+import { canSee, profileFor } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { Forbidden, Shell } from "@/components/Shell";
-import { Card, Chip, Empty, LevelSegments, MilestoneStrip, VERDICT } from "@/components/ui";
+import { Card, Chip, LevelSegments, MilestoneStrip, StatusPill, VERDICT } from "@/components/ui";
 import { ConfirmCard } from "@/components/actions";
 
 export const dynamic = "force-dynamic";
 
-/** งานของฉัน — คอลัมน์ Suggestion คือเหตุผลที่หน้านี้มีอยู่ */
+/**
+ * งานของฉัน — โครงตาม MY TASKS ของไฟล์ทีม
+ * ของทีม 4 คอลัมน์: รายการ · กำหนดส่ง · สถานะ · การดำเนินการ
+ * ที่เราเพิ่ม: คอลัมน์ Suggestion แทรกก่อนการดำเนินการ
+ *
+ * ส่วน "รายการที่ถูกตีกลับ" ของไฟล์ทีม **ยังไม่แสดง** เพราะลูปตีกลับ (M4) ไม่ได้ทำ
+ * — ไม่มีข้อมูลจริงก็ไม่ใส่ตัวอย่างค้างไว้บนหน้าจอ
+ */
+const GRID = "2fr .8fr .9fr 1.8fr 1.3fr";
+
 export default async function MyPage() {
   const u = await currentUser();
   if (!canSee(u.role, "my")) {
     return (
       <Shell active="my">
-        <Forbidden roleLabel={u.role === "central" ? "ผู้ดูแล (ทีมกลาง)" : "ผู้บริหาร"}
+        <Forbidden roleLabel={profileFor(u.role).label}
           what="เข้าหน้า “งานของฉัน” — หน้านี้เป็นของเจ้าของข้อมูลรายกอง" />
       </Shell>
     );
@@ -27,120 +36,151 @@ export default async function MyPage() {
 
   return (
     <Shell active="my">
-      <h1 className="text-xl font-semibold">งานของฉัน</h1>
-      <p className="mt-1 text-[13.5px] text-[var(--ink2)]">
-        <b>{div?.name}</b> · {u.title} · {mine.length} รายการ · รอบ {v.meta.cycle} · กำหนดส่ง {v.meta.cycleDue}
-      </p>
-      <p className="mt-1 text-[12.5px] text-[var(--muted)]">
-        หน้านี้แสดง<b>เฉพาะรายการของกองคุณ</b> — อีก {v.items.length - mine.length} รายการเป็นของกองอื่น
-        เปิดดูได้แต่แก้ไม่ได้
-      </p>
-
-      {v.pending.length > 0 && (
-        <section className="mt-4">
-          <h2 className="text-[14px] font-semibold">รอคุณยืนยัน ({v.pending.length})</h2>
-          <p className="text-[12.5px] text-[var(--muted)]">
-            ค่าจริงยังไม่เปลี่ยนจนกว่าคุณจะกด — ระบบและ agent ร่างได้ แต่เขียนเองไม่ได้
-          </p>
-          <div className="mt-2 space-y-2">
-            {v.pending.map((p) => <ConfirmCard key={p.id} pending={p} />)}
-          </div>
-        </section>
-      )}
+      <div style={{ marginBottom: 18 }}>
+        <div className="ga-h1">งานของฉัน</div>
+        <div className="ga-sub">
+          {div?.name} · {u.title} · รอบปัจจุบัน: {v.meta.cycle} · กำหนดส่ง {v.meta.cycleDue}
+        </div>
+        <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 4 }}>
+          แสดง <b>{mine.length} รายการของกองคุณ</b> — อีก {v.items.length - mine.length} รายการเป็นของกองอื่น
+          เปิดดูได้แต่แก้ไม่ได้
+        </div>
+      </div>
 
       {notSubmitted.length > 0 && (
-        <Card tone="danger" className="mt-4">
-          <p className="text-[13.5px] font-bold" style={{ color: "var(--danger)" }}>
-            มี {notSubmitted.length} รายการที่ยังไม่ส่งข้อมูลรอบนี้
-          </p>
-          <p className="text-[12.5px] text-[var(--ink2)]">
-            {notSubmitted.map((i) => i.code).join(" · ")} — เหลืออีก {notSubmitted[0].daysToDue} วันถึงกำหนด
-          </p>
-        </Card>
-      )}
-
-      {mine.length === 0 ? (
-        <Empty>กองของคุณไม่มีรายการในรอบนี้</Empty>
-      ) : (
-        <div className="mt-4 overflow-x-auto rounded-lg border border-[var(--line)] bg-[var(--card)]">
-          <table className="w-full text-[13px]">
-            <thead className="bg-[var(--page)] text-left text-[12px] text-[var(--muted)]">
-              <tr>
-                <th className="px-3 py-2 font-medium">รายการ</th>
-                <th className="px-3 py-2 font-medium">กำหนดส่ง</th>
-                <th className="px-3 py-2 font-medium">ระดับ / แผนงาน</th>
-                <th className="px-3 py-2 font-medium" style={{ width: "34%" }}>
-                  Suggestion จาก agent
-                </th>
-                <th className="px-3 py-2 font-medium">ดำเนินการ</th>
-              </tr>
-            </thead>
-            <tbody>
-              {mine.map((i) => {
-                const s = VERDICT[i.suggestion.verdict];
-                return (
-                  <tr key={i.code} className="border-t border-[var(--line)] align-top">
-                    <td className="px-3 py-3">
-                      <Link href={`/item/${i.code}`} className="font-semibold underline">{i.code}</Link>{" "}
-                      {i.name}
-                      <p className="mt-0.5 text-[11.5px] text-[var(--muted)]">
-                        หลักฐาน {i.evidenceCount} ฉบับ · ยืนยันด้วยหลักฐาน {i.verified}%
-                      </p>
-                    </td>
-                    <td className="px-3 py-3 text-[12.5px]">
-                      {i.dueDate}
-                      {!i.submittedThisCycle && (
-                        <p className="text-[11.5px]" style={{ color: i.daysToDue < 0 ? "var(--danger)" : "var(--warn)" }}>
-                          {i.daysToDue < 0 ? `เลย ${-i.daysToDue} วัน` : `เหลือ ${i.daysToDue} วัน`}
-                        </p>
-                      )}
-                    </td>
-                    <td className="px-3 py-3">
-                      <LevelSegments achieved={i.achievedLevel} percentWithinNext={i.percentWithinNextLevel} />
-                      <div className="mt-1.5"><MilestoneStrip milestones={i.milestones} today={v.meta.today} /></div>
-                    </td>
-                    <td className="px-3 py-3">
-                      <Chip glyph={s.glyph} label={s.label} color={s.color} />
-                      <p className="mt-1.5 text-[12.5px] text-[var(--ink2)]">{i.suggestion.reason}</p>
-                    </td>
-                    <td className="px-3 py-3">
-                      <Link
-                        href={`/item/${i.code}`}
-                        className="inline-block rounded-md bg-[var(--accent)] px-2.5 py-1 text-[12.5px] text-white"
-                      >
-                        เปิดเพื่ออัปเดต
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="ga-banner-warn" style={{ marginBottom: 20 }}>
+          มี {notSubmitted.length} รายการที่ยังไม่ส่งข้อมูลรอบนี้ — กำหนดส่ง {v.meta.cycleDue}
+          {" (เหลือ "}{notSubmitted[0].daysToDue} วัน) · {notSubmitted.map((i) => i.code).join(" · ")}
         </div>
       )}
 
-      <Card className="mt-4">
-        <p className="text-[13px] font-semibold">เกณฑ์ที่ใช้ตัดสิน Suggestion</p>
-        <ul className="mt-2 space-y-1 text-[12.5px] text-[var(--ink2)]">
-          <li><Chip {...VERDICT.needsfix} /> ไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้ว — <b>ตรวจก่อนทุกเงื่อนไข</b></li>
-          <li><Chip {...VERDICT.complete} /> ถึงเป้า <b>และ</b> มีหลักฐานยืนยันรองรับ</li>
-          <li><Chip {...VERDICT.nearly} /> ความคืบหน้าในระดับถัดไป ≥ 80%</li>
-          <li><Chip {...VERDICT.asked} /> มีเอกสารที่ยังไม่มีวันที่ในตัวเอกสาร</li>
-          <li><Chip {...VERDICT.onplan} /> ไม่มีข้อกังวล</li>
-          <li>
-            <Chip {...VERDICT.escalate} /> เลื่อนแผน ≥ {v.settings.slip_escalate_after} ครั้ง —{" "}
-            <b>ต่อท้ายเสมอ ไม่ให้การวินิจฉัยอื่นกลบ</b>
-          </li>
-        </ul>
-        <p className="mt-2.5 rounded-md bg-[var(--page)] px-2.5 py-2 text-[12px] text-[var(--ink2)]">
-          ลำดับการตรวจ <b>หลักฐานมาก่อนเป้า</b> — ถ้าตรวจเป้าก่อน รายการที่ถึงระดับ 5 แต่ไม่มีหลักฐานเลย
-          จะขึ้นว่า “เสร็จสมบูรณ์” ซึ่งขัดกับกฎข้อแรกของระบบทั้งระบบ
-        </p>
-        <p className="mt-2 text-[12px] text-[var(--muted)]">
-          ⚠️ วันนี้ Suggestion มาจาก<b>กฎในโค้ด ไม่ใช่โมเดล</b> — agent จะมาช่วยเรียบเรียงถ้อยคำในขั้นถัดไป
-          แต่การตัดสินว่าเข้าเงื่อนไขไหนยังอยู่ในโค้ด
-        </p>
-      </Card>
+      {v.pending.length > 0 && (
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>
+            รอคุณยืนยัน ({v.pending.length})
+          </div>
+          <div style={{ fontSize: 12, color: "var(--muted)", margin: "4px 0 8px" }}>
+            ค่าจริงยังไม่เปลี่ยนจนกว่าคุณจะกด — ระบบและ agent ร่างได้ แต่เขียนเองไม่ได้
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {v.pending.map((p) => <ConfirmCard key={p.id} pending={p} />)}
+          </div>
+        </div>
+      )}
+
+      <div style={{
+        background: "var(--card)", border: "1px solid var(--line)",
+        borderRadius: 12, overflow: "hidden", marginBottom: 20,
+      }}>
+        <div className="ga-row-head" style={{ display: "grid", gridTemplateColumns: GRID, gap: 8 }}>
+          <div>รายการ</div>
+          <div>กำหนดส่ง</div>
+          <div>สถานะ</div>
+          <div>Suggestion จาก agent</div>
+          <div>การดำเนินการ</div>
+        </div>
+
+        {mine.length === 0 ? (
+          <div style={{ padding: "24px 18px", textAlign: "center", fontSize: 13, color: "var(--muted)" }}>
+            กองของคุณไม่มีรายการในรอบนี้
+          </div>
+        ) : mine.map((i) => {
+          const s = VERDICT[i.suggestion.verdict];
+          return (
+            <div key={i.code} className="ga-row"
+              style={{ display: "grid", gridTemplateColumns: GRID, gap: 8 }}>
+              <div>
+                <Link href={`/item/${i.code}`}><b>{i.code}</b></Link> {i.name}
+                <div style={{ fontSize: 11.5, color: "var(--muted2)", marginTop: 3 }}>
+                  หลักฐาน {i.evidenceCount} · ยืนยันด้วยหลักฐาน {i.verified}%
+                  {i.slipHistory.length > 0 && ` · เลื่อนแผน ${i.slipHistory.length} ครั้ง`}
+                </div>
+                <div style={{ marginTop: 4 }}>
+                  <MilestoneStrip milestones={i.milestones} today={v.meta.today} />
+                </div>
+              </div>
+
+              <div style={{ fontSize: 12.5, color: "var(--ink2)" }}>
+                {i.dueDate}
+                {!i.submittedThisCycle && (
+                  <div style={{
+                    fontSize: 11.5,
+                    color: i.daysToDue < 0 ? "var(--danger)" : "var(--warn-ink)",
+                  }}>
+                    {i.daysToDue < 0 ? `เลย ${-i.daysToDue} วัน` : `เหลือ ${i.daysToDue} วัน`}
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <StatusPill status={i.status}
+                  title={`ตามปฏิทินควรคืบหน้า ${i.expected}% · ทำได้ ${i.progress}%`} />
+                <div style={{ marginTop: 5 }}>
+                  <LevelSegments achieved={i.achievedLevel} percentWithinNext={i.percentWithinNextLevel} />
+                </div>
+              </div>
+
+              <div>
+                <Chip glyph={s.glyph} label={s.label} color={s.color} />
+                <div style={{ fontSize: 12, color: "var(--ink2)", marginTop: 5 }}>
+                  {i.suggestion.reason}
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                <Link href={`/item/${i.code}`} className="ga-btn ga-btn-grey"
+                  style={{ textDecoration: "none" }}>
+                  กรอกข้อมูล
+                </Link>
+                <Link href={`/item/${i.code}`} className="ga-btn ga-btn-soft"
+                  style={{ textDecoration: "none" }}>
+                  แนบหลักฐาน
+                </Link>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <details>
+        <summary style={{ cursor: "pointer", fontSize: 13, fontWeight: 700, color: "var(--ink)" }}>
+          เกณฑ์ที่ใช้ตัดสิน Suggestion และสถานะ
+        </summary>
+        <div style={{ marginTop: 10 }}>
+          <Card>
+            <div style={{ fontSize: 12.5, color: "var(--ink2)", lineHeight: 2 }}>
+              <div><Chip {...VERDICT.needsfix} /> ไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้ว — <b>ตรวจก่อนทุกเงื่อนไข</b></div>
+              <div><Chip {...VERDICT.complete} /> ถึงเป้า <b>และ</b> มีหลักฐานยืนยันรองรับ</div>
+              <div><Chip {...VERDICT.nearly} /> ความคืบหน้าในระดับถัดไป ≥ 80%</div>
+              <div><Chip {...VERDICT.asked} /> มีเอกสารที่ยังไม่มีวันที่ในตัวเอกสาร</div>
+              <div><Chip {...VERDICT.onplan} /> ไม่มีข้อกังวล</div>
+              <div>
+                <Chip {...VERDICT.escalate} /> เลื่อนแผน ≥ {v.settings.slip_escalate_after} ครั้ง —{" "}
+                <b>ต่อท้ายเสมอ ไม่ให้การวินิจฉัยอื่นกลบ</b>
+              </div>
+            </div>
+
+            <div className="ga-divider" style={{ fontSize: 12.5, color: "var(--ink2)", lineHeight: 2 }}>
+              <div><StatusPill status="delayed" /> มีขั้นเลยวันแผนแล้วยังไม่ 100% หรือเลยกำหนดส่งแล้วยังไม่ส่ง</div>
+              <div>
+                <StatusPill status="at_risk" /> ตามหลังปฏิทินเกิน{" "}
+                <b>{v.settings.at_risk_threshold_points} จุด</b> — เกณฑ์นี้แก้ได้ที่หน้าแจ้งเตือน
+              </div>
+              <div><StatusPill status="on_track" /> นอกนั้น</div>
+            </div>
+
+            <p style={{
+              marginTop: 10, marginBottom: 0, background: "var(--fill)", borderRadius: 8,
+              padding: "8px 10px", fontSize: 12, color: "var(--ink2)",
+            }}>
+              ลำดับการตรวจ <b>หลักฐานมาก่อนเป้า</b> — ถ้าตรวจเป้าก่อน รายการที่ถึงระดับ 5 แต่ไม่มีหลักฐานเลย
+              จะขึ้นว่า “เสร็จสมบูรณ์” ซึ่งขัดกับกฎข้อแรกของทั้งระบบ
+              <br />
+              ⚠️ วันนี้ Suggestion มาจาก<b>กฎในโค้ด ไม่ใช่โมเดล</b> — agent จะมาช่วยเรียบเรียงถ้อยคำในขั้นถัดไป
+            </p>
+          </Card>
+        </div>
+      </details>
     </Shell>
   );
 }

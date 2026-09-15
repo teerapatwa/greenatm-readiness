@@ -454,3 +454,238 @@ export function setTargetLevel(code: string, target: number, actor: string) {
   audit(actor, "set_target_level", "tracked_item", code,
     { targetLevel: it.targetLevel }, { targetLevel: target });
 }
+
+// ── แผนงาน (milestone) ───────────────────────────────────────────────────────
+
+/** เกลี่ยน้ำหนักทุกขั้นให้เท่ากัน — ใช้หลังเพิ่ม/ลบขั้น เพื่อให้ progressPercent อธิบายได้ */
+function rebalanceWeights(code: string) {
+  const rows = db().prepare("SELECT seq FROM milestone WHERE item_code=? ORDER BY seq").all(code) as Row[];
+  if (rows.length === 0) return;
+  const w = Math.round((100 / rows.length) * 100) / 100;
+  const up = db().prepare("UPDATE milestone SET weight=? WHERE item_code=? AND seq=?");
+  for (const r of rows) up.run(w, code, n(r.seq));
+}
+
+const DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+export function addMilestone(
+  code: string,
+  a: { name: string; plannedStart: string; plannedEnd: string },
+  actor: string,
+) {
+  const it = itemByCode(code);
+  if (!it) throw new Error(`ไม่พบรายการ ${code}`);
+  const name = a.name.trim();
+  if (name.length < 3) throw new Error("ชื่อขั้นสั้นเกินไป (ต้อง 3 ตัวอักษรขึ้นไป)");
+  if (name.length > 200) throw new Error("ชื่อขั้นยาวเกิน 200 ตัวอักษร");
+  if (!DATE.test(a.plannedStart) || !DATE.test(a.plannedEnd)) {
+    throw new Error("รูปแบบวันที่ต้องเป็น YYYY-MM-DD");
+  }
+  if (a.plannedEnd < a.plannedStart) throw new Error("วันสิ้นสุดตามแผนต้องไม่มาก่อนวันเริ่ม");
+
+  const seq = (it.milestones.reduce((m, x) => Math.max(m, x.seq), 0) || 0) + 1;
+  db().prepare(
+    `INSERT INTO milestone (item_code,seq,name,weight,planned_start,planned_end,percent_complete)
+     VALUES (?,?,?,?,?,?,0)`).run(code, seq, name, 0, a.plannedStart, a.plannedEnd);
+  rebalanceWeights(code);
+  audit(actor, "add_milestone", "tracked_item", code, null,
+    { seq, name, plannedStart: a.plannedStart, plannedEnd: a.plannedEnd });
+  return seq;
+}
+
+export function updateMilestone(
+  code: string,
+  seq: number,
+  patch: { name?: string; plannedStart?: string; plannedEnd?: string },
+  actor: string,
+) {
+  const it = itemByCode(code);
+  if (!it) throw new Error(`ไม่พบรายการ ${code}`);
+  const m = it.milestones.find((x) => x.seq === seq);
+  if (!m) throw new Error(`ไม่พบแผนงานขั้นที่ ${seq}`);
+
+  const next = {
+    name: patch.name !== undefined ? patch.name.trim() : m.name,
+    plannedStart: patch.plannedStart ?? m.plannedStart,
+    plannedEnd: patch.plannedEnd ?? m.plannedEnd,
+  };
+  if (next.name.length < 3) throw new Error("ชื่อขั้นสั้นเกินไป (ต้อง 3 ตัวอักษรขึ้นไป)");
+  if (next.name.length > 200) throw new Error("ชื่อขั้นยาวเกิน 200 ตัวอักษร");
+  if (!DATE.test(next.plannedStart) || !DATE.test(next.plannedEnd)) {
+    throw new Error("รูปแบบวันที่ต้องเป็น YYYY-MM-DD");
+  }
+  if (next.plannedEnd < next.plannedStart) throw new Error("วันสิ้นสุดตามแผนต้องไม่มาก่อนวันเริ่ม");
+  // เลื่อนวันให้ช้าลง = การเลื่อนแผน ต้องผ่าน recordSlip ที่บังคับเหตุผล
+  if (next.plannedEnd > m.plannedEnd) {
+    throw new Error(
+      "การเลื่อนวันสิ้นสุดให้ช้าลง ต้องบันทึกเป็น “การเลื่อนแผน” พร้อมเหตุผล — ใช้ปุ่มเลื่อนแผน",
+    );
+  }
+
+  db().prepare("UPDATE milestone SET name=?, planned_start=?, planned_end=? WHERE item_code=? AND seq=?")
+    .run(next.name, next.plannedStart, next.plannedEnd, code, seq);
+  audit(actor, "update_milestone", "tracked_item", code,
+    { seq, name: m.name, plannedStart: m.plannedStart, plannedEnd: m.plannedEnd },
+    { seq, ...next });
+  return next;
+}
+
+export function deleteMilestone(code: string, seq: number, actor: string) {
+  const it = itemByCode(code);
+  if (!it) throw new Error(`ไม่พบรายการ ${code}`);
+  const m = it.milestones.find((x) => x.seq === seq);
+  if (!m) throw new Error(`ไม่พบแผนงานขั้นที่ ${seq}`);
+  if (m.percentComplete > 0) {
+    throw new Error(
+      `ขั้นที่ ${seq} เริ่มไปแล้ว ${m.percentComplete}% — ลบไม่ได้ เพราะจะทำให้ความคืบหน้าที่บันทึกไว้หายไป`,
+    );
+  }
+  db().prepare("DELETE FROM milestone WHERE item_code=? AND seq=?").run(code, seq);
+  rebalanceWeights(code);
+  audit(actor, "delete_milestone", "tracked_item", code, { seq, name: m.name }, null);
+}
+
+/**
+ * บันทึกการเลื่อนแผน — **จุดที่ทำให้กฎ A-SLIP และการยกระดับครั้งที่ 3 ทำงานจากข้อมูลจริง**
+ *
+ * เลื่อนวันแล้วสัญญาณ "เลยกำหนด" จะหายไปจริง (เพราะวันแผนขยับ)
+ * แต่ระบบนับจำนวนครั้งไว้ — นี่คือเหตุผลที่กฎยกระดับนับ "ครั้ง" ไม่ใช่ "ความรุนแรง"
+ */
+export function recordSlip(
+  code: string,
+  a: { milestoneSeq: number; toDate: string; reason: string },
+  actor: string,
+) {
+  const it = itemByCode(code);
+  if (!it) throw new Error(`ไม่พบรายการ ${code}`);
+  const m = it.milestones.find((x) => x.seq === a.milestoneSeq);
+  if (!m) throw new Error(`ไม่พบแผนงานขั้นที่ ${a.milestoneSeq}`);
+  if (!DATE.test(a.toDate)) throw new Error("รูปแบบวันที่ต้องเป็น YYYY-MM-DD");
+  if (a.toDate <= m.plannedEnd) {
+    throw new Error(
+      `วันใหม่ (${a.toDate}) ต้องช้ากว่าวันแผนเดิม (${m.plannedEnd}) — ถ้าเร็วขึ้นไม่ใช่การเลื่อนแผน ให้แก้วันแผนตรง ๆ`,
+    );
+  }
+  const reason = a.reason.trim();
+  if (reason.length < 5) {
+    throw new Error("ต้องระบุเหตุผลการเลื่อนแผนอย่างน้อย 5 ตัวอักษร — เหตุผลคือสิ่งที่ทำให้การเลื่อนซ้ำมีความหมาย");
+  }
+
+  const d = db();
+  d.exec("BEGIN");
+  try {
+    d.prepare(
+      "INSERT INTO milestone_slip (item_code,from_date,to_date,reason,by_user,at) VALUES (?,?,?,?,?,?)")
+      .run(code, m.plannedEnd, a.toDate, reason, actor, nowIso());
+    d.prepare("UPDATE milestone SET planned_end=? WHERE item_code=? AND seq=?")
+      .run(a.toDate, code, a.milestoneSeq);
+    d.prepare("UPDATE tracked_item SET last_updated=? WHERE code=?").run(today(), code);
+    d.exec("COMMIT");
+  } catch (err) {
+    d.exec("ROLLBACK");
+    throw err;
+  }
+
+  const count = slipsOf(code).length;
+  audit(actor, "record_slip", "tracked_item", code,
+    { seq: a.milestoneSeq, plannedEnd: m.plannedEnd },
+    { seq: a.milestoneSeq, plannedEnd: a.toDate, reason, slipCount: count });
+  return { count, from: m.plannedEnd, to: a.toDate };
+}
+
+export function slipRows(code: string) {
+  return (db().prepare(
+    "SELECT id,item_code,from_date,to_date,reason,by_user,at FROM milestone_slip WHERE item_code=? ORDER BY id")
+    .all(code) as Row[])
+    .map((r) => ({
+      id: n(r.id), itemCode: String(r.item_code), from: String(r.from_date),
+      to: String(r.to_date), reason: String(r.reason), by: String(r.by_user), at: String(r.at),
+    }));
+}
+
+/** ลบ slip ที่บันทึกผิด — ทีมกลางเท่านั้น · คืนวันแผนกลับไปเป็นวันก่อนเลื่อน */
+export function deleteSlip(code: string, id: number, actor: string) {
+  const r = db().prepare(
+    "SELECT item_code,from_date,to_date,reason FROM milestone_slip WHERE id=?").get(id) as Row | undefined;
+  if (!r) throw new Error(`ไม่พบประวัติการเลื่อนแผน id ${id}`);
+  if (String(r.item_code) !== code) throw new Error("ประวัติการเลื่อนแผนนี้ไม่ใช่ของรายการนี้");
+
+  const d = db();
+  d.exec("BEGIN");
+  try {
+    // คืนวันแผนให้ขั้นที่ยังมีวันตรงกับ to_date ของ slip นี้ (ถ้ายังไม่ถูกเลื่อนต่อ)
+    d.prepare("UPDATE milestone SET planned_end=? WHERE item_code=? AND planned_end=?")
+      .run(String(r.from_date), code, String(r.to_date));
+    d.prepare("DELETE FROM milestone_slip WHERE id=?").run(id);
+    d.exec("COMMIT");
+  } catch (err) {
+    d.exec("ROLLBACK");
+    throw err;
+  }
+  audit(actor, "delete_slip", "tracked_item", code,
+    { slipId: id, from: String(r.from_date), to: String(r.to_date), reason: String(r.reason) }, null);
+}
+
+// ── ไฟล์แนบจริง ─────────────────────────────────────────────────────────────
+
+export const UPLOAD_MAX_BYTES = 10 * 1024 * 1024;
+
+/** ชนิดที่รับ — PDF / Word / รูป ตาม R4 · ไม่ทำ OCR (§3.3) */
+export const UPLOAD_TYPES: Record<string, string> = {
+  "application/pdf": ".pdf",
+  "application/msword": ".doc",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+  "image/jpeg": ".jpg",
+  "image/png": ".png",
+  "image/webp": ".webp",
+};
+
+/**
+ * ทำชื่อไฟล์ให้ปลอดภัย — ใช้ whitelist ไม่ใช่ blacklist
+ *
+ * ตัด path ทั้งหมดออกก่อน (กัน ../ และ path แบบ Windows) แล้วเหลือเฉพาะอักขระที่ยอมรับ
+ * วิธี whitelist ปลอดภัยกว่า เพราะอักขระแปลกที่ยังไม่รู้จักจะถูกตัดออกโดยปริยาย
+ */
+export function safeFileName(raw: string): string {
+  // แยกด้วยทั้ง / และ \ โดยไม่ใช้ regex เพื่อไม่ต้องพึ่ง escape ที่พลาดง่าย
+  const base = raw.split("/").join("|").split(String.fromCharCode(92)).join("|")
+    .split("|").filter(Boolean).pop() ?? "file";
+  const cleaned = base
+    .replace(/[^A-Za-z0-9\u0E00-\u0E7F._()\- ]/g, "")
+    .replace(/\s+/g, "_")
+    .replace(/^[._]+/, "")
+    .slice(0, 120);
+  return cleaned.length > 0 ? cleaned : "file";
+}
+
+export function setEvidenceFile(id: string, storedPath: string, actor: string) {
+  const r = db().prepare("SELECT stored_path FROM evidence WHERE id=?").get(id) as Row | undefined;
+  if (!r) throw new Error(`ไม่พบหลักฐาน ${id}`);
+  db().prepare("UPDATE evidence SET stored_path=? WHERE id=?").run(storedPath, id);
+  audit(actor, "attach_file", "evidence", id, { storedPath: s(r.stored_path) }, { storedPath });
+}
+
+export function evidenceRow(id: string) {
+  const r = db().prepare(
+    `SELECT id,item_code,title,document_date,upload_date,uploaded_by,stored_path,
+            proposed_tier,proposed_reason,confirmed_tier,confirmed_by
+     FROM evidence WHERE id=?`).get(id) as Row | undefined;
+  if (!r) return null;
+  return {
+    id: String(r.id), itemCode: String(r.item_code), title: String(r.title),
+    documentDate: s(r.document_date), uploadDate: String(r.upload_date),
+    uploadedBy: s(r.uploaded_by), storedPath: s(r.stored_path),
+    proposedTier: s(r.proposed_tier), proposedReason: s(r.proposed_reason),
+    confirmedTier: s(r.confirmed_tier), confirmedBy: s(r.confirmed_by),
+  };
+}
+
+/** ลบหลักฐาน — ทีมกลางเท่านั้น · เอกสารที่แนบผิดต้องเอาออกได้ */
+export function deleteEvidence(id: string, actor: string) {
+  const row = evidenceRow(id);
+  if (!row) throw new Error(`ไม่พบหลักฐาน ${id}`);
+  db().prepare("DELETE FROM evidence WHERE id=?").run(id);
+  audit(actor, "delete_evidence", "evidence", id,
+    { itemCode: row.itemCode, title: row.title, confirmedTier: row.confirmedTier }, null);
+  return row;
+}

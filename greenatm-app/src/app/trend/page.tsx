@@ -29,56 +29,56 @@ export default async function TrendPage() {
 
   return (
     <Shell active="trend">
-      <h1 className="text-xl font-semibold">แนวโน้มและคาดการณ์ 3 ปี / 5 ปี</h1>
+      <h1 className="ga-h1">แนวโน้มและคาดการณ์ 3 ปี / 5 ปี</h1>
 
-      <Card tone="warn" className="mt-3">
+      <Card tone="warn" style={{ marginTop: 12 }}>
         <p className="text-[14px] font-bold">⚠ นี่คือการฉายภาพ ไม่ใช่คำมั่น</p>
-        <p className="mt-1 text-[13px] text-[var(--ink2)]">
+        <p className="ga-sub">
           และหัวข้อข่าวที่ซื่อสัตย์ไม่ใช่การคาดการณ์ — คือ{" "}
           <b>{t.stalled.length} จาก {t.items.length} รายการไม่ขยับระดับเลยตั้งแต่ปีที่แล้ว</b>{" "}
           การคาดการณ์เป็นผลพวงของอัตรานั้น
         </p>
       </Card>
 
-      <section className="mt-4">
-        <h2 className="text-[14px] font-semibold">ระดับเฉลี่ยทั้งองค์กร ตาม 3 ฉากทัศน์</h2>
-        <div className="mt-2 overflow-x-auto rounded-lg border border-[var(--line)] bg-[var(--card)]">
-          <table className="w-full text-[13px]">
-            <thead className="bg-[var(--page)] text-left text-[12px] text-[var(--muted)]">
+      <section style={{ marginTop: 16 }}>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--ink)" }}>ระดับเฉลี่ยทั้งองค์กร ตาม 3 ฉากทัศน์</h2>
+        <div style={{ marginTop: 8, overflowX: "auto", border: "1px solid var(--line)", borderRadius: 12, background: "var(--card)" }}>
+          <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
+            <thead className="ga-thead" style={{ background: "var(--fill2)", textAlign: "left" }}>
               <tr>
-                <th className="px-3 py-2 font-medium">ฉากทัศน์</th>
+                <th style={{ padding: "9px 12px" }}>ฉากทัศน์</th>
                 {t.years.map((y) => (
-                  <th key={y} className="px-3 py-2 text-center font-medium">
+                  <th key={y} style={{ padding: "9px 12px", textAlign: "center" }}>
                     {y === 0 ? "วันนี้" : `+${y} ปี`}
                   </th>
                 ))}
-                <th className="px-3 py-2 font-medium">สัดส่วนที่ไปถึง</th>
+                <th style={{ padding: "9px 12px" }}>สัดส่วนที่ไปถึง</th>
               </tr>
             </thead>
             <tbody>
               {t.scenarios.map((sc) => (
-                <tr key={sc.key} className="border-t border-[var(--line)]">
-                  <td className="px-3 py-2.5">
+                <tr key={sc.key} style={{ borderTop: "1px solid var(--line)" }}>
+                  <td style={{ padding: "10px 12px" }}>
                     <b>{sc.label}</b>
-                    <p className="text-[11.5px] text-[var(--muted)]">ความเร็ว × {sc.multiplier}</p>
+                    <p style={{ fontSize: 11.5, color: "var(--muted)" }}>ความเร็ว × {sc.multiplier}</p>
                   </td>
                   {sc.byYear.map((val, i) => (
-                    <td key={i} className="px-3 py-2.5 text-center">
-                      <b className="text-[15px]">{val.toFixed(2)}</b>
+                    <td key={i} style={{ padding: "10px 12px", textAlign: "center" }}>
+                      <b style={{ fontSize: 15 }}>{val.toFixed(2)}</b>
                     </td>
                   ))}
-                  <td className="px-3 py-2.5">
-                    <div className="h-[8px] w-full rounded-sm bg-[var(--page)]">
+                  <td style={{ padding: "10px 12px" }}>
+                    <div style={{ height: 8, width: "100%", borderRadius: 3, background: "var(--l1)" }}>
                       <div
-                        className="h-full rounded-sm"
                         style={{
+                          height: "100%", borderRadius: 3,
                           width: `${(sc.byYear[sc.byYear.length - 1] / max) * 100}%`,
                           background: sc.key === "stalled" ? "var(--danger)"
                             : sc.key === "faster" ? "var(--accent)" : "var(--teal)",
                         }}
                       />
                     </div>
-                    <p className="mt-1 text-[11.5px] text-[var(--muted)]">
+                    <p style={{ marginTop: 4, fontSize: 11.5, color: "var(--muted)" }}>
                       {((sc.byYear[sc.byYear.length - 1] / max) * 100).toFixed(0)}% ของเพดาน (ระดับ 5)
                     </p>
                   </td>
@@ -89,14 +89,14 @@ export default async function TrendPage() {
         </div>
       </section>
 
-      <Card className="mt-4">
-        <h2 className="text-[14px] font-semibold">สมมติฐานของตัวเลขข้างบน</h2>
-        <pre className="mt-2 overflow-x-auto rounded-md bg-[var(--page)] px-3 py-2.5 font-mono text-[12px] leading-relaxed">
+      <Card style={{ marginTop: 16 }}>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--ink)" }}>สมมติฐานของตัวเลขข้างบน</h2>
+        <pre style={{ marginTop: 8, overflowX: "auto", background: "var(--fill)", borderRadius: 8, padding: "10px 12px", fontFamily: "ui-monospace, monospace", fontSize: 12, lineHeight: 1.7 }}>
 {`ระดับที่คาด(ปี) = min( 5 , ระดับที่ได้ + ความคืบหน้าในระดับถัดไป/100 + max(0, ความเร็ว) × ปี )
 ความเร็ว        = (ระดับที่ได้ − ระดับปีที่แล้ว) + ความคืบหน้าในระดับถัดไป/100`}
         </pre>
-        <p className="mt-2.5 text-[13px] font-semibold">สิ่งที่สูตรนี้ไม่ได้คิด — เขียนไว้ตรงนี้ ไม่ซ่อนในเอกสาร</p>
-        <ul className="mt-1.5 space-y-1 text-[12.5px] text-[var(--ink2)]">
+        <p style={{ marginTop: 10, fontSize: 13, fontWeight: 700 }}>สิ่งที่สูตรนี้ไม่ได้คิด — เขียนไว้ตรงนี้ ไม่ซ่อนในเอกสาร</p>
+        <ul style={{ marginTop: 6, fontSize: 12.5, color: "var(--ink2)", listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: 4 }}>
           <li>· งบประมาณและกำลังคน และคำถามว่าเงินที่ทำให้ปีนี้เดินได้ จะมีต่อไหม</li>
           <li>· <b>ระดับสูงยากกว่าระดับต่ำ</b> — เส้นตรงที่ลากผ่านระดับ 1–2 จะประเมินระดับ 4–5 สูงเกินจริง</li>
           <li>· การเปลี่ยนเกณฑ์ของ CANSO หรือการแก้แบบฟอร์มภายในเอง</li>
@@ -106,64 +106,63 @@ export default async function TrendPage() {
             สองรอบจึงจะเถียงได้ หนึ่งรอบยังเถียงไม่ได้
           </li>
         </ul>
-        <p className="mt-2 text-[12.5px] text-[var(--muted)]">
+        <p style={{ marginTop: 8, fontSize: 12.5, color: "var(--muted)" }}>
           รายการที่ความเร็วเป็นศูนย์ <b>ถูกคาดว่าอยู่ที่เดิม</b> ไม่ถูกปัดขึ้นตามค่าเฉลี่ยองค์กร
         </p>
       </Card>
 
-      <Card tone="danger" className="mt-4">
-        <h2 className="text-[14px] font-semibold">
+      <Card tone="danger" style={{ marginTop: 16 }}>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--ink)" }}>
           รายการที่ระดับไม่ขยับเลย ({t.stalled.length})
         </h2>
-        <p className="mt-1 text-[12.5px] text-[var(--ink2)]">
+        <p style={{ marginTop: 4, fontSize: 12.5, color: "var(--ink2)" }}>
           ถ้าปลดล็อกกลุ่มนี้ได้ ความเร็วรวมจะเปลี่ยนมากกว่าการเร่งรายการที่วิ่งอยู่แล้ว
         </p>
-        <ul className="mt-2 grid grid-cols-2 gap-x-4 gap-y-1 text-[12.5px] sm:grid-cols-3">
+        <ul style={{ marginTop: 8, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "4px 16px", fontSize: 12.5, listStyle: "none", padding: 0 }}>
           {t.stalled.map((i) => (
             <li key={i.code}>
-              <Link href={`/item/${i.code}`} className="underline">{i.code}</Link>
-              <span className="text-[var(--muted)]"> · ระดับ {i.level}</span>
+              <Link href={`/item/${i.code}`} >{i.code}</Link>
+              <span style={{ color: "var(--muted)" }}> · ระดับ {i.level}</span>
             </li>
           ))}
         </ul>
       </Card>
 
-      <section className="mt-4">
-        <h2 className="text-[14px] font-semibold">คาดการณ์รายรายการ</h2>
-        <div className="mt-2 overflow-x-auto rounded-lg border border-[var(--line)] bg-[var(--card)]">
-          <table className="w-full text-[13px]">
-            <thead className="bg-[var(--page)] text-left text-[12px] text-[var(--muted)]">
+      <section style={{ marginTop: 16 }}>
+        <h2 style={{ fontSize: 14, fontWeight: 700, color: "var(--ink)" }}>คาดการณ์รายรายการ</h2>
+        <div style={{ marginTop: 8, overflowX: "auto", border: "1px solid var(--line)", borderRadius: 12, background: "var(--card)" }}>
+          <table style={{ width: "100%", fontSize: 13, borderCollapse: "collapse" }}>
+            <thead className="ga-thead" style={{ background: "var(--fill2)", textAlign: "left" }}>
               <tr>
-                <th className="px-3 py-2 font-medium">รายการ</th>
-                <th className="px-3 py-2 text-center font-medium">ปีที่แล้ว</th>
-                <th className="px-3 py-2 text-center font-medium">ปัจจุบัน</th>
-                <th className="px-3 py-2 text-center font-medium">เป้า</th>
-                <th className="px-3 py-2 text-center font-medium">ความเร็ว/ปี</th>
-                <th className="px-3 py-2 text-center font-medium">+3 ปี</th>
-                <th className="px-3 py-2 text-center font-medium">+5 ปี</th>
+                <th style={{ padding: "9px 12px" }}>รายการ</th>
+                <th style={{ padding: "9px 12px", textAlign: "center" }}>ปีที่แล้ว</th>
+                <th style={{ padding: "9px 12px", textAlign: "center" }}>ปัจจุบัน</th>
+                <th style={{ padding: "9px 12px", textAlign: "center" }}>เป้า</th>
+                <th style={{ padding: "9px 12px", textAlign: "center" }}>ความเร็ว/ปี</th>
+                <th style={{ padding: "9px 12px", textAlign: "center" }}>+3 ปี</th>
+                <th style={{ padding: "9px 12px", textAlign: "center" }}>+5 ปี</th>
               </tr>
             </thead>
             <tbody>
               {t.items.map((i) => (
-                <tr key={i.code} className="border-t border-[var(--line)]">
-                  <td className="px-3 py-2">
-                    <Link href={`/item/${i.code}`} className="font-semibold underline">{i.code}</Link>{" "}
+                <tr key={i.code} style={{ borderTop: "1px solid var(--line)" }}>
+                  <td style={{ padding: "9px 12px" }}>
+                    <Link href={`/item/${i.code}`} style={{ fontWeight: 700 }}>{i.code}</Link>{" "}
                     <span className="text-[12.5px]">{i.name}</span>
                     {i.stalled && (
-                      <span className="ml-1 rounded-full border px-1.5 text-[11px]"
-                        style={{ borderColor: "var(--danger)", color: "var(--danger)" }}>
+                      <span style={{ marginLeft: 4, border: "1px solid", borderRadius: 999, padding: "0 6px", fontSize: 11, borderColor: "var(--danger)", color: "var(--danger)" }}>
                         ไม่ขยับ
                       </span>
                     )}
                   </td>
-                  <td className="px-3 py-2 text-center">{i.lastYearLevel}</td>
-                  <td className="px-3 py-2 text-center">{i.achievedLevel}</td>
-                  <td className="px-3 py-2 text-center">{i.targetLevel}</td>
-                  <td className="px-3 py-2 text-center" style={{ color: i.velocity <= 0 ? "var(--danger)" : undefined }}>
+                  <td style={{ padding: "9px 12px", textAlign: "center" }}>{i.lastYearLevel}</td>
+                  <td style={{ padding: "9px 12px", textAlign: "center" }}>{i.achievedLevel}</td>
+                  <td style={{ padding: "9px 12px", textAlign: "center" }}>{i.targetLevel}</td>
+                  <td style={{ padding: "9px 12px", textAlign: "center", color: i.velocity <= 0 ? "var(--danger)" : undefined }}>
                     {i.velocity > 0 ? "+" : ""}{i.velocity.toFixed(2)}
                   </td>
-                  <td className="px-3 py-2 text-center">{i.p3.toFixed(1)}</td>
-                  <td className="px-3 py-2 text-center">
+                  <td style={{ padding: "9px 12px", textAlign: "center" }}>{i.p3.toFixed(1)}</td>
+                  <td style={{ padding: "9px 12px", textAlign: "center" }}>
                     <b>{i.p5.toFixed(1)}</b>
                     {i.p5 < i.targetLevel && (
                       <p className="text-[11px]" style={{ color: "var(--warn)" }}>ยังไม่ถึงเป้า</p>

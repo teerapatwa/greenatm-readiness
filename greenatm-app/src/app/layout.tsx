@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="th">
       <body>
-        <div className="sticky top-0 z-10 bg-[var(--warn)]/15 border-b border-[var(--line)] px-4 py-1.5 text-[13px] text-[var(--ink2)]">
+        <div style={{ position: "sticky", top: 0, zIndex: 10, background: "var(--warn-bg)", borderBottom: "1px solid var(--warn-line)", padding: "6px 16px", fontSize: 13, color: "var(--warn-ink)", fontWeight: 600 }}>
           ⚠ ข้อมูลตัวอย่าง (Mockup) — ไม่ใช่สถานะจริงขององค์กร
         </div>
         {children}

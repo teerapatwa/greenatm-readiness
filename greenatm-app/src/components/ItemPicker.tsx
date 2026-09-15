@@ -19,10 +19,10 @@ export function ItemPicker({ items, current, ownerMode, categories }: {
   const others = items.filter((i) => !i.canWrite);
 
   return (
-    <label className="flex flex-wrap items-center gap-2 text-[13px]">
-      <span className="text-[var(--muted)]">เลือกรายการ</span>
+    <label style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, fontSize: 13 }}>
+      <span style={{ color: "var(--muted)" }}>เลือกรายการ</span>
       <select
-        className="min-w-[330px] max-w-full rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5"
+        className="ga-select" style={{ minWidth: 330, maxWidth: "100%" }}
         value={current}
         onChange={(e) => router.push(`/item/${e.target.value}`)}
       >
@@ -45,7 +45,7 @@ export function ItemPicker({ items, current, ownerMode, categories }: {
           ))
         )}
       </select>
-      <span className="text-[12px] text-[var(--muted)]">
+      <span style={{ fontSize: 12, color: "var(--muted)" }}>
         {ownerMode ? `${mine.length} ของกองคุณ · จากทั้งหมด ${items.length}` : `${items.length} รายการ`}
       </span>
     </label>

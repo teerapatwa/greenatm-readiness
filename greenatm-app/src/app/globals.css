@@ -134,3 +134,141 @@ a:hover {
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
+
+/* ── ปุ่มและแถบ — ค่าตรงตามไฟล์ทีม ─────────────────────────────────────────── */
+.ga-btn {
+  border-radius: 7px;
+  font-size: 12.5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+.ga-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.ga-btn-primary {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  font-weight: 700;
+}
+.ga-btn-ghost {
+  background: var(--card);
+  color: var(--ink2);
+  border: 1px solid var(--line);
+  padding: 8px 14px;
+  font-weight: 600;
+}
+.ga-btn-grey {
+  background: var(--page);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  padding: 7px 12px;
+  font-weight: 600;
+}
+.ga-btn-soft {
+  background: var(--ok-bg);
+  color: var(--accent);
+  border: 1px solid var(--ok-line);
+  padding: 7px 12px;
+  font-weight: 600;
+}
+.ga-btn-danger {
+  background: var(--card);
+  color: var(--danger);
+  border: 1px solid var(--danger-line);
+  padding: 7px 12px;
+  font-weight: 600;
+}
+
+.ga-input,
+.ga-select {
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  border-radius: 7px;
+  padding: 7px 10px;
+  font: inherit;
+  font-size: 13px;
+}
+
+.ga-banner-warn {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-line);
+  border-radius: 10px;
+  padding: 14px 18px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--warn-ink);
+}
+.ga-card-returned {
+  background: var(--card);
+  border: 1px solid var(--danger-line);
+  border-left: 4px solid var(--danger);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+.ga-divider {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+
+/* หัวตาราง/แถว แบบหน้างานของฉันในไฟล์ทีม */
+.ga-row-head {
+  padding: 11px 18px;
+  background: var(--fill2);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.ga-row {
+  padding: 13px 18px;
+  border-top: 1px solid var(--l1);
+  align-items: center;
+  font-size: 13px;
+}
+
+/* แท็บ pill ในศูนย์ตรวจสอบ */
+.ga-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--page);
+  border-radius: 9px;
+  padding: 3px;
+  width: fit-content;
+  flex-wrap: wrap;
+}
+.ga-tab {
+  border: none;
+  background: transparent;
+  color: var(--ink2);
+  border-radius: 7px;
+  padding: 7px 14px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ga-tab[data-on="true"] {
+  background: var(--card);
+  color: var(--ink);
+  font-weight: 700;
+  box-shadow: 0 1px 2px rgba(21, 41, 34, 0.08);
+}
+
+/* จอแคบ — โครง 3 คอลัมน์ของไฟล์ทีมพังที่ความกว้างน้อย จึงยุบเป็นคอลัมน์เดียว */
+@media (max-width: 1100px) {
+  .ga-3col { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 860px) {
+  .ga-2col { grid-template-columns: 1fr !important; }
+}
+
+/* sidebar ซ่อนบนจอแคบ — เดิมใช้ Tailwind max-lg:hidden */
+@media (max-width: 1024px) {
+  .ga-nav { display: none; }
+}

@@ -2,7 +2,8 @@ import "server-only";
 import {
   buildAlerts, alertCounts, progressPercent, verifiedPercent, suggestion,
   projectedLevel, velocity, stalledItems, SCENARIOS, orgAverage,
-  type Alert, type Item,
+  statusFor, expectedPercent, gapsFor,
+  type Alert, type Item, type Status, type Gap,
 } from "@/lib/data/rules";
 import { snapshot, openPendingFor, outbox, evidence as allEvidence } from "@/lib/db/queries";
 import { profileFor } from "@/lib/auth/perms";
@@ -18,8 +19,12 @@ import { canWriteItem, type CurrentUser } from "@/lib/auth/session";
 
 export type ItemView = Item & {
   progress: number;
+  /** ความคืบหน้าที่ควรได้แล้วตามปฏิทิน — ใช้เทียบเพื่อหาสถานะ */
+  expected: number;
+  status: Status;
   verified: number;
   suggestion: ReturnType<typeof suggestion>;
+  gaps: Gap[];
   velocity: number;
   forecast1: number;
   canWrite: boolean;
@@ -46,8 +51,11 @@ export function buildView(u: CurrentUser) {
   const items: ItemView[] = seed.items.map((it) => ({
     ...it,
     progress: progressPercent(it),
+    expected: expectedPercent(it, seed.meta.today),
+    status: statusFor(it, seed.settings, seed.meta.today),
     verified: verifiedPercent(it, ev),
     suggestion: suggestion(it, ev, seed.settings),
+    gaps: gapsFor(it, ev, seed.settings, seed.meta.today),
     velocity: velocity(it),
     forecast1: projectedLevel(it, 1),
     canWrite: canWriteItem(u, it.code),
@@ -78,6 +86,8 @@ export function buildView(u: CurrentUser) {
       stalled: stalledItems(items).length,
       notSubmitted: items.filter((i) => !i.submittedThisCycle).length,
       unowned: items.filter((i) => !i.ownerUserId).length,
+      delayed: items.filter((i) => i.status === "delayed").length,
+      atRisk: items.filter((i) => i.status === "at_risk").length,
     },
   };
 }

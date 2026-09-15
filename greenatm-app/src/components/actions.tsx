@@ -45,13 +45,16 @@ function useAction() {
   return { run, busy: busy || pendingTransition, error, note };
 }
 
-const btn = "rounded-md px-3 py-1.5 text-[13px] font-medium disabled:opacity-50";
-const primary = `${btn} bg-[var(--accent)] text-white`;
-const ghost = `${btn} border border-[var(--line)]`;
+// ปุ่มและช่องกรอกทั้งไฟล์ใช้คลาสจาก globals.css ที่ยึดค่าตามไฟล์ทีม
+const primary = "ga-btn ga-btn-primary";
+const ghost = "ga-btn ga-btn-ghost";
+const grey = "ga-btn ga-btn-grey";
+const soft = "ga-btn ga-btn-soft";
+const field = "ga-input";
 
 function Msg({ error, note }: { error: string | null; note: string | null }) {
-  if (error) return <p className="mt-2 text-[12.5px]" style={{ color: "var(--danger)" }}>⛔ {error}</p>;
-  if (note) return <p className="mt-2 text-[12.5px] text-[var(--ink2)]">{note}</p>;
+  if (error) return <p style={{ marginTop: 8, fontSize: 12.5, color: "var(--danger)" }}>⛔ {error}</p>;
+  if (note) return <p style={{ marginTop: 8, fontSize: 12.5, color: "var(--ink2)" }}>{note}</p>;
   return null;
 }
 
@@ -70,7 +73,8 @@ export function UserSwitcher({ users, currentId }: {
   return (
     <select
       aria-label="สลับผู้ใช้"
-      className="max-w-[320px] rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1 text-[13px]"
+      className="ga-select"
+      style={{ maxWidth: 320 }}
       value={currentId}
       disabled={busy}
       onChange={(e) =>
@@ -108,11 +112,11 @@ export function ProgressForm({ itemCode, milestones, percentWithinNextLevel, fro
 
   return (
     <div>
-      <div className="flex flex-wrap items-end gap-2">
-        <label className="text-[12.5px]">
-          <span className="block text-[var(--muted)]">สิ่งที่จะอัปเดต</span>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "flex-end" }}>
+        <label style={{ fontSize: 12.5 }}>
+          <span style={{ display: "block", color: "var(--muted)" }}>สิ่งที่จะอัปเดต</span>
           <select
-            className="mt-1 rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5"
+            className={field}
             value={field}
             onChange={(e) => {
               const f = e.target.value as typeof field;
@@ -128,10 +132,10 @@ export function ProgressForm({ itemCode, milestones, percentWithinNextLevel, fro
         </label>
 
         {field === "milestone_percent" && (
-          <label className="text-[12.5px]">
-            <span className="block text-[var(--muted)]">ขั้นที่</span>
+          <label style={{ fontSize: 12.5 }}>
+            <span style={{ display: "block", color: "var(--muted)" }}>ขั้นที่</span>
             <select
-              className="mt-1 max-w-[210px] rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5"
+              className={field} style={{ maxWidth: 210 }}
               value={seq}
               onChange={(e) => {
                 const s = Number(e.target.value);
@@ -146,20 +150,20 @@ export function ProgressForm({ itemCode, milestones, percentWithinNextLevel, fro
           </label>
         )}
 
-        <label className="text-[12.5px]">
-          <span className="block text-[var(--muted)]">เปอร์เซ็นต์</span>
+        <label style={{ fontSize: 12.5 }}>
+          <span style={{ display: "block", color: "var(--muted)" }}>เปอร์เซ็นต์</span>
           <input
             type="number" min={0} max={100} value={percent}
             onChange={(e) => setPercent(Number(e.target.value))}
-            className="mt-1 w-[86px] rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5"
+            className={field} style={{ width: 86 }}
           />
         </label>
 
-        <label className="text-[12.5px]">
-          <span className="block text-[var(--muted)]">วันที่เสร็จจริง (ถ้ามี)</span>
+        <label style={{ fontSize: 12.5 }}>
+          <span style={{ display: "block", color: "var(--muted)" }}>วันที่เสร็จจริง (ถ้ามี)</span>
           <input
             type="date" value={date} onChange={(e) => setDate(e.target.value)}
-            className="mt-1 rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5"
+            className={field}
           />
         </label>
 
@@ -174,7 +178,7 @@ export function ProgressForm({ itemCode, milestones, percentWithinNextLevel, fro
           {busy ? "กำลังร่าง…" : "ตรวจก่อนบันทึก →"}
         </button>
       </div>
-      <p className="mt-2 text-[12px] text-[var(--muted)]">
+      <p style={{ marginTop: 8, fontSize: 12, color: "var(--muted)" }}>
         กดปุ่มนี้แล้ว <b>ค่าจริงยังไม่เปลี่ยน</b> — ระบบจะขึ้นการ์ดให้ตรวจก่อนยืนยัน
       </p>
       <Msg error={error} note={note} />
@@ -194,21 +198,21 @@ export function ConfirmCard({ pending }: {
     ? `milestone ขั้นที่ ${pending.milestoneSeq}`
     : "ความคืบหน้าไปสู่ระดับถัดไป";
   return (
-    <div className="rounded-lg border-2 p-3.5" style={{ borderColor: "var(--teal)" }}>
-      <p className="text-[12px] font-semibold text-[var(--teal)]">
+    <div style={{ border: "2px solid var(--teal)", borderRadius: 10, padding: 14 }}>
+      <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: "var(--teal)" }}>
         รอคุณยืนยัน · ค่าจริงยังไม่เปลี่ยน
       </p>
-      <p className="mt-1.5 text-[15px]">
-        <code className="font-semibold">{pending.itemCode}</code> · {what}{" "}
-        <span className="text-[var(--muted)]">{pending.oldValue}%</span>
+      <p style={{ marginTop: 6, fontSize: 15 }}>
+        <code style={{ fontWeight: 700 }}>{pending.itemCode}</code> · {what}{" "}
+        <span style={{ color: "var(--muted)" }}>{pending.oldValue}%</span>
         {" → "}
         <b>{pending.newValue}%</b>
-        {pending.actualDate ? <span className="text-[var(--ink2)]"> · วันที่เสร็จ {pending.actualDate}</span> : null}
+        {pending.actualDate ? <span style={{ color: "var(--ink2)" }}> · วันที่เสร็จ {pending.actualDate}</span> : null}
       </p>
-      <p className="mt-1 text-[12px] text-[var(--muted)]">
+      <p style={{ marginTop: 4, fontSize: 12, color: "var(--muted)" }}>
         ร่างโดย: {pending.draftedBy === "ai" ? "agent ผู้ช่วย (เสนอ ไม่ได้เขียน)" : pending.draftedBy}
       </p>
-      <div className="mt-2.5 flex gap-2">
+      <div style={{ marginTop: 10, display: "flex", gap: 8 }}>
         <button className={primary} disabled={busy}
           onClick={() => run(() => send(`/api/pending/${pending.id}`))}>
           {busy ? "กำลังบันทึก…" : "ยืนยัน — บันทึกค่านี้"}
@@ -233,39 +237,71 @@ export function EvidenceForm({ itemCode }: { itemCode: string }) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [noDate, setNoDate] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+
+  const submit = () =>
+    run(async () => {
+      // ส่งเป็น multipart เมื่อมีไฟล์ · ถ้าไม่มีไฟล์ก็ยังแนบชื่อเรื่องได้เหมือนเดิม
+      const fd = new FormData();
+      fd.set("itemCode", itemCode);
+      fd.set("title", title);
+      fd.set("documentDate", noDate ? "" : date);
+      if (file) fd.set("file", file);
+      const res = await fetch("/api/evidence", { method: "POST", body: fd });
+      const b = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error([b.error, b.detail].filter(Boolean).join(" · "));
+      setTitle(""); setDate(""); setFile(null); setNoDate(false);
+      return b;
+    });
 
   return (
     <div>
-      <div className="flex flex-wrap items-end gap-2">
-        <label className="text-[12.5px] grow">
-          <span className="block text-[var(--muted)]">ชื่อเอกสารหลักฐาน</span>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "flex-end" }}>
+        <label style={{ fontSize: 12.5, flex: "1 1 220px" }}>
+          <span style={{ display: "block", color: "var(--muted)" }}>ไฟล์เอกสาร</span>
           <input
-            value={title} onChange={(e) => setTitle(e.target.value)}
-            placeholder="เช่น รายงานผลการตรวจวัด ลงนามแล้ว"
-            className="mt-1 w-full rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5"
+            className={field} type="file" style={{ width: "100%", padding: "5px 8px" }}
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.webp,application/pdf,image/*"
+            onChange={(e) => {
+              const f = e.target.files?.[0] ?? null;
+              setFile(f);
+              if (f && !title.trim()) setTitle(f.name);
+            }}
           />
         </label>
-        <label className="text-[12.5px]">
-          <span className="block text-[var(--muted)]">วันที่ในตัวเอกสาร</span>
-          <input
-            type="date" value={date} disabled={noDate}
-            onChange={(e) => setDate(e.target.value)}
-            className="mt-1 rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5 disabled:opacity-40"
-          />
+        <label style={{ fontSize: 12.5, flex: "1 1 220px" }}>
+          <span style={{ display: "block", color: "var(--muted)" }}>ชื่อเอกสาร</span>
+          <input className={field} style={{ width: "100%" }} value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="เช่น รายงานผลการตรวจวัด ลงนามแล้ว" />
         </label>
-        <button className={primary} disabled={busy || !title.trim()}
-          onClick={() => run(() => send("/api/evidence", {
-            body: JSON.stringify({ itemCode, title, documentDate: noDate ? null : date || null }),
-          }))}>
+        <label style={{ fontSize: 12.5 }}>
+          <span style={{ display: "block", color: "var(--muted)" }}>วันที่ในตัวเอกสาร</span>
+          <input className={field} type="date" value={date} disabled={noDate}
+            onChange={(e) => setDate(e.target.value)} />
+        </label>
+        <button className={primary} disabled={busy || (!title.trim() && !file)} onClick={submit}>
           {busy ? "กำลังแนบ…" : "แนบหลักฐาน"}
         </button>
       </div>
-      <label className="mt-2 flex items-center gap-2 text-[12.5px] text-[var(--ink2)]">
+
+      {file && (
+        <p style={{ fontSize: 12, color: "var(--ink2)", marginTop: 6 }}>
+          เลือกไว้: <b>{file.name}</b> · {(file.size / 1048576).toFixed(2)} MB
+          {file.size > 10 * 1048576 && (
+            <b style={{ color: "var(--danger)" }}> — เกินเพดาน 10 MB ระบบจะปฏิเสธ</b>
+          )}
+        </p>
+      )}
+
+      <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5,
+        color: "var(--ink2)", marginTop: 8 }}>
         <input type="checkbox" checked={noDate} onChange={(e) => setNoDate(e.target.checked)} />
         เอกสารนี้ไม่มีวันที่อยู่ในตัวเอกสารจริง ๆ
       </label>
-      <p className="mt-1 text-[12px] text-[var(--muted)]">
-        ไม่ใส่วันที่ก็แนบได้ — ระบบจะ<b>ถาม</b>ภายหลัง และ<b>ไม่เอาวันอัปโหลดมาใช้แทน</b>
+      <p style={{ fontSize: 12, color: "var(--muted)", marginTop: 4, marginBottom: 0 }}>
+        รับ PDF · Word · รูปภาพ ไม่เกิน 10 MB · <b>ไม่ทำ OCR</b> ·
+        ไม่ใส่วันที่ก็แนบได้ — ระบบจะ<b>ถาม</b>ภายหลัง และ<b>ไม่เอาวันอัปโหลดหรือวันแก้ไขไฟล์มาใช้แทน</b>
       </p>
       <Msg error={error} note={note} />
     </div>
@@ -276,10 +312,10 @@ export function EvidenceDateForm({ evidenceId }: { evidenceId: string }) {
   const { run, busy, error } = useAction();
   const [date, setDate] = useState("");
   return (
-    <div className="mt-1.5 flex flex-wrap items-center gap-2">
+    <div style={{ marginTop: 6, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
       <input
         type="date" value={date} onChange={(e) => setDate(e.target.value)}
-        className="rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1 text-[13px]"
+        className={field}
       />
       <button className={ghost} disabled={busy || !date}
         onClick={() => run(async () => {
@@ -318,10 +354,10 @@ export function TierActions({ evidenceId, proposedTier }: { evidenceId: string; 
   });
 
   return (
-    <div className="mt-2">
-      <div className="flex flex-wrap items-center gap-2">
+    <div style={{ marginTop: 8 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
         <select
-          className="rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1 text-[13px]"
+          className={field}
           value={tier} onChange={(e) => setTier(e.target.value)}
         >
           {["A", "B", "C", "D"].map((t) => <option key={t} value={t}>ชั้น {t}</option>)}
@@ -330,8 +366,7 @@ export function TierActions({ evidenceId, proposedTier }: { evidenceId: string; 
           <input
             value={reason} onChange={(e) => setReason(e.target.value)}
             placeholder="เหตุผลที่แก้จากที่ agent เสนอ (บังคับ)"
-            className="min-w-[260px] grow rounded-md border px-2 py-1 text-[13px]"
-            style={{ borderColor: "var(--warn)" }}
+            className={field} style={{ minWidth: 260, flexGrow: 1, borderColor: "var(--warn)" }}
           />
         )}
         <button className={primary} disabled={busy} onClick={patch}>
@@ -339,7 +374,7 @@ export function TierActions({ evidenceId, proposedTier }: { evidenceId: string; 
         </button>
       </div>
       {overriding && (
-        <p className="mt-1 text-[12px]" style={{ color: "var(--warn)" }}>
+        <p style={{ marginTop: 4, fontSize: 12, color: "var(--warn-ink)" }}>
           กำลังแก้จากชั้น {proposedTier} ที่ agent เสนอ → ต้องระบุเหตุผล ระบบบันทึกทั้งค่าเดิมและค่าใหม่
         </p>
       )}
@@ -392,13 +427,13 @@ export function SettingField({ settingKey, label, value, suffix }: {
   const { run, busy, error, note } = useAction();
   const [v, setV] = useState(value);
   return (
-    <div className="flex flex-wrap items-center gap-2 py-1">
-      <span className="min-w-[230px] text-[13px]">{label}</span>
+    <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8, padding: "4px 0" }}>
+      <span style={{ minWidth: 230, fontSize: 13 }}>{label}</span>
       <input
         type="number" value={v} onChange={(e) => setV(Number(e.target.value))}
-        className="w-[80px] rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1 text-[13px]"
+        className={field} style={{ width: 80 }}
       />
-      {suffix && <span className="text-[12.5px] text-[var(--muted)]">{suffix}</span>}
+      {suffix && <span style={{ fontSize: 12.5, color: "var(--muted)" }}>{suffix}</span>}
       <button className={ghost} disabled={busy || v === value}
         onClick={() => run(() => send("/api/settings", {
           method: "PATCH", body: JSON.stringify({ key: settingKey, value: v }),

@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="d465c27b-b90f-4349-8ac6-25782227fd8c"></script>
+</head>
+<body>
+<x-dc>
+
+
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<style>/* cyrillic-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e204cf23-f195-4d22-b8d1-c4d7457aa613") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("15ab23be-871c-4ca0-9d88-4a833f2da4fa") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("ea143bb4-20b2-4fd2-8a48-1c1f45173580") format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("be4b1bf6-44c0-4d5b-b70b-ad2c5203f942") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("65956268-214a-488e-b33f-01e8237cb47c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("19c1b060-4efa-45e2-9552-9958f1681693") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("2d349ee7-ee4b-41f2-8824-a2accbb47733") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("99321fe2-f913-45f0-b68b-e82ad42a3c6c") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e204cf23-f195-4d22-b8d1-c4d7457aa613") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("15ab23be-871c-4ca0-9d88-4a833f2da4fa") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("ea143bb4-20b2-4fd2-8a48-1c1f45173580") format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("be4b1bf6-44c0-4d5b-b70b-ad2c5203f942") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("65956268-214a-488e-b33f-01e8237cb47c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("19c1b060-4efa-45e2-9552-9958f1681693") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("2d349ee7-ee4b-41f2-8824-a2accbb47733") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("99321fe2-f913-45f0-b68b-e82ad42a3c6c") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e204cf23-f195-4d22-b8d1-c4d7457aa613") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("15ab23be-871c-4ca0-9d88-4a833f2da4fa") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("ea143bb4-20b2-4fd2-8a48-1c1f45173580") format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("be4b1bf6-44c0-4d5b-b70b-ad2c5203f942") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("65956268-214a-488e-b33f-01e8237cb47c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("19c1b060-4efa-45e2-9552-9958f1681693") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("2d349ee7-ee4b-41f2-8824-a2accbb47733") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("99321fe2-f913-45f0-b68b-e82ad42a3c6c") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e204cf23-f195-4d22-b8d1-c4d7457aa613") format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C8A, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("15ab23be-871c-4ca0-9d88-4a833f2da4fa") format('woff2');
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* devanagari */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("ea143bb4-20b2-4fd2-8a48-1c1f45173580") format('woff2');
+  unicode-range: U+0900-097F, U+1CD0-1CF9, U+200C-200D, U+20A8, U+20B9, U+20F0, U+25CC, U+A830-A839, U+A8E0-A8FF, U+11B00-11B09;
+}
+/* greek-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("be4b1bf6-44c0-4d5b-b70b-ad2c5203f942") format('woff2');
+  unicode-range: U+1F00-1FFF;
+}
+/* greek */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("65956268-214a-488e-b33f-01e8237cb47c") format('woff2');
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("19c1b060-4efa-45e2-9552-9958f1681693") format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("2d349ee7-ee4b-41f2-8824-a2accbb47733") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("99321fe2-f913-45f0-b68b-e82ad42a3c6c") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* thai */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("eb0c9a15-5f89-4107-8c2f-a22bad7bc129") format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("58ffc898-7cfc-4eb2-87dd-28714e3ff1e7") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e88c1a4f-24ff-4bf2-b3e5-ce88b6b53f56") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* thai */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("eb0c9a15-5f89-4107-8c2f-a22bad7bc129") format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("58ffc898-7cfc-4eb2-87dd-28714e3ff1e7") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 500;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e88c1a4f-24ff-4bf2-b3e5-ce88b6b53f56") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* thai */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("eb0c9a15-5f89-4107-8c2f-a22bad7bc129") format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("58ffc898-7cfc-4eb2-87dd-28714e3ff1e7") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 600;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e88c1a4f-24ff-4bf2-b3e5-ce88b6b53f56") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* thai */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("eb0c9a15-5f89-4107-8c2f-a22bad7bc129") format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("58ffc898-7cfc-4eb2-87dd-28714e3ff1e7") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 700;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e88c1a4f-24ff-4bf2-b3e5-ce88b6b53f56") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+/* thai */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("eb0c9a15-5f89-4107-8c2f-a22bad7bc129") format('woff2');
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("58ffc898-7cfc-4eb2-87dd-28714e3ff1e7") format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Noto Sans Thai';
+  font-style: normal;
+  font-weight: 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url("e88c1a4f-24ff-4bf2-b3e5-ce88b6b53f56") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+</style>
+<style>
+body{margin:0;font-family:'Noto Sans Thai','Noto Sans',system-ui,sans-serif}
+a{color:#1f8a53}a:hover{color:#166b40}
+*{box-sizing:border-box}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:#c9d1c6;border-radius:4px}
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:#f4f6f3;color:#1a2420;font-size:14px;line-height:1.5">
+
+  <div style="background:#152922;color:#eef3ee;padding:7px 24px;font-size:12.5px;font-weight:600;letter-spacing:.2px;display:flex;align-items:center;gap:8px">
+    <span style="width:6px;height:6px;border-radius:50%;background:#e8c34a;flex:none"></span>
+    ข้อมูลตัวอย่าง (MOCKUP) — ไม่ใช่ข้อมูลจริงขององค์กร · เกณฑ์และหลักฐานทั้งหมดสร้างขึ้นเพื่อสาธิตระบบ
+  </div>
+
+  <div style="height:64px;background:#ffffff;border-bottom:1px solid #e2e6e0;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:10">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:34px;height:34px;border-radius:8px;background:#1f8a53;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px">GA</div>
+      <div>
+        <div style="font-weight:700;font-size:15px;color:#152922">GreenATM Evidence &amp; Readiness</div>
+        <div style="font-size:11.5px;color:#7c8a80">ระบบหลักฐานและความพร้อม GreenATM</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:18px">
+      <div style="display:flex;background:#f1f3ef;border-radius:8px;padding:3px;gap:2px">
+        <button style="{{ roleBtnStyle.submitter }}" sc-camel-on-click="{{ setRoleSubmitter }}">เจ้าของข้อมูล</button>
+        <button style="{{ roleBtnStyle.central }}" sc-camel-on-click="{{ setRoleCentral }}">ทีมกลาง</button>
+        <button style="{{ roleBtnStyle.executive }}" sc-camel-on-click="{{ setRoleExecutive }}">ผู้บริหาร</button>
+      </div>
+      <div style="position:relative;width:36px;height:36px;border-radius:8px;background:#f1f3ef;display:flex;align-items:center;justify-content:center;color:#445048;font-size:16px">
+        🔔
+        <span style="position:absolute;top:-4px;right:-4px;background:#c0392b;color:#fff;font-size:10px;font-weight:700;border-radius:9px;padding:1px 5px;line-height:1.3">2</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:flex-start">
+    <div style="width:230px;flex:none;background:#fbfbfa;border-right:1px solid #e2e6e0;padding:18px 12px;position:sticky;top:64px;height:calc(100vh - 64px)">
+      <div style="font-size:11px;font-weight:700;color:#8c9a90;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px 8px">สำหรับตรวจสอบ</div>
+      <button style="{{ navStyle.workflow }}" sc-camel-on-click="{{ goToWorkflow }}">◇&nbsp; Workflow (ยืนยัน)</button>
+      <div style="height:1px;background:#e2e6e0;margin:10px 6px"></div>
+      <div style="font-size:11px;font-weight:700;color:#8c9a90;text-transform:uppercase;letter-spacing:.06em;padding:4px 10px 8px">เมนูหลัก</div>
+      <button style="{{ navStyle.dashboard }}" sc-camel-on-click="{{ goToDashboard }}">1 · หน้าแรก</button>
+      <button style="{{ navStyle.mytasks }}" sc-camel-on-click="{{ goToMyTasks }}">2 · งานของฉัน</button>
+      <button style="{{ navStyle.detail }}" sc-camel-on-click="{{ goToDetail }}">3 · รายละเอียดรายการ</button>
+      <button style="{{ navStyle.review }}" sc-camel-on-click="{{ goToReview }}">4 · ศูนย์ตรวจสอบ</button>
+    </div>
+
+    <div style="flex:1;min-width:0;padding:32px;max-width:1240px">
+
+      <!-- ===== WORKFLOW ===== -->
+      <sc-if value="{{ isWorkflow }}" hint-placeholder-val="{{ true }}">
+        <div style="margin-bottom:22px">
+          <div style="font-size:20px;font-weight:800;color:#152922">Workflow หนึ่งรอบ — ขอให้ยืนยันก่อนลงมือทำหน้าจอ</div>
+          <div style="color:#5c6b62;font-size:13.5px;margin-top:4px;max-width:760px">สรุปจาก PLAN.md §4.1–4.2 · 12 ขั้นตอน 4 ประเภทผู้ทำ (คน / โค้ด / Agent / โมเดล) · ผลลัพธ์ทุกขั้นตอนตรวจย้อนกลับได้</div>
+        </div>
+
+        <div style="display:flex;gap:14px;margin-bottom:24px;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#445048"><span style="width:11px;height:11px;border-radius:3px;background:#445048"></span>คน (เจ้าของข้อมูล / ทีมกลาง / ผู้บริหาร)</div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#445048"><span style="width:11px;height:11px;border-radius:3px;background:#22282a"></span>โค้ด</div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#445048"><span style="width:11px;height:11px;border-radius:3px;background:#1f8a53"></span>Agent ⭐ หัวใจของระบบ</div>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12.5px;color:#445048"><span style="width:11px;height:11px;border-radius:3px;background:#4f8a76"></span>โมเดล</div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:0;border:1px solid #e2e6e0;border-radius:12px;overflow:hidden;background:#fff;margin-bottom:28px">
+          <sc-for list="{{ workflowSteps }}" as="step" hint-placeholder-count="12">
+            <div style="{{ step.rowStyle }}">
+              <div style="width:30px;flex:none;display:flex;align-items:flex-start;padding-top:2px">
+                <span style="{{ step.badgeStyle }}">{{ step.num }}</span>
+              </div>
+              <div style="width:118px;flex:none">
+                <div style="{{ step.actorPillStyle }}">{{ step.actor }}</div>
+              </div>
+              <div style="flex:1;min-width:0;padding-right:16px">
+                <div style="font-weight:600;color:#152922;font-size:13.5px">{{ step.action }}</div>
+                <div style="font-size:12.5px;color:#7c8a80;margin-top:3px">ผลลัพธ์: {{ step.output }}</div>
+              </div>
+              <div style="flex:1;min-width:0;border-left:1px solid #edf0ea;padding-left:16px">
+                <div style="font-size:11px;font-weight:700;color:#b8860b;text-transform:uppercase;letter-spacing:.04em;margin-bottom:2px">ข้อยกเว้น</div>
+                <div style="font-size:12.5px;color:#5c6b62">{{ step.exception }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e2e6e0;border-radius:12px;padding:22px 24px;margin-bottom:20px">
+          <div style="font-weight:700;color:#152922;font-size:14.5px;margin-bottom:14px">กติกาหัวใจ — สามคอลัมน์ที่ห้ามรวมกัน</div>
+          <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:14px;align-items:center">
+            <div style="background:#f4f6f3;border-radius:10px;padding:16px">
+              <div style="font-size:11.5px;color:#7c8a80;font-weight:600">ความคืบหน้างาน (เจ้าของกรอก)</div>
+              <div style="font-size:24px;font-weight:800;color:#152922;margin-top:6px">80%</div>
+              <div style="font-size:12px;color:#8c9a90;margin-top:2px">8/10 milestone</div>
+            </div>
+            <div style="font-size:20px;color:#c0392b;font-weight:700">✕</div>
+            <div style="background:#f4f6f3;border-radius:10px;padding:16px">
+              <div style="font-size:11.5px;color:#7c8a80;font-weight:600">หลักฐาน (agent จัดชั้น)</div>
+              <div style="font-size:15px;font-weight:700;color:#152922;margin-top:6px">2 ชิ้น · ชั้น C ทั้งคู่</div>
+              <div style="font-size:12px;color:#c0392b;margin-top:2px;font-weight:600">ยังไม่นับ</div>
+            </div>
+            <div style="font-size:20px;color:#c0392b;font-weight:700">→</div>
+            <div style="background:#f4f6f3;border-radius:10px;padding:16px">
+              <div style="font-size:11.5px;color:#7c8a80;font-weight:600">การยืนยัน (คนอนุมัติ)</div>
+              <div style="font-size:24px;font-weight:800;color:#152922;margin-top:6px">0%</div>
+              <div style="font-size:12px;color:#8c9a90;margin-top:2px">ยังไม่ยืนยัน</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding-top:14px;border-top:1px dashed #e2e6e0;font-size:12.5px;color:#5c6b62">
+            ▲ ตัวเลขงานคืบหน้าไม่ดันตัวเลขยืนยันด้วยหลักฐานให้ขึ้นได้เลย — <b style="color:#152922">ระบบไม่แปลง % งานเสร็จ เป็นความพร้อมโดยอัตโนมัติ</b> (เคสทดสอบ AC-01)
+          </div>
+        </div>
+
+        <div style="background:#eaf3ec;border:1px solid #cfe4d5;border-radius:12px;padding:18px 22px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+          <div style="font-size:13.5px;color:#152922;max-width:640px">โครงนี้ตรงกับ PLAN.md §4.1–4.2 หรือยัง? ยืนยันแล้วจะไปต่อที่หน้าจอด้านซ้าย</div>
+          <div style="display:flex;gap:10px">
+            <button style="background:#1f8a53;color:#fff;border:none;border-radius:8px;padding:10px 18px;font-weight:700;font-size:13.5px;cursor:pointer" sc-camel-on-click="{{ goToDashboard }}">ยืนยัน → ดูหน้าจอ</button>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== DASHBOARD ===== -->
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:20px">
+          <div style="font-size:20px;font-weight:800;color:#152922">หน้าแรก — ภาพรวมระดับ GreenATM ตามหมวดหมู่</div>
+          <div style="color:#5c6b62;font-size:13.5px;margin-top:4px">จัดกลุ่มตามแบบประเมิน วว.นบ209_2569-14 · เทียบคะแนนปีที่แล้ว เป้าที่ทีมกลางกำหนด และคะแนนคาดการณ์จากหลักฐานปัจจุบัน (Agent ประเมิน) · แถวสีเขียวอ่อน = เป้าปีนี้สูงกว่าปีที่แล้ว</div>
+        </div>
+
+        <div style="background:#fff;border:1px solid #e2e6e0;border-radius:12px;padding:20px 22px;margin-bottom:22px;display:flex;align-items:center;gap:28px;flex-wrap:wrap">
+          <div>
+            <div style="font-size:11.5px;color:#7c8a80;font-weight:600">ข้อประเมินทั้งหมด</div>
+            <div style="font-size:28px;font-weight:800;color:#152922;margin-top:4px">{{ overall.total }} ข้อ</div>
+          </div>
+          <div>
+            <div style="font-size:11.5px;color:#7c8a80;font-weight:600">Level เฉลี่ยทั้งองค์กร</div>
+            <div style="font-size:28px;font-weight:800;color:#1f8a53;margin-top:4px">{{ overall.avgLevel }}</div>
+          </div>
+          <div style="flex:1;min-width:220px">
+            <div style="font-size:11.5px;color:#7c8a80;font-weight:600;margin-bottom:6px">การกระจายตัวของ Level (1–5) ทุกหมวดหมู่</div>
+            <div style="display:flex;height:14px;border-radius:7px;overflow:hidden">
+              <sc-for list="{{ overall.distribution }}" as="d" hint-placeholder-count="5">
+                <div style="{{ d.barStyle }}" title="{{ d.label }}"></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap">
+              <sc-for list="{{ overall.distribution }}" as="d" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#5c6b62"><span style="{{ d.dotStyle }}"></span>{{ d.label }} ({{ d.count }})</div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="4">
+          <div style="background:#fff;border:1px solid #e2e6e0;border-radius:12px;padding:20px 22px;margin-bottom:16px">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#8c9a90;text-transform:uppercase;letter-spacing:.04em">หมวดหมู่ {{ cat.num }}</div>
+                <div style="font-size:15.5px;font-weight:800;color:#152922;margin-top:2px">{{ cat.name }}</div>
+                <div style="font-size:12px;color:#8c9a90;margin-top:1px">{{ cat.nameEn }} · {{ cat.itemCount }} ข้อ</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:11px;color:#7c8a80;font-weight:600">Level เฉลี่ยหมวดนี้</div>
+                <div style="font-size:22px;font-weight:800;color:#152922">{{ cat.avgLevel }}</div>
+              </div>
+            </div>
+            <div style="display:flex;height:8px;border-radius:4px;overflow:hidden;margin-bottom:16px">
+              <sc-for list="{{ cat.distribution }}" as="d" hint-placeholder-count="5">
+                <div style="{{ d.barStyle }}"></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px">
+              <div style="display:grid;grid-template-columns:2.1fr 90px 60px 172px 70px;gap:10px;padding:0 12px 6px;font-size:10.5px;font-weight:700;color:#8c9a90;text-transform:uppercase;letter-spacing:.03em">
+                <div>รายการ</div><div>สถานะปัจจุบัน</div><div>ปีที่แล้ว</div><div>เป้าปีนี้ (ทีมกลาง)</div><div>คาดการณ์</div>
+              </div>
+              <sc-for list="{{ cat.items }}" as="it" hint-placeholder-count="6">
+                <div style="{{ it.rowWrapStyle }}">
+                  <div style="display:grid;grid-template-columns:2.1fr 90px 60px 172px 70px;gap:10px;align-items:center">
+                    <div style="font-size:13px;color:#152922"><b>{{ it.code }}</b> {{ it.name }}<span style="{{ it.stretchTagStyle }}">เป้าสูงกว่าปีที่แล้ว</span></div>
+                    <div style="display:flex;gap:3px">
+                      <sc-for list="{{ it.segments }}" as="seg" hint-placeholder-count="5">
+                        <div style="{{ seg.style }}"></div>
+                      </sc-for>
+                    </div>
+                    <div style="font-size:15px;font-weight:800;color:#8c9a90;text-align:center">{{ it.lastYear }}</div>
+                    <div style="display:flex;gap:4px">
+                      <sc-for list="{{ it.targetDots }}" as="dot" hint-placeholder-count="5">
+                        <button style="{{ dot.style }}" sc-camel-on-click="{{ dot.onClick }}">{{ dot.level }}</button>
+                      </sc-for>
+                    </div>
+                    <div style="{{ it.forecastStyle }};text-align:center">{{ it.forecast }}</div>
+                  </div>
+                  <sc-if value="{{ it.showNote }}" hint-placeholder-val="{{ false }}">
+                    <div style="{{ it.noteStyle }}">{{ it.noteIcon }} {{ it.noteText }}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </sc-if>
+
+      <!-- ===== MY TASKS ===== -->
+      <sc-if value="{{ isMyTasks }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:18px">
+          <div style="font-size:20px;font-weight:800;color:#152922">งานของฉัน</div>
+          <div style="color:#5c6b62;font-size:13.5px;margin-top:4px">กองยุทธศาสตร์และแผน · รอบปัจจุบัน: รายเดือน ก.ย. 2569</div>
+        </div>
+        <div style="background:#fff5e0;border:1px solid #f0d9a8;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:13.5px;color:#7a5c12;font-weight:600">
+          มี 2 รายการที่ยังไม่ส่งข้อมูลรอบนี้ — กำหนดส่ง 20 ก.ย. 2569
+        </div>
+        <div style="background:#fff;border:1px solid #e2e6e0;border-radius:12px;overflow:hidden;margin-bottom:24px">
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.6fr;gap:8px;padding:11px 18px;background:#f7f8f6;font-size:11.5px;font-weight:700;color:#7c8a80;text-transform:uppercase">
+            <div>รายการ</div><div>กำหนดส่ง</div><div>สถานะ</div><div>การดำเนินการ</div>
+          </div>
+          <sc-for list="{{ myItems }}" as="it" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1.6fr;gap:8px;padding:13px 18px;border-top:1px solid #edf0ea;align-items:center;font-size:13px">
+              <div><b style="color:#152922">{{ it.code }}</b> {{ it.name }}</div>
+              <div style="color:#5c6b62">{{ it.due }}</div>
+              <div><span style="{{ it.statusPillStyle }}">{{ it.statusLabel }}</span></div>
+              <div style="display:flex;gap:8px">
+                <button style="background:#f1f3ef;border:1px solid #e2e6e0;color:#152922;border-radius:7px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer">กรอกข้อมูล</button>
+                <button style="background:#eaf3ec;border:1px solid #cfe4d5;color:#1f8a53;border-radius:7px;padding:7px 12px;font-size:12.5px;font-weight:600;cursor:pointer">แนบหลักฐาน</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size:13px;font-weight:700;color:#152922;margin-bottom:10px">รายการที่ถูกตีกลับ</div>
+        <div style="background:#fff;border:1px solid #f0c3bb;border-left:4px solid #c0392b;border-radius:10px;padding:14px 18px">
+          <div style="font-weight:600;color:#152922">A-07 — แผนงานล่าช้ากว่ากำหนดมาก</div>
+          <div style="font-size:12.5px;color:#5c6b62;margin-top:4px">เหตุผลจากทีมกลาง: "ขอเลื่อนครั้งที่ 3 แล้ว ต้องแนบแผนกู้สถานการณ์ (recovery plan) ก่อนส่งใหม่"</div>
+        </div>
+      </sc-if>
+
+      <!-- ===== ITEM DETAIL ===== -->
+      <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:18px">
+          <div style="font-size:20px;font-weight:800;color:#152922">A-03 · รายงานผลตรวจวัดคุณภาพอากาศประจำปี</div>
+          <div style="color:#5c6b62;font-size:13.5px;margin-top:4px">ข้อประเมิน · กองยุทธศาสตร์และแผน · น้ำหนัก 9% · อัปเดตล่าสุด 14 ก.ย. 2569</div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1.3fr .9fr;gap:16px;align-items:start">
+
+          <div style="background:#fff;border:1px solid #e2e6e0;border-radius:12px;padding:18px">
+            <div style="font-weight:700;font-size:13.5px;color:#152922;margin-bottom:12px">ความคืบหน้า (milestone)</div>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span>1. เก็บตัวอย่างครบ 4 จุด</span><b>100%</b></div>
+                <div style="height:6px;background:#edf0ea;border-radius:3px;overflow:hidden"><div style="height:100%;width:100%;background:#1f8a53"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span>2. วิเคราะห์ผลในห้องแล็บ</span><b>100%</b></div>
+                <div style="height:6px;background:#edf0ea;border-radius:3px;overflow:hidden"><div style="height:100%;width:100%;background:#1f8a53"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:4px"><span>3. ลงนามรับรองผล</span><b>100%</b></div>
+                <div style="height:6px;background:#edf0ea;border-radius:3px;overflow:hidden"><div style="height:100%;width:100%;background:#1f8a53"></div></div>
+              </div>
+            </div>
+            <div style="margin-top:14px;padding-top:14px;border-top:1px dashed #e2e6e0;font-size:12.5px;color:#5c6b62">วันที่จริงที่เสร็จ: <b style="color:#152922">10 ก.ย. 2569</b> · แผนเดิม: 15 ก.ย. 2569 (ก่อนแผน)</div>
+          </div>
+
+          <div style="background:#fff;border:1px solid #e2e6e0;border-radius:12px;padding:18px">
+            <div style="font-weight:700;font-size:13.5px;color:#152922;margin-bottom:12px">หลักฐานที่แนบ · ข้อเสนอจาก Agent</div>
+            <div style="border:1px solid #cfe4d5;background:#f6fbf7;border-radius:10px;padding:14px;margin-bottom:12px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:600;color:#152922;font-size:13px">[E-014] รายงานผลตรวจวัดคุณภาพอากาศ_ลงนาม.pdf</div>
+                  <div style="font-size:12px;color:#8c9a90;margin-top:2px">อัปโหลด 12 ก.ย. 2569 · วันที่ในเอกสาร 10 ก.ย. 2569</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;color:#1f8a53;font-weight:800;font-size:14px">◆ A</div>
+              </div>
+              <div style="font-size:12.5px;color:#3d4a43;margin-top:10px;line-height:1.6">เหตุผลจาก Agent: มีผลตรวจวัดจริง หน่วยงานภายนอกลงนามรับรอง ตรงกับเกณฑ์ข้อ 3.2 ครบทั้งขอบเขตและการรับรอง</div>
+              <div style="display:flex;gap:8px;margin-top:12px">
+                <button style="background:#1f8a53;color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer">ยืนยันชั้น A</button>
+                <button style="background:#fff;color:#5c6b62;border:1px solid #e2e6e0;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer">แก้ไขพร้อมเหตุผล</button>
+              </div>
+            </div>
+            <div style="border:1px solid #e2e6e0;background:#f7f8f6;border-radius:10px;padding:14px">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div>
+                  <div style="font-weight:600;color:#152922;font-size:13px">[E-015] บันทึกภาพหน้างานเก็บตัวอย่าง.jpg</div>
+                  <div style="font-size:12px;color:#8c9a90;margin-top:2px">อัปโหลด 12 ก.ย. 2569 · วันที่ในเอกสาร 8 ก.ย. 2569</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:6px;color:#8c9a90;font-weight:800;font-size:14px">○ C</div>
+              </div>
+              <div style="font-size:12.5px;color:#3d4a43;margin-top:10px">เหตุผลจาก Agent: ภาพประกอบสนับสนุนเท่านั้น ไม่ใช่หลักฐานผลลัพธ์โดยตรง — นับเป็นข้อมูลสนับสนุน ไม่ใช่ข้อมูลตัดสิน</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid #e2e6e0;border-radius:12px;padding:18px">
+            <div style="font-weight:700;font-size:13.5px;color:#152922;margin-bottom:12px">ยังขาดอะไร</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:13px">
+              <div style="display:flex;gap:8px;align-items:flex-start;color:#8c9a90;text-decoration:line-through">
+                <span style="margin-top:1px">☑</span> รายงานผลวัดที่ลงนามรับรอง
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start;color:#152922">
+                <span style="margin-top:1px">☐</span> สรุปแนวทางแก้ไขหากผลไม่ผ่านเกณฑ์ (ยังไม่บังคับสำหรับเคสนี้)
+              </div>
+            </div>
+            <div style="margin-top:16px;padding-top:14px;border-top:1px dashed #e2e6e0">
+              <div style="font-weight:700;font-size:12.5px;color:#152922;margin-bottom:8px">ประวัติ</div>
+              <div style="font-size:12px;color:#7c8a80;line-height:1.7">
+                14 ก.ย. — Agent เสนอชั้น A (AC-04)<br>
+                12 ก.ย. — แนบหลักฐาน E-014, E-015<br>
+                10 ก.ย. — milestone ที่ 3 เสร็จ
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <!-- ===== REVIEW CENTER ===== -->
+      <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-bottom:18px">
+          <div style="font-size:20px;font-weight:800;color:#152922">ศูนย์ตรวจสอบ</div>
+          <div style="color:#5c6b62;font-size:13.5px;margin-top:4px">ทีมกลาง — ยืนยันข้อเสนอของ agent, ตรวจร่างคำตอบ, ติดตามกองที่ยังไม่ส่ง</div>
+        </div>
+        <div style="display:flex;gap:2px;background:#f1f3ef;border-radius:9px;padding:3px;margin-bottom:20px;width:fit-content">
+          <button style="{{ reviewTabStyle.A }}" sc-camel-on-click="{{ setReviewTabA }}">รอยืนยันชั้นหลักฐาน · 3</button>
+          <button style="{{ reviewTabStyle.B }}" sc-camel-on-click="{{ setReviewTabB }}">ร่างคำตอบรอตรวจ · 2</button>
+          <button style="{{ reviewTabStyle.C }}" sc-camel-on-click="{{ setReviewTabC }}">ยังไม่ส่ง · 1</button>
+          <button style="{{ reviewTabStyle.D }}" sc-camel-on-click="{{ setReviewTabD }}">Outbox · 2</button>
+        </div>
+
+        <sc-if value="{{ isReviewA }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:#fff;border:1px solid #e2e6e0;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center">
+              <div><b style="color:#152922">A-05</b> — หลักฐานเดียวคือ "(ร่าง) แผนดำเนินการ" → Agent เสนอชั้น <span style="color:#8c9a90;font-weight:700">○ C</span> · "แผนไม่ใช่หลักฐานผลลัพธ์"</div>
+              <div style="display:flex;gap:8px"><button style="background:#1f8a53;color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer">ยืนยัน</button><button style="background:#fff;border:1px solid #e2e6e0;color:#5c6b62;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer">แก้ไข</button></div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e6e0;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center">
+              <div><b style="color:#152922">A-09</b> — เอกสารลงวันที่เกิน 12 เดือน → Agent เสนอปรับเป็น <span style="color:#b8860b;font-weight:700">◇ B (ล้าสมัย)</span></div>
+              <div style="display:flex;gap:8px"><button style="background:#1f8a53;color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer">ยืนยัน</button><button style="background:#fff;border:1px solid #e2e6e0;color:#5c6b62;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer">แก้ไข</button></div>
+            </div>
+            <div style="background:#fff;border:1px solid #e2e6e0;border-radius:10px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center">
+              <div><b style="color:#152922">A-11</b> — เอกสารไม่มีวันที่ในตัวเอกสาร → Agent หยุด ถามหาวันที่ (ห้ามเดา)</div>
+              <div style="display:flex;gap:8px"><button style="background:#fff;border:1px solid #e2e6e0;color:#152922;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:600;cursor:pointer">ระบุวันที่</button></div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isReviewB }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:#fff;border:1px solid #e2e6e0;border-radius:10px;padding:14px 18px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <b style="color:#152922">A-03</b>
+                <div style="display:flex;gap:8px"><button style="background:#152922;color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer">ส่งขออนุมัติ</button></div>
+              </div>
+              <div style="font-size:13px;color:#3d4a43;margin-top:8px;line-height:1.6">"ผลตรวจวัดคุณภาพอากาศประจำปี 2569 ดำเนินการครบ 4 จุดตรวจวัด และผ่านการรับรองจากหน่วยงานภายนอก [E-014 น.3]"</div>
+            </div>
+            <div style="background:#fff;border:1px solid #f0d9a8;border-radius:10px;padding:14px 18px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <b style="color:#152922">A-05</b>
+                <span style="background:#fff5e0;color:#7a5c12;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:6px">ข้อมูลไม่พอ</span>
+              </div>
+              <div style="font-size:13px;color:#3d4a43;margin-top:8px">ไม่ร่างคำตอบ — มีเพียงหลักฐานชั้น C ต้องเก็บผลลัพธ์จริงก่อน (รายงานผลวัด/ใบรับรอง)</div>
+            </div>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isReviewC }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border:1px solid #f0d9a8;border-left:4px solid #b8860b;border-radius:10px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center">
+            <div><b style="color:#152922">กองบำรุงรักษา (กอง C)</b> — ยังไม่ส่งข้อมูล 1 รายการ (A-12) · เลยกำหนด 6 วัน</div>
+            <button style="background:#152922;color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer">สร้างร่างข้อความ</button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ isReviewD }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="background:#fff;border:1px solid #e2e6e0;border-radius:10px;padding:14px 18px">
+              <div style="font-size:12px;color:#8c9a90;margin-bottom:4px">ถึง: กองบำรุงรักษา (กอง C)</div>
+              <div style="font-weight:600;color:#152922;font-size:13.5px">เตือนส่งข้อมูล GreenATM — เลยกำหนด 6 วัน</div>
+              <div style="font-size:12.5px;color:#5c6b62;margin-top:4px">"รายการ A-12 ยังไม่มีข้อมูลในระบบ กรุณากรอกและแนบหลักฐานภายในวันที่ 20 ก.ย. 2569"</div>
+              <button style="margin-top:10px;background:#1f8a53;color:#fff;border:none;border-radius:7px;padding:8px 14px;font-size:12.5px;font-weight:700;cursor:pointer">ตรวจแล้ว — กดส่ง</button>
+            </div>
+          </div>
+        </sc-if>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script="">
+
+class Component extends DCLogic {
+  state = { screen: 'workflow', role: 'central', reviewTab: 'A', targetOverrides: {} };
+  maintainTargetCodes = new Set(['2.11','2.12','4.1','4.3','4.4']);
+
+  myItemsData = [
+    { code:'A-05', name:'แผนบำรุงรักษาอุปกรณ์ประหยัดพลังงาน', due:'20 ก.ย. 2569', status:'at_risk' },
+    { code:'A-07', name:'โครงการเปลี่ยนหลอดไฟ LED ทั้งอาคาร', due:'20 ก.ย. 2569', status:'delayed' },
+    { code:'A-09', name:'โครงการบำบัดน้ำเสียก่อนปล่อยออกนอกพื้นที่', due:'20 ก.ย. 2569', status:'at_risk' },
+    { code:'A-12', name:'มาตรการจัดการเสียงรบกวนรอบสนามบิน', due:'9 ก.ย. 2569 (เลยกำหนด)', status:'not_submitted' },
+  ];
+
+  workflowStepsData = [
+    { actor:'เจ้าของข้อมูล', type:'human', action:'เปิด "งานของฉัน" ดูรายการที่ต้องส่งรอบนี้', output:'รายการงาน', exception:'ไม่มีงานค้าง → แสดงสถานะว่าง' },
+    { actor:'เจ้าของข้อมูล', type:'human', action:'กรอกความคืบหน้า milestone (% + วันที่จริง)', output:'บันทึก + audit_log', exception:'ค่านอกช่วง/วันที่ผิด → ไม่บันทึก' },
+    { actor:'เจ้าของข้อมูล', type:'human', action:'แนบเอกสารหลักฐานผูกกับรายการ', output:'evidence สถานะ "รอประเมิน"', exception:'ไม่มีวันที่ในเอกสาร → ระบบถาม ห้ามเดา' },
+    { actor:'โค้ด', type:'code', action:'คำนวณถ่วงน้ำหนักขึ้นทุกชั้น + planned vs actual + สถานะ', output:'progress · status', exception:'น้ำหนักรวมไม่ครบ 100 → ไม่ให้บันทึก' },
+    { actor:'Agent ⭐', type:'agent', action:'ไล่อ่านหลักฐานทีละชิ้น เทียบเกณฑ์ จัดชั้น A–D + เหตุผล + สิ่งที่ขาด', output:'ข้อเสนอสถานะ pending', exception:'ชนเพดาน tool call → รายงานว่าประเมินไม่ครบ' },
+    { actor:'ทีมกลาง', type:'human', action:'ยืนยันชั้น หรือแก้พร้อมเหตุผล', output:'confirmed_at → นับเข้า Verified', exception:'ไม่ทำอะไร → ค้างสถานะ "รอตรวจ"' },
+    { actor:'โมเดล', type:'model', action:'ร่างคำตอบจากหลักฐานที่ยืนยันแล้ว + flag "ข้อมูลไม่พอ"', output:'response สถานะ draft', exception:'ไม่มีหลักฐาน A/B เลย → ไม่ร่าง' },
+    { actor:'ทีมกลาง', type:'human', action:'ตรวจ แก้ ส่งขออนุมัติ', output:'สถานะ "รออนุมัติ"', exception:'—' },
+    { actor:'ผู้บริหาร', type:'human', action:'อนุมัติ หรือตีกลับพร้อมเหตุผล', output:'อนุมัติแล้ว / กลับไปขั้น 8', exception:'—' },
+    { actor:'โค้ด', type:'code', action:'ประกอบเอกสารรายเดือน Word/PDF + ทะเบียนหมายเหตุ', output:'ไฟล์ส่งออก', exception:'ข้อความไม่มีตัวอ้างอิง → สร้างไม่ผ่าน' },
+    { actor:'โค้ด', type:'code', action:'จับกองที่ยังไม่ส่ง → ร่างข้อความเข้า Outbox', output:'รายการใน Outbox', exception:'ไม่เข้าเงื่อนไข → ไม่สร้าง' },
+    { actor:'ทีมกลาง', type:'human', action:'ตรวจข้อความแล้วกดส่งเอง', output:'ข้อความแสดงในแอปของผู้รับ', exception:'ไม่มีอะไรออกนอกระบบ' },
+  ];
+
+  categoriesData = [
+    { num:1, name:'การจัดการสิ่งแวดล้อม', nameEn:'Environmental Management', items:[
+      { code:'1.1', name:'Environmental policy and plan', achievedLevel:4, frontierLevel:5, frontierPct:33 },
+      { code:'1.2', name:'Environmental management system', achievedLevel:1, frontierLevel:2, frontierPct:67 },
+      { code:'1.3', name:'Environmental culture', achievedLevel:1, frontierLevel:2, frontierPct:75 },
+      { code:'1.4', name:'Environmental targets', achievedLevel:1, frontierLevel:2, frontierPct:50 },
+    ]},
+    { num:2, name:'การบริหารจราจรทางอากาศเพื่อสิ่งแวดล้อม', nameEn:'Air Traffic Management', items:[
+      { code:'2.1', name:'Flexible use of airspace (FUA)', achievedLevel:3, frontierLevel:4, frontierPct:57 },
+      { code:'2.2', name:'Meteorological information', achievedLevel:2, frontierLevel:3, frontierPct:25 },
+      { code:'2.3', name:'Improved surveillance', achievedLevel:1, frontierLevel:2, frontierPct:57 },
+      { code:'2.4', name:'Airport collaborative decision making (A-CDM)', achievedLevel:3, frontierLevel:4, frontierPct:0 },
+      { code:'2.5', name:'Surface management', achievedLevel:1, frontierLevel:2, frontierPct:25 },
+      { code:'2.6', name:'Continuous climb operations (CCO)', achievedLevel:1, frontierLevel:2, frontierPct:25 },
+      { code:'2.7', name:'Continuous descent operations (CDO)', achievedLevel:1, frontierLevel:2, frontierPct:33 },
+      { code:'2.8', name:'Performance based navigation (PBN)', achievedLevel:3, frontierLevel:4, frontierPct:86 },
+      { code:'2.9', name:'Wake turbulence optimization', achievedLevel:2, frontierLevel:2, frontierPct:100 },
+      { code:'2.10', name:'Trajectory optimization', achievedLevel:1, frontierLevel:2, frontierPct:57 },
+      { code:'2.11', name:'Air traffic flow management (ATFM)', achievedLevel:5, frontierLevel:5, frontierPct:100 },
+      { code:'2.12', name:'Research and development', achievedLevel:5, frontierLevel:5, frontierPct:100 },
+    ]},
+    { num:3, name:'พลังงานและโครงสร้างพื้นฐาน CNS', nameEn:'Energy & CNS Infrastructure', items:[
+      { code:'3.1', name:'Energy management', achievedLevel:1, frontierLevel:2, frontierPct:50 },
+      { code:'3.2', name:'Power procurement and production', achievedLevel:1, frontierLevel:2, frontierPct:80 },
+      { code:'3.3', name:'CNS rationalization', achievedLevel:3, frontierLevel:4, frontierPct:0 },
+      { code:'3.4', name:'CNS flight inspection', achievedLevel:1, frontierLevel:2, frontierPct:50 },
+    ]},
+    { num:4, name:'ชุมชนและผู้มีส่วนได้ส่วนเสีย', nameEn:'Community & Stakeholder Engagement', items:[
+      { code:'4.1', name:'Sustainable procurement', achievedLevel:1, frontierLevel:1, frontierPct:100 },
+      { code:'4.2', name:'Airport and community relations', achievedLevel:1, frontierLevel:2, frontierPct:50 },
+      { code:'4.3', name:'Airspace change management', achievedLevel:1, frontierLevel:1, frontierPct:100 },
+      { code:'4.4', name:'Mobility management', achievedLevel:1, frontierLevel:1, frontierPct:100 },
+    ]},
+  ];
+  levelColors = { 1:'#cfe0d3', 2:'#a9d3b8', 3:'#6fbd8c', 4:'#2f8f5b', 5:'#155c3a' };
+  levelEmpty = '#e7ebe4';
+
+  buildSegments(it){
+    const segs = [];
+    for (let L = 1; L <= 5; L++){
+      let style;
+      if (L <= it.achievedLevel) {
+        style = `width:16px;height:8px;border-radius:2px;background:${this.levelColors[L]}`;
+      } else if (L === it.frontierLevel && it.frontierLevel > it.achievedLevel) {
+        style = `width:16px;height:8px;border-radius:2px;background:linear-gradient(to right, ${this.levelColors[L]} ${it.frontierPct}%, ${this.levelEmpty} ${it.frontierPct}%)`;
+      } else {
+        style = `width:16px;height:8px;border-radius:2px;background:${this.levelEmpty}`;
+      }
+      segs.push({ style });
+    }
+    return segs;
+  }
+  setTarget(code, level){
+    this.setState(s => ({ targetOverrides: { ...s.targetOverrides, [code]: level } }));
+  }
+  defaultTarget(code, lastYear){
+    return this.maintainTargetCodes.has(code) ? lastYear : Math.min(5, lastYear + 1);
+  }
+  buildTargetDots(code, target){
+    return [1,2,3,4,5].map(level => {
+      const selected = level === target;
+      return {
+        level,
+        style: `width:22px;height:22px;border-radius:50%;border:1.5px solid ${selected?'#152922':'#d5dbd2'};background:${selected?'#152922':'#fff'};color:${selected?'#fff':'#8c9a90'};font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;font-family:inherit`,
+        onClick: () => this.setTarget(code, level)
+      };
+    });
+  }
+  badgeMeta(it){
+    const color = this.levelColors[it.achievedLevel] || '#8c9a90';
+    const text = it.frontierLevel > it.achievedLevel
+      ? `Level ${it.achievedLevel} · ผลักดัน ${it.frontierLevel} (${it.frontierPct}%)`
+      : `Level ${it.achievedLevel} (สูงสุดที่ประเมิน)`;
+    return {
+      badgeStyle: `font-size:11.5px;font-weight:700;color:${color};background:${color}22;padding:4px 9px;border-radius:6px;white-space:nowrap`,
+      badgeText: text
+    };
+  }
+  distributionOf(items, totalForWidth){
+    const counts = {1:0,2:0,3:0,4:0,5:0};
+    items.forEach(it => counts[it.achievedLevel]++);
+    const total = totalForWidth || items.length;
+    return [1,2,3,4,5].map(L => ({
+      label: `Level ${L}`,
+      count: counts[L],
+      barStyle: `flex:0 0 ${total ? (counts[L]/total*100) : 0}%;background:${this.levelColors[L]}`,
+      dotStyle: `display:inline-block;width:9px;height:9px;border-radius:2px;background:${this.levelColors[L]}`
+    }));
+  }
+  statusMeta(s){
+    const map = {
+      on_track:{label:'ตามแผน',bg:'#eaf3ec',fg:'#1f8a53'},
+      at_risk:{label:'เสี่ยง',bg:'#fff5e0',fg:'#7a5c12'},
+      delayed:{label:'ล่าช้า',bg:'#fbe7e4',fg:'#c0392b'},
+      not_submitted:{label:'ยังไม่ส่ง',bg:'#f1f3ef',fg:'#5c6b62'}
+    };
+    return map[s] || map.on_track;
+  }
+  actorColor(type){
+    return { human:'#445048', code:'#22282a', agent:'#1f8a53', model:'#4f8a76' }[type] || '#445048';
+  }
+
+  navBtnStyle(active){
+    return `display:block;width:100%;text-align:left;background:${active?'#eaf3ec':'transparent'};color:${active?'#1f8a53':'#3d4a43'};border:none;border-radius:8px;padding:9px 10px;font-size:13px;font-weight:${active?700:600};cursor:pointer;margin-bottom:2px;font-family:inherit`;
+  }
+  roleBtnStyle(active){
+    return `background:${active?'#152922':'transparent'};color:${active?'#fff':'#5c6b62'};border:none;border-radius:6px;padding:7px 13px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit`;
+  }
+  reviewTabBtnStyle(active){
+    return `background:${active?'#152922':'transparent'};color:${active?'#fff':'#5c6b62'};border:none;border-radius:7px;padding:9px 16px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit`;
+  }
+
+  renderVals() {
+    const screen = this.state.screen;
+
+    const allItems = this.categoriesData.flatMap(c => c.items);
+    const overallAvg = (allItems.reduce((s,i)=>s+i.achievedLevel,0) / allItems.length).toFixed(1);
+    const overall = {
+      total: allItems.length,
+      avgLevel: overallAvg,
+      distribution: this.distributionOf(allItems)
+    };
+    const categories = this.categoriesData.map(cat => {
+      const itemCount = cat.items.length;
+      const avgLevel = (cat.items.reduce((s,i)=>s+i.achievedLevel,0) / itemCount).toFixed(1);
+      const items = cat.items.map(it => {
+        const b = this.badgeMeta(it);
+        const lastYear = it.achievedLevel > 1 ? it.achievedLevel - 1 : 1;
+        const target = this.state.targetOverrides[it.code] ?? this.defaultTarget(it.code, lastYear);
+        const forecast = it.frontierPct >= 50 ? it.frontierLevel : it.achievedLevel;
+        const isStretch = target > lastYear;
+        const meetsForecast = forecast >= target;
+        const forecastColor = meetsForecast ? '#1f8a53' : '#c0392b';
+        let noteText = '';
+        if (!meetsForecast) {
+          noteText = `Agent คาดการณ์: หลักฐานปัจจุบันรองรับ Level ${it.achievedLevel} ครบ แต่ยังไม่พอสำหรับเป้า Level ${target} — ควรเพิ่มหลักฐานผลลัพธ์จริงที่ตรงเกณฑ์ Level ${Math.min(target, it.frontierLevel)} (ปัจจุบันมีหลักฐานรองรับเกณฑ์นั้นเพียง ${it.frontierPct}%)`;
+        } else if (isStretch) {
+          noteText = `Agent คาดการณ์: หลักฐานที่มีแนวโน้มเพียงพอให้ถึงเป้า Level ${target} ตามที่ทีมกลางตั้งไว้`;
+        }
+        return {
+          ...it,
+          segments: this.buildSegments(it), badgeStyle: b.badgeStyle, badgeText: b.badgeText,
+          lastYear, target, forecast,
+          targetDots: this.buildTargetDots(it.code, target),
+          forecastStyle: `font-size:14px;font-weight:800;color:${forecastColor}`,
+          rowWrapStyle: `padding:10px 12px;border-radius:8px;margin:2px 0;${isStretch ? 'background:#f2f9f4;border:1px solid #cfe4d5;' : 'border:1px solid transparent;'}`,
+          showNote: !!noteText,
+          noteStyle: `margin-top:8px;font-size:12px;line-height:1.5;color:${meetsForecast?'#1f8a53':'#a8631a'};padding-left:2px`,
+          noteIcon: meetsForecast ? '✓' : '▲',
+          noteText,
+          stretchTagStyle: isStretch ? 'display:inline-block;font-size:10.5px;font-weight:700;color:#1f8a53;background:#dcefe1;padding:2px 7px;border-radius:5px;margin-left:8px' : 'display:none'
+        };
+      });
+      return { ...cat, itemCount, avgLevel, distribution: this.distributionOf(cat.items, itemCount), items };
+    });
+
+    const myItems = this.myItemsData.map(it => {
+      const st = this.statusMeta(it.status);
+      return { ...it, statusPillStyle: `background:${st.bg};color:${st.fg};font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap`, statusLabel: st.label };
+    });
+
+    const workflowSteps = this.workflowStepsData.map((s, idx) => {
+      const highlight = s.type === 'agent';
+      return {
+        ...s,
+        num: idx + 1,
+        rowStyle: `display:flex;gap:14px;padding:16px 20px;${idx>0?'border-top:1px solid #edf0ea;':''}${highlight?'background:#f6fbf7;':''}`,
+        badgeStyle: `display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:${highlight?'#1f8a53':'#e2e6e0'};color:${highlight?'#fff':'#5c6b62'};font-size:11.5px;font-weight:800`,
+        actorPillStyle: `display:inline-block;font-size:11.5px;font-weight:700;color:#fff;background:${this.actorColor(s.type)};padding:4px 9px;border-radius:6px`
+      };
+    });
+
+    return {
+      screen,
+      isWorkflow: screen === 'workflow',
+      isDashboard: screen === 'dashboard',
+      isMyTasks: screen === 'mytasks',
+      isDetail: screen === 'detail',
+      isReview: screen === 'review',
+      isReviewA: this.state.reviewTab === 'A',
+      isReviewB: this.state.reviewTab === 'B',
+      isReviewC: this.state.reviewTab === 'C',
+      isReviewD: this.state.reviewTab === 'D',
+      goToWorkflow: () => this.setState({ screen: 'workflow' }),
+      goToDashboard: () => this.setState({ screen: 'dashboard' }),
+      goToMyTasks: () => this.setState({ screen: 'mytasks' }),
+      goToDetail: () => this.setState({ screen: 'detail' }),
+      goToReview: () => this.setState({ screen: 'review' }),
+      setRoleSubmitter: () => this.setState({ role: 'submitter' }),
+      setRoleCentral: () => this.setState({ role: 'central' }),
+      setRoleExecutive: () => this.setState({ role: 'executive' }),
+      setReviewTabA: () => this.setState({ reviewTab: 'A' }),
+      setReviewTabB: () => this.setState({ reviewTab: 'B' }),
+      setReviewTabC: () => this.setState({ reviewTab: 'C' }),
+      setReviewTabD: () => this.setState({ reviewTab: 'D' }),
+      navStyle: {
+        workflow: this.navBtnStyle(screen==='workflow'),
+        dashboard: this.navBtnStyle(screen==='dashboard'),
+        mytasks: this.navBtnStyle(screen==='mytasks'),
+        detail: this.navBtnStyle(screen==='detail'),
+        review: this.navBtnStyle(screen==='review')
+      },
+      roleBtnStyle: {
+        submitter: this.roleBtnStyle(this.state.role==='submitter'),
+        central: this.roleBtnStyle(this.state.role==='central'),
+        executive: this.roleBtnStyle(this.state.role==='executive')
+      },
+      reviewTabStyle: {
+        A: this.reviewTabBtnStyle(this.state.reviewTab==='A'),
+        B: this.reviewTabBtnStyle(this.state.reviewTab==='B'),
+        C: this.reviewTabBtnStyle(this.state.reviewTab==='C'),
+        D: this.reviewTabBtnStyle(this.state.reviewTab==='D')
+      },
+      overall, categories, myItems, workflowSteps
+    };
+  }
+}
+
+</script>
+
+
+</body></html>

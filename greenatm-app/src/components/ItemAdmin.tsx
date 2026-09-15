@@ -68,27 +68,27 @@ export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel,
     }
   };
 
-  const field = "rounded-md border border-[var(--line)] bg-[var(--card)] px-2 py-1.5 text-[13px]";
+  const field = "ga-input";
 
   return (
     <div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div style={{ display: "grid", gap: 12, gridTemplateColumns: "repeat(auto-fit, minmax(230px, 1fr))" }}>
         {canManage && (
-          <label className="text-[12.5px] sm:col-span-2">
-            <span className="block text-[var(--muted)]">ชื่อหัวข้อ</span>
-            <input value={nm} onChange={(e) => setNm(e.target.value)} className={`mt-1 w-full ${field}`} />
+          <label style={{ fontSize: 12.5, gridColumn: "1 / -1" }}>
+            <span style={{ display: "block", color: "var(--muted)" }}>ชื่อหัวข้อ</span>
+            <input value={nm} onChange={(e) => setNm(e.target.value)} className={field} style={{ marginTop: 4, width: "100%" }} />
           </label>
         )}
 
         {canManage && (
-          <label className="text-[12.5px]">
-            <span className="block text-[var(--muted)]">ผู้รับผิดชอบ</span>
-            <select value={ow} onChange={(e) => setOw(e.target.value)} className={`mt-1 w-full ${field}`}>
+          <label style={{ fontSize: 12.5 }}>
+            <span style={{ display: "block", color: "var(--muted)" }}>ผู้รับผิดชอบ</span>
+            <select value={ow} onChange={(e) => setOw(e.target.value)} className={field} style={{ marginTop: 4, width: "100%" }}>
               <option value="">— ยังไม่มอบหมาย —</option>
               {candidates.map((c) => <option key={c.id} value={c.id}>{c.title}</option>)}
             </select>
             {candidates.length === 0 && (
-              <span className="mt-1 block text-[11.5px]" style={{ color: "var(--warn)" }}>
+              <span style={{ marginTop: 4, display: "block", fontSize: 11.5, color: "var(--warn-ink)" }}>
                 กองนี้ยังไม่มีผู้ใช้บทบาทเจ้าของข้อมูลในระบบ — ต้องเพิ่มผู้ใช้ก่อนจึงมอบหมายได้
               </span>
             )}
@@ -96,9 +96,9 @@ export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel,
         )}
 
         {canSetTarget && (
-          <label className="text-[12.5px]">
-            <span className="block text-[var(--muted)]">เป้าระดับของปีนี้</span>
-            <select value={tgt} onChange={(e) => setTgt(Number(e.target.value))} className={`mt-1 w-full ${field}`}>
+          <label style={{ fontSize: 12.5 }}>
+            <span style={{ display: "block", color: "var(--muted)" }}>เป้าระดับของปีนี้</span>
+            <select value={tgt} onChange={(e) => setTgt(Number(e.target.value))} className={field} style={{ marginTop: 4, width: "100%" }}>
               {[1, 2, 3, 4, 5].map((L) => (
                 <option key={L} value={L} disabled={L < ach}>
                   ระดับ {L}
@@ -111,9 +111,9 @@ export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel,
         )}
 
         {canManage && (
-          <label className="text-[12.5px]">
-            <span className="block text-[var(--muted)]">ระดับที่ได้</span>
-            <select value={ach} onChange={(e) => setAch(Number(e.target.value))} className={`mt-1 w-full ${field}`}>
+          <label style={{ fontSize: 12.5 }}>
+            <span style={{ display: "block", color: "var(--muted)" }}>ระดับที่ได้</span>
+            <select value={ach} onChange={(e) => setAch(Number(e.target.value))} className={field} style={{ marginTop: 4, width: "100%" }}>
               {[0, 1, 2, 3, 4, 5].map((L) => (
                 <option key={L} value={L} disabled={L > tgt || (L > achievedLevel && !hasConfirmedEvidence)}>
                   {L === 0 ? "0 — ยังไม่ถึงระดับ 1" : `ระดับ ${L}`}
@@ -123,7 +123,7 @@ export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel,
               ))}
             </select>
             {!hasConfirmedEvidence && (
-              <span className="mt-1 block text-[11.5px]" style={{ color: "var(--warn)" }}>
+              <span style={{ marginTop: 4, display: "block", fontSize: 11.5, color: "var(--warn-ink)" }}>
                 รายการนี้ยังไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้ว — <b>ขึ้นระดับไม่ได้</b>
                 {" "}ระดับขยับด้วยหลักฐาน ไม่ใช่ด้วยการกรอก
               </span>
@@ -132,29 +132,29 @@ export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel,
         )}
       </div>
 
-      <div className="mt-3 flex flex-wrap items-center gap-2">
+      <div style={{ marginTop: 12, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
         <button
           onClick={save}
           disabled={busy || !dirty}
-          className="rounded-md bg-[var(--accent)] px-3 py-1.5 text-[13px] font-medium text-white disabled:opacity-50"
+          className="ga-btn ga-btn-primary"
         >
           {busy ? "กำลังบันทึก…" : "บันทึกการแก้ไข"}
         </button>
         {dirty && !busy && (
           <button
             onClick={() => { setNm(name); setOw(ownerUserId ?? ""); setAch(achievedLevel); setTgt(targetLevel); setError(null); setNote(null); }}
-            className="rounded-md border border-[var(--line)] px-3 py-1.5 text-[13px]"
+            className="ga-btn ga-btn-ghost"
           >
             ย้อนกลับ
           </button>
         )}
-        <span className="text-[12px] text-[var(--muted)]">
+        <span style={{ fontSize: 12, color: "var(--muted)" }}>
           ทุกการแก้บันทึกค่าก่อน/หลังลง audit log พร้อมชื่อผู้แก้
         </span>
       </div>
 
-      {error && <p className="mt-2 text-[12.5px]" style={{ color: "var(--danger)" }}>⛔ {error}</p>}
-      {note && <p className="mt-2 text-[12.5px] text-[var(--ink2)]">{note}</p>}
+      {error && <p style={{ marginTop: 8, fontSize: 12.5, color: "var(--danger)" }}>⛔ {error}</p>}
+      {note && <p style={{ marginTop: 8, fontSize: 12.5, color: "var(--ink2)" }}>{note}</p>}
     </div>
   );
 }

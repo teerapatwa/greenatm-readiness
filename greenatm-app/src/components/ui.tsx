@@ -23,11 +23,12 @@ export const VERB: Record<string, { glyph: string; label: string; color: string 
   ESCALATE: { glyph: "⛔", label: "ยกให้ผู้ดูแลตัดสิน", color: "#c0392b" },
 };
 
-export function Card({ children, tone, className = "", pad }: {
+export function Card({ children, tone, className = "", pad, style }: {
   children: React.ReactNode;
   tone?: "warn" | "danger" | "ok";
   className?: string;
   pad?: string;
+  style?: React.CSSProperties;
 }) {
   const bg = tone === "warn" ? "var(--warn-bg)" : tone === "danger" ? "var(--danger-bg)"
     : tone === "ok" ? "var(--ok-bg)" : "var(--card)";
@@ -36,6 +37,7 @@ export function Card({ children, tone, className = "", pad }: {
   return (
     <div className={className} style={{
       background: bg, border: `1px solid ${bd}`, borderRadius: 12, padding: pad ?? "20px 22px",
+      ...style,
     }}>
       {children}
     </div>
@@ -320,5 +322,160 @@ export function Empty({ children }: { children: React.ReactNode }) {
     }}>
       {children}
     </p>
+  );
+}
+
+/** สถานะ pill — ไฟล์ทีมมีคอลัมน์ `สถานะ` ในหน้างานของฉัน */
+export const STATUS_STYLE: Record<string, { glyph: string; label: string; fg: string; bg: string; bd: string }> = {
+  on_track: { glyph: "●", label: "ตามแผน",    fg: "#166b40", bg: "var(--ok-bg)",     bd: "var(--ok-line)" },
+  at_risk:  { glyph: "▲", label: "เสี่ยง",     fg: "var(--warn-ink)", bg: "var(--warn-bg)", bd: "var(--warn-line)" },
+  delayed:  { glyph: "⛔", label: "ช้ากว่าแผน", fg: "var(--danger)", bg: "var(--danger-bg)", bd: "var(--danger-line)" },
+};
+
+export function StatusPill({ status, title }: { status: string; title?: string }) {
+  const s = STATUS_STYLE[status] ?? STATUS_STYLE.on_track;
+  return (
+    <span title={title} style={{
+      display: "inline-flex", alignItems: "center", gap: 4, whiteSpace: "nowrap",
+      background: s.bg, border: `1px solid ${s.bd}`, color: s.fg,
+      borderRadius: 999, padding: "2px 9px", fontSize: 11.5, fontWeight: 700,
+    }}>
+      <span aria-hidden>{s.glyph}</span>{s.label}
+    </span>
+  );
+}
+
+/** ความคืบหน้า (milestone) แบบไฟล์ทีม — ชื่อ+% แล้วแถบ 6px */
+export function MilestoneBars({ milestones, today }: { milestones: Milestone[]; today: string }) {
+  if (milestones.length === 0) {
+    return <p style={{ margin: 0, fontSize: 13, color: "var(--muted)" }}>
+      ยังไม่มีแผนงานย่อย — เพิ่มขั้นได้ที่ปุ่มด้านล่าง
+    </p>;
+  }
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      {milestones.map((m) => {
+        const late = m.plannedEnd < today && m.percentComplete < 100;
+        const fill = m.percentComplete === 100 ? "var(--accent)"
+          : late ? "var(--danger)" : "var(--l3)";
+        return (
+          <div key={m.seq}>
+            <div style={{
+              display: "flex", justifyContent: "space-between", gap: 8,
+              fontSize: 12.5, marginBottom: 4,
+            }}>
+              <span>{m.seq}. {m.name}{late && <span style={{ color: "var(--danger)" }}> ⛔</span>}</span>
+              <span className="tnum" style={{ fontWeight: 700 }}>{m.percentComplete}%</span>
+            </div>
+            <div style={{ height: 6, background: "var(--l1)", borderRadius: 3, overflow: "hidden" }}>
+              <div style={{ height: "100%", width: `${m.percentComplete}%`, background: fill }} />
+            </div>
+            <div style={{ fontSize: 11, color: "var(--muted2)", marginTop: 3 }}>
+              แผน {m.plannedStart} → {m.plannedEnd}
+              {m.actualEnd ? ` · เสร็จจริง ${m.actualEnd}` : late ? " · เลยกำหนดแล้ว" : ""}
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/** กล่องหลักฐานแบบไฟล์ทีม — ชั้น A/B พื้นเขียวอ่อน ชั้นอื่นพื้นเทา */
+export function EvidenceCard({ e, hasFile, children }: {
+  e: Evidence; hasFile?: boolean; children?: React.ReactNode;
+}) {
+  const tier = e.confirmedTier ?? e.proposedTier;
+  const good = tier === "A" || tier === "B";
+  const TIER_GLYPH: Record<string, string> = { A: "◆", B: "◇", C: "○", D: "✕" };
+  const glyph = TIER_GLYPH[tier ?? ""] ?? "•";
+  const color = tier ? `var(--tier-${tier.toLowerCase()})` : "var(--muted2)";
+  return (
+    <div style={{
+      border: `1px solid ${good ? "var(--ok-line)" : "var(--line)"}`,
+      background: good ? "#f6fbf7" : "var(--fill2)",
+      borderRadius: 10, padding: 14, marginBottom: 12,
+    }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 10 }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontWeight: 600, color: "var(--ink)", fontSize: 13, wordBreak: "break-word" }}>
+            [{e.id}] {e.title}
+            {hasFile
+              ? <> · <a href={`/api/evidence/${e.id}/file`} target="_blank" rel="noopener"
+                  style={{ fontWeight: 600 }}>เปิดไฟล์</a></>
+              : <span style={{ color: "var(--muted2)", fontWeight: 400 }}> · ไม่มีไฟล์แนบ มีแต่ชื่อเรื่อง</span>}
+          </div>
+          <div style={{ fontSize: 12, color: "var(--muted2)", marginTop: 2 }}>
+            อัปโหลด {e.uploadDate} · วันที่ในเอกสาร{" "}
+            {e.documentDate ?? <b style={{ color: "var(--warn-ink)" }}>ไม่พบ — ระบบถาม ไม่เดา</b>}
+          </div>
+        </div>
+        <div style={{
+          display: "flex", alignItems: "center", gap: 6, color,
+          fontWeight: 800, fontSize: 14, flex: "none",
+        }}>
+          <span aria-hidden>{glyph}</span>{tier ?? "?"}
+        </div>
+      </div>
+      {e.proposedReason && (
+        <div style={{ fontSize: 12.5, color: "#3d4a43", marginTop: 10, lineHeight: 1.6 }}>
+          เหตุผลจาก Agent: {e.proposedReason}
+        </div>
+      )}
+      <div style={{ fontSize: 11.5, color: "var(--muted2)", marginTop: 6 }}>
+        {e.confirmedTier
+          ? `ยืนยันชั้น ${e.confirmedTier} แล้วโดย ${e.confirmedBy}`
+          : "agent เสนอ · รอทีมกลางยืนยัน — ค่า Verified ยังไม่ขยับ"}
+      </div>
+      {children && <div style={{ marginTop: 12 }}>{children}</div>}
+    </div>
+  );
+}
+
+/** "ยังขาดอะไร" — ขีดฆ่าข้อที่ครบแล้วแบบไฟล์ทีม */
+export function GapChecklist({ gaps }: { gaps: { text: string; done: boolean }[] }) {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 13 }}>
+      {gaps.map((g, i) => (
+        <div key={i} style={{
+          display: "flex", gap: 8, alignItems: "flex-start",
+          color: g.done ? "var(--muted2)" : "var(--ink)",
+          textDecoration: g.done ? "line-through" : "none",
+        }}>
+          <span aria-hidden style={{ marginTop: 1, flex: "none" }}>{g.done ? "✓" : "☐"}</span>
+          <span>{g.text}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/** "ประวัติ" จาก audit_log */
+export function HistoryList({ rows }: {
+  rows: { actor: string; action: string; before: string | null; after: string | null; at: string }[];
+}) {
+  if (rows.length === 0) {
+    return <p style={{ margin: 0, fontSize: 12, color: "var(--muted)" }}>
+      ยังไม่มีการเปลี่ยนค่าในรายการนี้
+    </p>;
+  }
+  const label: Record<string, string> = {
+    confirm_progress: "ยืนยันความคืบหน้า", add_evidence: "แนบหลักฐาน",
+    attach_file: "แนบไฟล์", confirm_tier: "ยืนยันชั้นหลักฐาน",
+    set_evidence_date: "ระบุวันที่เอกสาร", delete_evidence: "ลบหลักฐาน",
+    add_milestone: "เพิ่มขั้นแผนงาน", update_milestone: "แก้แผนงาน",
+    delete_milestone: "ลบขั้นแผนงาน", record_slip: "เลื่อนแผน",
+    delete_slip: "ลบประวัติการเลื่อน", set_target_level: "ตั้งเป้าระดับ",
+    set_achieved_level: "ปรับระดับที่ได้", update_item_meta: "แก้ข้อมูลรายการ",
+  };
+  return (
+    <div style={{ fontSize: 12, color: "var(--muted)", lineHeight: 1.7 }}>
+      {rows.map((h, i) => (
+        <div key={i}>
+          {h.at.slice(5, 10)} — {label[h.action] ?? h.action}{" "}
+          <span style={{ color: "var(--muted2)" }}>โดย {h.actor}</span>
+        </div>
+      ))}
+    </div>
   );
 }

@@ -1,6 +1,8 @@
 import { currentUser, requireAbility, requireItemWriteAccess } from "@/lib/auth/session";
 import { HttpError } from "@/lib/auth/session";
-import { confirmTier, evidence, setEvidenceDate } from "@/lib/db/queries";
+import fs from "node:fs";
+import path from "node:path";
+import { confirmTier, deleteEvidence, evidence, setEvidenceDate } from "@/lib/db/queries";
 import { fail, jsonBody, ok, str } from "@/lib/http";
 
 export const dynamic = "force-dynamic";
@@ -47,6 +49,32 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     }
 
     throw new HttpError(400, "ต้องส่ง documentDate หรือ tier อย่างน้อยหนึ่งอย่าง");
+  } catch (e) {
+    return fail(e);
+  }
+}
+
+/**
+ * ลบหลักฐาน — ทีมกลางเท่านั้น
+ *
+ * ของจริงต้องลบเอกสารที่แนบผิดได้ · และการมีเส้นทางนี้ทำให้ชุดทดสอบคืนสภาพตัวเองได้
+ * ซึ่งเป็นเหตุให้ verify:seed กับ verify:app รันสลับลำดับกันได้โดยไม่พัง
+ */
+export async function DELETE(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await ctx.params;
+    const u = await currentUser();
+    requireAbility(u, "confirm_tier");
+    const row = deleteEvidence(id, u.id);
+    let fileRemoved = false;
+    if (row.storedPath) {
+      const abs = path.resolve(process.cwd(), row.storedPath);
+      if (abs.startsWith(path.resolve(process.cwd()) + path.sep) && fs.existsSync(abs)) {
+        fs.rmSync(abs);
+        fileRemoved = true;
+      }
+    }
+    return ok({ deleted: id, itemCode: row.itemCode, fileRemoved });
   } catch (e) {
     return fail(e);
   }

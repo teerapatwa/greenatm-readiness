@@ -25,6 +25,7 @@ export function db(): DatabaseSync {
   const opened = new DatabaseSync(DB_PATH);
   try {
     opened.exec(SCHEMA);
+    migrate(opened);
     if (fresh) seedInto(opened);
   } catch (err) {
     // อย่าเก็บ connection ที่ seed ไม่สำเร็จไว้เป็น singleton
@@ -51,6 +52,20 @@ export function resetDatabase() {
 
 export function dbPath() {
   return DB_PATH;
+}
+
+/**
+ * เพิ่มคอลัมน์ที่ตามมาทีหลัง — `CREATE TABLE IF NOT EXISTS` ไม่แก้ตารางที่มีอยู่แล้ว
+ *
+ * ถ้าไม่มีขั้นนี้ ฐานข้อมูลที่สร้างไว้ก่อนจะพังตอน query คอลัมน์ใหม่
+ * และคนที่ไม่ได้ `db:reset` จะเจอ error ที่อ่านไม่ออกว่าเพราะอะไร
+ */
+function migrate(d: DatabaseSync) {
+  const cols = (d.prepare("PRAGMA table_info(evidence)").all() as { name: string }[])
+    .map((c) => c.name);
+  if (!cols.includes("stored_path")) {
+    d.exec("ALTER TABLE evidence ADD COLUMN stored_path TEXT");
+  }
 }
 
 function seedInto(d: DatabaseSync) {

@@ -86,6 +86,25 @@ export function TargetDots({ code, achieved, target, lastYear, editable }: {
           สูงกว่าปีที่แล้ว ({lastYear})
         </div>
       )}
+      {/*
+        เมื่อไม่มีปุ่มไหนกดได้เลย ต้องบอกเหตุผล — ปุ่มที่กดไม่ได้และไม่อธิบาย
+        ทำให้คนเข้าใจว่าระบบพัง ทั้งที่กติกาทำงานถูก
+      */}
+      {editable && achieved >= 5 && (
+        <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 3 }}>
+          ถึงระดับสูงสุด (5) แล้ว — ไม่มีเป้าอื่นให้ตั้ง
+        </div>
+      )}
+      {editable && achieved < 5 && target === achieved && (
+        <div style={{ fontSize: 10.5, color: "var(--muted)", marginTop: 3 }}>
+          เป้าเท่ากับระดับที่ได้แล้ว · กดระดับ {achieved + 1}–5 เพื่อตั้งเป้าให้สูงขึ้น
+        </div>
+      )}
+      {editable && achieved > 1 && (
+        <div style={{ fontSize: 10, color: "var(--muted2)", marginTop: 2 }}>
+          ระดับ 1–{achieved - 1} กดไม่ได้ เพราะได้ไปแล้ว
+        </div>
+      )}
       {error && (
         <div style={{ fontSize: 11, color: "var(--danger)", marginTop: 3, maxWidth: 190 }}>
           ⛔ {error}

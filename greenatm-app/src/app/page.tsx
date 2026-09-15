@@ -236,7 +236,9 @@ export default async function HomePage() {
                         <div>
                           <LevelSegments achieved={i.achievedLevel} percentWithinNext={i.percentWithinNextLevel} />
                           <div style={{ fontSize: 10.5, color: "var(--muted2)", marginTop: 3 }}>
-                            ไประดับถัดไป {i.percentWithinNextLevel}%
+                            {i.achievedLevel >= 5
+                              ? "ระดับสูงสุดแล้ว"
+                              : `ระดับ ${i.achievedLevel} · งานของระดับ ${i.achievedLevel + 1} ทำได้ ${i.percentWithinNextLevel}%`}
                           </div>
                         </div>
 
@@ -288,12 +290,31 @@ export default async function HomePage() {
         );
       })}
 
-      <p style={{ fontSize: 11.5, color: "var(--muted2)", marginTop: 4 }}>
-        คอลัมน์ “คาดการณ์” คือการฉายภาพจากอัตราปีเดียว <b>ไม่ใช่คำมั่น</b> —{" "}
-        {hasAbility(u.role, "set_target_level")
-          ? "กดตัวเลขในคอลัมน์ “เป้าปีนี้” เพื่อตั้งเป้าได้เลย"
-          : "การตั้งเป้าเป็นของทีมกลางและผู้บริหาร"}
-      </p>
+      <Card style={{ marginTop: 4 }} pad="14px 18px">
+        <div className="ga-label" style={{ marginBottom: 6 }}>อ่านตารางนี้อย่างไร</div>
+        <ul style={{ margin: 0, paddingLeft: 16, fontSize: 12, color: "var(--ink2)", lineHeight: 1.85 }}>
+          <li>
+            <b>สถานะปัจจุบัน</b> — ช่องทึบ = ระดับที่ได้แล้ว · ช่องถัดไปที่เติมบางส่วน =
+            <b> งานของระดับถัดไปทำไปแล้วกี่เปอร์เซ็นต์</b> เช่น “ระดับ 2 · งานของระดับ 3 ทำได้ 30%”
+            หมายถึงยังได้ระดับ 2 อยู่ แต่เกณฑ์ของระดับ 3 เดินไปแล้ว 30%
+            <br />
+            <span style={{ color: "var(--muted)" }}>
+              เปอร์เซ็นต์นี้<b>ไม่ทำให้ระดับขึ้นเอง</b> — ถึง 100% ก็ยังต้องมีหลักฐานชั้น A/B
+              ที่ทีมกลางยืนยันก่อน (เคสทดสอบ AC-01)
+            </span>
+          </li>
+          <li>
+            <b>เป้าปีนี้</b> — ระดับที่ทีมกลางตั้งไว้ว่าปีนี้ต้องไปถึง ·
+            {hasAbility(u.role, "set_target_level")
+              ? " กดตัวเลขเพื่อตั้งได้เลย · ระดับที่ต่ำกว่าระดับที่ได้แล้วกดไม่ได้"
+              : " การตั้งเป้าเป็นของทีมกลางและผู้บริหาร"}
+          </li>
+          <li>
+            <b>คาดการณ์</b> — ฉายภาพ 1 ปีจากอัตราของปีที่ผ่านมา <b>ไม่ใช่คำมั่น</b> ·
+            ดูสมมติฐานทั้งหมดที่หน้าแนวโน้ม
+          </li>
+        </ul>
+      </Card>
     </Shell>
   );
 }

@@ -297,6 +297,7 @@ try {
   group("§5.5 · ทีมกลางแก้หัวข้อ · มอบหมายผู้รับผิดชอบ · ตั้งเป้า (ที่ผู้ใช้แจ้งว่าทำไม่ได้)");
   const orphan = mod.items.find((i) => !i.ownerUserId);
   t(`ยังมีรายการที่ไม่มีเจ้าของให้มอบหมาย (${orphan?.code})`, !!orphan);
+  const origOrphan = { target: orphan.targetLevel, name: orphan.name };
   const modTarget = await as("u-mod", `/api/items/${orphan.code}`, {
     method: "PATCH", body: JSON.stringify({ targetLevel: 4 }),
   });
@@ -304,7 +305,7 @@ try {
   t("เป้าเปลี่ยนเป็น 4 จริง", modTarget.body?.item?.targetLevel === 4, modTarget.body?.item?.targetLevel);
 
   const rename = await as("u-mod", `/api/items/${orphan.code}`, {
-    method: "PATCH", body: JSON.stringify({ name: orphan.name + " (ปรับชื่อโดยทีมกลาง)" }),
+    method: "PATCH", body: JSON.stringify({ name: origOrphan.name + " (ปรับชื่อโดยทีมกลาง)" }),
   });
   t("ผู้ดูแลแก้ชื่อหัวข้อได้", rename.status === 200, rename.body?.error);
   t("ชื่อใหม่ถูกบันทึก", rename.body?.item?.name?.includes("ปรับชื่อโดยทีมกลาง"));
@@ -341,19 +342,49 @@ try {
     (i) => i.achievedLevel < 5 &&
       mod.evidence.some((e) => e.itemCode === i.code && (e.confirmedTier === "A" || e.confirmedTier === "B")));
   if (withEv) {
+    // เก็บค่าเดิมไว้คืนทีหลัง — เทสต์ต้องไม่ทำข้อมูลเดโมเพี้ยนเมื่อรันซ้ำ
+    const orig = { achieved: withEv.achievedLevel, target: withEv.targetLevel };
     await as("u-mod", `/api/items/${withEv.code}`, {
       method: "PATCH", body: JSON.stringify({ targetLevel: 5 }),
     });
     const raiseOk = await as("u-mod", `/api/items/${withEv.code}`, {
-      method: "PATCH", body: JSON.stringify({ achievedLevel: withEv.achievedLevel + 1 }),
+      method: "PATCH", body: JSON.stringify({ achievedLevel: orig.achieved + 1 }),
     });
     t(`ขึ้นระดับ ${withEv.code} ได้เพราะมีหลักฐานยืนยันรองรับ`, raiseOk.status === 200, raiseOk.body?.error);
-    t("ระดับใหม่ถูกบันทึก", raiseOk.body?.item?.achievedLevel === withEv.achievedLevel + 1);
+    t("ระดับใหม่ถูกบันทึก", raiseOk.body?.item?.achievedLevel === orig.achieved + 1);
+    // คืนค่าเดิม: ต้องลดระดับก่อน แล้วจึงลดเป้า (เป้าห้ามต่ำกว่าระดับที่ได้)
+    await as("u-mod", `/api/items/${withEv.code}`, {
+      method: "PATCH", body: JSON.stringify({ achievedLevel: orig.achieved }),
+    });
+    await as("u-mod", `/api/items/${withEv.code}`, {
+      method: "PATCH", body: JSON.stringify({ targetLevel: orig.target }),
+    });
+    const restored = (await state("u-mod")).items.find((i) => i.code === withEv.code);
+    t(`คืนค่า ${withEv.code} กลับเป็นเดิมแล้ว — รันเทสต์ซ้ำได้ไม่ทำข้อมูลเพี้ยน`,
+      restored.achievedLevel === orig.achieved && restored.targetLevel === orig.target,
+      `ได้ ${restored.achievedLevel}/${restored.targetLevel} ต้องได้ ${orig.achieved}/${orig.target}`);
   }
   const overTarget = await as("u-mod", `/api/items/${noEv.code}`, {
     method: "PATCH", body: JSON.stringify({ targetLevel: 2, achievedLevel: 5 }),
   });
   t("ระดับที่ได้สูงกว่าเป้า → ปฏิเสธ", overTarget.status >= 400, overTarget.body?.error);
+
+  // คืนค่าที่เทสต์กลุ่มนี้แก้ไว้ ให้ข้อมูลเดโมกลับเป็นเดิม
+  await as("u-mod", `/api/items/${orphan.code}`, {
+    method: "PATCH", body: JSON.stringify({ name: origOrphan.name, targetLevel: origOrphan.target }),
+  });
+  await as("u-mod", `/api/items/${noEv.code}`, {
+    method: "PATCH", body: JSON.stringify({ targetLevel: noEv.targetLevel }),
+  });
+  await as("u-exec", `/api/items/${itemForTarget.code}`, {
+    method: "PATCH", body: JSON.stringify({ targetLevel: itemForTarget.targetLevel }),
+  });
+  const back = await state("u-mod");
+  t("คืนค่าทุกรายการที่เทสต์แก้ กลับเป็นเดิมครบ",
+    back.items.find((i) => i.code === orphan.code).name === origOrphan.name &&
+    back.items.find((i) => i.code === orphan.code).targetLevel === origOrphan.target &&
+    back.items.find((i) => i.code === noEv.code).targetLevel === noEv.targetLevel &&
+    back.items.find((i) => i.code === itemForTarget.code).targetLevel === itemForTarget.targetLevel);
 
   // ── AC-26 · ถึงเป้าแต่ไม่มีหลักฐาน ห้ามขึ้น complete ─────────────────────
   group("AC-26 ⭐ · ถึงเป้าแต่ไม่มีหลักฐาน ห้ามขึ้นว่าเสร็จสมบูรณ์");
@@ -379,6 +410,37 @@ try {
   t("ข้อมูลอ่านจากฐานข้อมูลไม่ใช่ไฟล์ seed คงที่",
     (await state("u-mod")).evidence.length > 14,
     `${(await state("u-mod")).evidence.length} ฉบับ (seed มี 14)`);
+
+  /*
+    คืนค่า milestone กลับเป็นค่าเดิม
+    ถ้าไม่คืน: ขั้นที่เคย 100% จะค้างที่ 95% → กลายเป็น "เลยกำหนดแผน"
+    → เกิดแจ้งเตือน A-MILESTONE เพิ่ม → verify:seed ที่ยืนยันจำนวนแจ้งเตือนแบบเป๊ะจะไม่ผ่าน
+    เทสต์ต้องไม่ทำให้เทสต์อีกชุดพัง
+  */
+  const back1 = await as("u-owner3", `/api/items/${targetItem}/progress`, {
+    method: "POST",
+    body: JSON.stringify({ field: "milestone_percent", milestoneSeq: seq, percent: before }),
+  });
+  await as("u-owner3", `/api/pending/${back1.body.pending.id}`, { method: "POST" });
+  const restoredMs = (await state("u-owner3")).myItems.find((i) => i.code === targetItem);
+  t(`คืนค่า milestone ${targetItem} ขั้นที่ ${seq} กลับเป็น ${before}%`,
+    restoredMs.milestones.find((m) => m.seq === seq).percentComplete === before,
+    `ได้ ${restoredMs.milestones.find((m) => m.seq === seq).percentComplete}`);
+
+  const pctBack = await as("u-owner3", `/api/items/${targetItem}/progress`, {
+    method: "POST",
+    body: JSON.stringify({
+      field: "percent_within_next_level",
+      percent: mineBefore.percentWithinNextLevel,
+    }),
+  });
+  await as("u-owner3", `/api/pending/${pctBack.body.pending.id}`, { method: "POST" });
+  t("คืนค่า % ไประดับถัดไปกลับเป็นเดิม",
+    (await state("u-owner3")).myItems.find((i) => i.code === targetItem)
+      .percentWithinNextLevel === mineBefore.percentWithinNextLevel);
+
+  const alertsNow = (await state("u-mod")).alerts.filter((a) => a.rule === "A-MILESTONE").length;
+  t(`ไม่สร้างแจ้งเตือน milestone เพิ่มจากการทดสอบ (${alertsNow} ฉบับ)`, alertsNow === 2, alertsNow);
 
   group("§4.3.1 · เมนูตามบทบาท");
   t("เจ้าของข้อมูลเข้า “งานของฉัน” ได้",
@@ -412,6 +474,260 @@ try {
         shouldBlock ? `blocked=${blocked}` : "");
     }
   }
+
+  // ── สถานะ On Track / At Risk / Delayed (R5 · เดิมไม่มีเลย) ───────────────
+  group("R5 · สถานะที่โค้ดคำนวณ · at_risk_threshold_points ต้องมีคนอ่าน");
+  const sv = await state("u-mod");
+  t("ทุกรายการมีสถานะ", sv.items.every((i) => ["on_track", "at_risk", "delayed"].includes(i.status)));
+  t("ทุกรายการมี expected (ความคืบหน้าที่ควรได้ตามปฏิทิน)",
+    sv.items.every((i) => typeof i.expected === "number"));
+  const lateMs = sv.items.filter((i) =>
+    i.milestones.some((m) => m.plannedEnd < sv.meta.today && m.percentComplete < 100));
+  t(`ข้อที่มีแผนงานเลยกำหนด ต้องเป็น delayed (${lateMs.length} ข้อ)`,
+    lateMs.length > 0 && lateMs.every((i) => i.status === "delayed"),
+    lateMs.map((i) => `${i.code}:${i.status}`).join(" "));
+  /*
+    ทดสอบว่า at_risk_threshold_points "มีคนอ่านจริง" โดยไม่ผูกกับการกระจายตัวของข้อมูล
+
+    วิธีเดิมที่ผิด: ลดเกณฑ์เป็น 1 แล้วคาดว่าจำนวนต้องเปลี่ยน — ใช้ไม่ได้ เพราะช่องว่าง
+    ของข้อมูลชุดนี้เป็น 0 หรือ ~18 ไม่มีข้อไหนอยู่ระหว่าง 1–15 จำนวนจึงไม่เปลี่ยน
+    วิธีนี้: ตั้งเกณฑ์ให้ต่ำกว่าช่องว่างที่เล็กที่สุด และสูงกว่าช่องว่างที่ใหญ่ที่สุด
+    แล้วดูว่าผลพลิกทั้งสองทาง
+  */
+  const origThreshold = sv.settings.at_risk_threshold_points;
+  const notDelayed = sv.items.filter((i) => i.status !== "delayed");
+  const gaps = notDelayed.map((i) => i.expected - i.progress).filter((g) => g > 0);
+  const maxGap = gaps.length ? Math.max(...gaps) : 0;
+  t(`มีข้อที่ตามหลังปฏิทิน (ช่องว่างสูงสุด ${maxGap} จุด)`, maxGap > 0, maxGap);
+
+  const setTh = (v) => as("u-mod", "/api/settings", {
+    method: "PATCH", body: JSON.stringify({ key: "at_risk_threshold_points", value: v }),
+  });
+  const riskCount = async () =>
+    (await state("u-mod")).items.filter((i) => i.status === "at_risk").length;
+
+  await setTh(Math.max(1, maxGap - 1));
+  const lowCount = await riskCount();
+  t(`ตั้งเกณฑ์ต่ำกว่าช่องว่างสูงสุด → มีข้อขึ้น at_risk (${lowCount} ข้อ)`, lowCount > 0, lowCount);
+
+  await setTh(maxGap + 5);
+  const highCount = await riskCount();
+  t(`ตั้งเกณฑ์สูงกว่าช่องว่างทุกข้อ → ไม่มีข้อไหน at_risk (${highCount} ข้อ)`, highCount === 0, highCount);
+
+  const ownerTh = await as("u-owner1", "/api/settings", {
+    method: "PATCH", body: JSON.stringify({ key: "at_risk_threshold_points", value: 99 }),
+  });
+  t("เจ้าของข้อมูลแก้เกณฑ์นี้ -> 403", ownerTh.status === 403, `ได้ ${ownerTh.status}`);
+
+  // คืนค่าที่อ่านมาจริง ไม่ใช่ตัวเลขที่เขียนตายไว้ — บทเรียนจากบั๊กเดิม
+  await setTh(origThreshold);
+  t(`คืนเกณฑ์กลับเป็น ${origThreshold} และจำนวน at_risk กลับเดิม (${riskBeforeRestore()})`,
+    (await riskCount()) === sv.items.filter((i) => i.status === "at_risk").length);
+  function riskBeforeRestore() {
+    return sv.items.filter((i) => i.status === "at_risk").length;
+  }
+
+  group("ยังขาดอะไร (gapsFor) — แผงของไฟล์ทีมที่เดิมไม่มีข้อมูล");
+  t("ทุกรายการมีรายการ gap", sv.items.every((i) => Array.isArray(i.gaps) && i.gaps.length > 0));
+  t("ข้อที่ไม่มีหลักฐาน ต้องมี gap ที่ยังไม่ครบ",
+    sv.items.filter((i) => i.evidenceCount === 0)
+      .every((i) => i.gaps.some((g) => !g.done && /หลักฐาน/.test(g.text))));
+  t("ข้อที่มีหลักฐานยืนยันแล้ว gap ข้อนั้นถูกขีดฆ่า",
+    sv.items.filter((i) => i.verified > 0)
+      .every((i) => i.gaps.some((g) => g.done && /ชั้น A/.test(g.text))));
+
+  // ── แผนงาน: เพิ่ม / แก้ / ลบ ─────────────────────────────────────────────
+  group("แก้แผนงาน — เพิ่ม · แก้ชื่อ · ลบ (ที่ผู้ใช้แจ้งว่าทำไม่ได้)");
+  const own3 = await state("u-owner3");
+  const target = own3.myItems.find((i) => i.milestones.length === 3);
+  const msBefore = target.milestones.length;
+  const progBefore = target.progress;
+
+  const addMs = await as("u-owner3", `/api/items/${target.code}/milestones`, {
+    method: "POST",
+    body: JSON.stringify({ name: "ขั้นทดสอบจากชุดทดสอบ", plannedStart: "2027-03-01", plannedEnd: "2027-04-30" }),
+  });
+  t("เพิ่มขั้นในแผนงานได้", addMs.status === 201, addMs.body?.error);
+  const newSeq = addMs.body?.seq;
+  const afterAdd = (await state("u-owner3")).myItems.find((i) => i.code === target.code);
+  t(`จำนวนขั้นเพิ่มจาก ${msBefore} เป็น ${afterAdd.milestones.length}`,
+    afterAdd.milestones.length === msBefore + 1);
+  t("น้ำหนักถูกเกลี่ยเท่ากันใหม่",
+    new Set(afterAdd.milestones.map((m) => m.weight)).size === 1,
+    afterAdd.milestones.map((m) => m.weight).join(" "));
+  t(`ความคืบหน้ารวมเปลี่ยนตามน้ำหนักใหม่ (${progBefore}% to ${afterAdd.progress}%)`,
+    afterAdd.progress !== progBefore);
+
+  const short = await as("u-owner3", `/api/items/${target.code}/milestones`, {
+    method: "POST", body: JSON.stringify({ name: "ก", plannedStart: "2027-01-01", plannedEnd: "2027-02-01" }),
+  });
+  t("ชื่อขั้นสั้นเกินไป -> ปฏิเสธ", short.status >= 400, `ได้ ${short.status}`);
+  const badRange = await as("u-owner3", `/api/items/${target.code}/milestones`, {
+    method: "POST", body: JSON.stringify({ name: "ช่วงวันผิด", plannedStart: "2027-05-01", plannedEnd: "2027-04-01" }),
+  });
+  t("วันจบมาก่อนวันเริ่ม -> ปฏิเสธ", badRange.status >= 400, `ได้ ${badRange.status}`);
+
+  const msRename = await as("u-owner3", `/api/items/${target.code}/milestones/${newSeq}`, {
+    method: "PATCH", body: JSON.stringify({ name: "ขั้นทดสอบ (แก้ชื่อแล้ว)" }),
+  });
+  t("แก้ชื่อขั้นได้", msRename.status === 200, msRename.body?.error);
+  const pushLater = await as("u-owner3", `/api/items/${target.code}/milestones/${newSeq}`, {
+    method: "PATCH", body: JSON.stringify({ plannedEnd: "2027-12-31" }),
+  });
+  t("เลื่อนวันจบให้ช้าลงผ่าน PATCH -> ปฏิเสธ (ต้องใช้ /slips)", pushLater.status >= 400,
+    pushLater.body?.error);
+  t("เหตุผลบอกให้ใช้ปุ่มเลื่อนแผน", /เลื่อนแผน/.test(pushLater.body?.error ?? ""));
+
+  const started = afterAdd.milestones.find((m) => m.percentComplete > 0);
+  const delStarted = await as("u-owner3", `/api/items/${target.code}/milestones/${started.seq}`, {
+    method: "DELETE",
+  });
+  t(`ลบขั้นที่เริ่มแล้ว (${started.percentComplete}%) -> ปฏิเสธ`, delStarted.status >= 400,
+    delStarted.body?.error);
+
+  const crossMs = await as("u-owner1", `/api/items/${target.code}/milestones`, {
+    method: "POST",
+    body: JSON.stringify({ name: "กองอื่นพยายามเพิ่ม", plannedStart: "2027-01-01", plannedEnd: "2027-02-01" }),
+  });
+  t("เพิ่มขั้นในรายการของกองอื่น -> 403", crossMs.status === 403, `ได้ ${crossMs.status}`);
+
+  const delOk = await as("u-owner3", `/api/items/${target.code}/milestones/${newSeq}`, { method: "DELETE" });
+  t("ลบขั้นที่ยัง 0% ได้", delOk.status === 200, delOk.body?.error);
+  const restoredMsCount = (await state("u-owner3")).myItems.find((i) => i.code === target.code);
+  t(`คืนจำนวนขั้นกลับเป็น ${msBefore} และความคืบหน้ากลับเป็น ${progBefore}%`,
+    restoredMsCount.milestones.length === msBefore && restoredMsCount.progress === progBefore,
+    `${restoredMsCount.milestones.length} ขั้น · ${restoredMsCount.progress}%`);
+
+  // ── AC-22 จริง: เลื่อนแผน 3 ครั้ง ────────────────────────────────────────
+  group("AC-22 · บันทึกการเลื่อนแผน 1 -> 2 -> 3 ครั้ง จากข้อมูลจริง");
+  const clean = (await state("u-owner3")).myItems.find((i) => i.slipHistory.length === 0);
+  t("มีรายการที่ยังไม่เคยเลื่อนแผนให้ทดสอบ", !!clean, clean?.code);
+  const ms1 = clean.milestones.find((m) => m.percentComplete < 100) ?? clean.milestones[0];
+
+  const shortReason = await as("u-owner3", `/api/items/${clean.code}/slips`, {
+    method: "POST", body: JSON.stringify({ milestoneSeq: ms1.seq, toDate: "2028-01-01", reason: "สั้น" }),
+  });
+  t("เลื่อนแผนโดยเหตุผลสั้นเกินไป -> ปฏิเสธ", shortReason.status >= 400, shortReason.body?.error);
+  const earlier = await as("u-owner3", `/api/items/${clean.code}/slips`, {
+    method: "POST",
+    body: JSON.stringify({ milestoneSeq: ms1.seq, toDate: "2026-01-01", reason: "ย้อนอดีตไม่ได้" }),
+  });
+  t("เลื่อนไปวันที่เร็วกว่าเดิม -> ปฏิเสธ", earlier.status >= 400, earlier.body?.error);
+  const crossSlip = await as("u-owner1", `/api/items/${clean.code}/slips`, {
+    method: "POST",
+    body: JSON.stringify({ milestoneSeq: ms1.seq, toDate: "2028-01-01", reason: "กองอื่นพยายามเลื่อน" }),
+  });
+  t("เลื่อนแผนของกองอื่น -> 403", crossSlip.status === 403, `ได้ ${crossSlip.status}`);
+
+  const REASON = "รอผลการพิจารณางบประมาณจากสำนักงบ";
+  for (const [n, date, wantVerb, wantMod] of [
+    [1, "2027-06-30", "NOTE", false],
+    [2, "2027-08-31", "ASK", true],
+    [3, "2027-10-31", "ESCALATE", true],
+  ]) {
+    const slipRes = await as("u-owner3", `/api/items/${clean.code}/slips`, {
+      method: "POST", body: JSON.stringify({ milestoneSeq: ms1.seq, toDate: date, reason: REASON }),
+    });
+    t(`เลื่อนครั้งที่ ${n} บันทึกได้`, slipRes.status === 201, slipRes.body?.error);
+    t(`ครั้งที่ ${n} -> ${wantVerb}`, slipRes.body?.verb === wantVerb, slipRes.body?.verb);
+    t(`ครั้งที่ ${n} ${wantMod ? "ถึงผู้ดูแล" : "ไม่รบกวนผู้ดูแล"}`,
+      slipRes.body?.reachesModerator === wantMod, String(slipRes.body?.reachesModerator));
+  }
+  const withSlips = (await state("u-mod")).items.find((i) => i.code === clean.code);
+  t("Suggestion ของรายการนี้เห็นการยกระดับ", withSlips.suggestion.escalated);
+  t("แจ้งเตือน A-SLIP ของรายการนี้เป็น ESCALATE และถึงผู้ดูแล",
+    (await state("u-mod")).alerts.some((a) => a.rule === "A-SLIP" && a.itemCode === clean.code
+      && a.verb === "ESCALATE" && a.toModerator));
+  t("gap เพิ่มข้อ ชี้แจงการเลื่อนแผน",
+    withSlips.gaps.some((g) => /ชี้แจงการเลื่อนแผน/.test(g.text)));
+
+  const slipList = (await as("u-mod", `/api/items/${clean.code}/slips`)).body.slips;
+  t("อ่านประวัติการเลื่อนได้ 3 รายการ", slipList.length === 3, slipList.length);
+  const ownerDelSlip = await as("u-owner3", `/api/items/${clean.code}/slips/${slipList[0].id}`, {
+    method: "DELETE",
+  });
+  t("เจ้าของข้อมูลลบประวัติการเลื่อน -> 403", ownerDelSlip.status === 403, `ได้ ${ownerDelSlip.status}`);
+  for (const sp of [...slipList].reverse()) {
+    await as("u-mod", `/api/items/${clean.code}/slips/${sp.id}`, { method: "DELETE" });
+  }
+  const back2 = (await state("u-mod")).items.find((i) => i.code === clean.code);
+  t("ผู้ดูแลลบประวัติคืนได้ครบ — ข้อมูลกลับเป็นเดิม",
+    back2.slipHistory.length === 0, back2.slipHistory.length);
+  t("วันแผนกลับเป็นวันเดิม",
+    back2.milestones.find((m) => m.seq === ms1.seq).plannedEnd === ms1.plannedEnd,
+    back2.milestones.find((m) => m.seq === ms1.seq).plannedEnd);
+
+  // ── อัปโหลดไฟล์จริง (R4) ─────────────────────────────────────────────────
+  group("R4 · อัปโหลดไฟล์จริง — ชนิด · ขนาด · ชื่อไฟล์ · ไม่แตะ document_date");
+  const upItem = (await state("u-owner3")).myItems[0].code;
+  const send = async (name, type, bytes, extra = {}) => {
+    const fd = new FormData();
+    fd.set("itemCode", extra.itemCode ?? upItem);
+    fd.set("title", extra.title ?? "");
+    fd.set("documentDate", extra.date ?? "");
+    fd.set("file", new File([new Uint8Array(bytes)], name, { type }));
+    const upRes = await fetch(`${base}/api/evidence`, {
+      method: "POST", body: fd, headers: { cookie: jars.get("u-owner3") }, cache: "no-store",
+    });
+    return { status: upRes.status, body: await upRes.json().catch(() => null) };
+  };
+
+  const okUp = await send("รายงานผลตรวจวัด.pdf", "application/pdf", 2048);
+  t("อัปโหลด PDF ได้", okUp.status === 201, okUp.body?.error);
+  t("บันทึก stored_path", !!okUp.body?.storedPath, okUp.body?.storedPath);
+  const upId = okUp.body.id;
+  const upRow = (await state("u-mod")).evidence.find((e) => e.id === upId);
+  t("document_date ยังเป็น null แม้ไฟล์มี metadata (AC-03 ไม่ถอยหลัง)",
+    upRow.documentDate === null, String(upRow.documentDate));
+  const fileRes = await fetch(`${base}/api/evidence/${upId}/file`,
+    { headers: { cookie: jars.get("u-mod") }, cache: "no-store" });
+  t("ดาวน์โหลดไฟล์กลับได้",
+    fileRes.ok && fileRes.headers.get("content-type") === "application/pdf",
+    `${fileRes.status} ${fileRes.headers.get("content-type")}`);
+
+  const badType = await send("script.exe", "application/x-msdownload", 100);
+  t("ชนิดไฟล์ที่ไม่อนุญาต -> ปฏิเสธ", badType.status >= 400, badType.body?.error);
+  const tooBig = await send("ใหญ่เกิน.pdf", "application/pdf", 11 * 1024 * 1024);
+  t("ไฟล์เกิน 10 MB -> ปฏิเสธ", tooBig.status >= 400, tooBig.body?.error);
+  const traversal = await send("../../../etc/passwd.pdf", "application/pdf", 64);
+  t("ชื่อไฟล์มี ../ -> อัปโหลดได้แต่ชื่อถูกล้าง", traversal.status === 201, traversal.body?.error);
+  t("path ที่เก็บไม่หลุดออกนอก sample-data/uploads",
+    (traversal.body?.storedPath ?? "").startsWith("sample-data/uploads/")
+    && !(traversal.body?.storedPath ?? "").includes(".."),
+    traversal.body?.storedPath);
+  const crossUp = await send("ของกองอื่น.pdf", "application/pdf", 64, { itemCode: "1.1" });
+  t("อัปโหลดเข้ารายการของกองอื่น -> 403", crossUp.status === 403, `ได้ ${crossUp.status}`);
+
+  // ── ลบหลักฐาน + คืนสภาพ ─────────────────────────────────────────────────
+  group("DELETE หลักฐาน — ทีมกลางเท่านั้น · ทำให้ชุดทดสอบคืนสภาพตัวเองได้");
+  const ownerDel = await as("u-owner3", `/api/evidence/${upId}`, { method: "DELETE" });
+  t("เจ้าของข้อมูลลบหลักฐาน -> 403", ownerDel.status === 403, `ได้ ${ownerDel.status}`);
+  const execDel = await as("u-exec", `/api/evidence/${upId}`, { method: "DELETE" });
+  t("ผู้บริหารลบหลักฐาน -> 403", execDel.status === 403, `ได้ ${execDel.status}`);
+  for (const id of [upId, traversal.body.id]) {
+    const d = await as("u-mod", `/api/evidence/${id}`, { method: "DELETE" });
+    t(`ผู้ดูแลลบ ${id} ได้`, d.status === 200, d.body?.error);
+    t(`ไฟล์บนดิสก์ถูกลบด้วย (${id})`, d.body?.fileRemoved === true);
+  }
+  /*
+    เก็บกวาดหลักฐานทุกชิ้นที่ชุดทดสอบสร้างขึ้น (id เกิน E-014 ของ seed)
+    ไม่ใช่แค่ไฟล์ที่อัปโหลด — กลุ่ม AC-03/AC-04 ก็เพิ่มไว้ด้วย
+
+    ข้อนี้คือเหตุผลที่ต้องมี DELETE /api/evidence/[id]:
+    ถ้าไม่คืนสภาพ verify:seed ที่ยืนยันจำนวนแจ้งเตือนแบบเป๊ะจะไม่ผ่านเมื่อรันตามหลัง
+  */
+  const SEED_EVIDENCE = 14;
+  for (const e of (await state("u-mod")).evidence) {
+    if (Number(e.id.replace(/\D/g, "")) > SEED_EVIDENCE) {
+      await as("u-mod", `/api/evidence/${e.id}`, { method: "DELETE" });
+    }
+  }
+  const finalEv = (await state("u-mod")).evidence;
+  t(`ลบหลักฐานที่ชุดทดสอบเพิ่มคืนครบ — จำนวนกลับเป็น ${SEED_EVIDENCE} เท่า seed`,
+    finalEv.length === SEED_EVIDENCE, finalEv.length);
+  t("แจ้งเตือนกลับเป็นจำนวนเดิม — verify:seed รันตามหลังได้",
+    (await state("u-mod")).allAlertCounts.ownerTotal === 27,
+    (await state("u-mod")).allAlertCounts.ownerTotal);
 
   // ── รายงาน ───────────────────────────────────────────────────────────────
   for (const grp of groups) {

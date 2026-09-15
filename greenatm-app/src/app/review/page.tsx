@@ -4,18 +4,26 @@ import { canSee, profileFor } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { auditCount } from "@/lib/db/queries";
 import { Forbidden, Shell } from "@/components/Shell";
-import { Card, Chip, Empty, TierChip, VERDICT } from "@/components/ui";
+import { Card, StatusPill, TierChip } from "@/components/ui";
 import { TierActions } from "@/components/actions";
+import { ReviewTabs } from "@/components/ReviewTabs";
 
 export const dynamic = "force-dynamic";
 
-/** ศูนย์ตรวจสอบ — ค่า Verified ทั้งองค์กรขยับจากหน้านี้ที่เดียว */
+/**
+ * ศูนย์ตรวจสอบ — โครงตาม REVIEW CENTER ของไฟล์ทีม
+ * แท็บ pill พร้อมตัวนับ · แถวผลลัพธ์แบบ justify-content:space-between
+ *
+ * แท็บ "ร่างคำตอบรอตรวจ" ของไฟล์ทีม **ยังไม่มี** เพราะ M4/M5 ไม่ได้ทำ
+ * แทนด้วย "ยังไม่มีหลักฐาน" ซึ่งมีข้อมูลจริงและเป็นเรื่องที่ต้องตัดสินใจจริง
+ */
 export default async function ReviewPage() {
   const u = await currentUser();
   if (!canSee(u.role, "review")) {
     return (
       <Shell active="review">
-        <Forbidden roleLabel={profileFor(u.role).label} what="เข้าศูนย์ตรวจสอบ — หน้านี้เป็นของผู้ดูแล (ทีมกลาง)" />
+        <Forbidden roleLabel={profileFor(u.role).label}
+          what="เข้าศูนย์ตรวจสอบ — หน้านี้เป็นของผู้ดูแล (ทีมกลาง)" />
       </Shell>
     );
   }
@@ -24,101 +32,175 @@ export default async function ReviewPage() {
   const queue = v.evidence.filter((e) => e.confirmedTier === null);
   const notSubmitted = v.items.filter((i) => !i.submittedThisCycle);
   const noEvidence = v.items.filter((i) => i.evidenceCount === 0);
+  const unsent = v.outbox.filter((m) => !m.sentAt);
+  const rowStyle = {
+    background: "var(--card)", border: "1px solid var(--line)", borderRadius: 10,
+    padding: "14px 18px", display: "flex", justifyContent: "space-between",
+    alignItems: "center", gap: 12, flexWrap: "wrap" as const,
+  };
 
   return (
     <Shell active="review">
-      <h1 className="text-xl font-semibold">ศูนย์ตรวจสอบ</h1>
-      <p className="mt-1 text-[13.5px] text-[var(--ink2)]">
-        ยืนยันข้อเสนอของ agent · ติดตามกองที่ยังไม่ส่ง · ดูรายการที่ยังพิสูจน์ไม่ได้
-      </p>
-      <Card tone="warn" className="mt-3">
-        <p className="text-[13.5px]">
-          <b>ค่า Verified ทั้งองค์กรขยับจากหน้านี้ที่เดียว</b> — agent เสนอได้ เจ้าของข้อมูลแนบหลักฐานได้
-          แต่การยืนยันเป็นของ{profileFor(u.role).label} · ทุกการยืนยันบันทึกลง audit log
-          (ปัจจุบัน {auditCount()} รายการ)
-        </p>
-      </Card>
-
-      <section className="mt-5">
-        <h2 className="text-[14px] font-semibold">รอยืนยันชั้นหลักฐาน ({queue.length})</h2>
-        {queue.length === 0 ? (
-          <div className="mt-2"><Empty>ไม่มีหลักฐานค้างรอยืนยัน</Empty></div>
-        ) : (
-          <ul className="mt-2 space-y-2">
-            {queue.map((e) => {
-              const item = v.items.find((i) => i.code === e.itemCode)!;
-              return (
-                <li key={e.id}>
-                  <Card>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <Link href={`/item/${e.itemCode}`} className="text-[13px] font-semibold underline">
-                        {e.itemCode}
-                      </Link>
-                      <TierChip tier={e.proposedTier} confirmed={false} />
-                      <code className="text-[11.5px] text-[var(--muted)]">{e.id}</code>
-                    </div>
-                    <p className="mt-1 text-[13.5px]">{e.title}</p>
-                    <p className="text-[12px] text-[var(--ink2)]">
-                      วันที่ในเอกสาร:{" "}
-                      {e.documentDate ?? <b style={{ color: "var(--warn)" }}>ไม่พบ — ต้องให้เจ้าของข้อมูลเติมก่อน</b>}
-                    </p>
-                    {e.proposedReason && (
-                      <p className="mt-1 text-[12.5px] text-[var(--ink2)]">เหตุผลของ agent: {e.proposedReason}</p>
-                    )}
-                    <TierActions evidenceId={e.id} proposedTier={e.proposedTier} />
-                  </Card>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </section>
-
-      <div className="mt-5 grid gap-3 lg:grid-cols-2">
-        <Card>
-          <h2 className="text-[14px] font-semibold">ยังไม่ส่งข้อมูลรอบนี้ ({notSubmitted.length})</h2>
-          <ul className="mt-2 space-y-1.5 text-[13px]">
-            {notSubmitted.map((i) => (
-              <li key={i.code}>
-                <Link href={`/item/${i.code}`} className="font-semibold underline">{i.code}</Link> {i.name}
-                <p className="text-[12px] text-[var(--muted)]">
-                  {v.users.find((x) => x.id === i.ownerUserId)?.title ?? (
-                    <b style={{ color: "var(--warn)" }}>ไม่มีเจ้าของในระบบ — ไม่มีใครถูกเตือน</b>
-                  )}
-                  {" · "}
-                  {i.daysToDue < 0 ? `เลยกำหนด ${-i.daysToDue} วัน` : `เหลือ ${i.daysToDue} วัน`}
-                </p>
-              </li>
-            ))}
-          </ul>
-          <Link href="/alerts" className="mt-2.5 inline-block rounded-md bg-[var(--accent)] px-2.5 py-1 text-[12.5px] text-white">
-            ไปหน้าแจ้งเตือนเพื่อร่างข้อความ →
-          </Link>
-        </Card>
-
-        <Card>
-          <h2 className="text-[14px] font-semibold">ยังไม่มีหลักฐานเลย ({noEvidence.length})</h2>
-          <p className="text-[12.5px] text-[var(--muted)]">
-            รายการเหล่านี้จะเข้า “ทะเบียนหมายเหตุ” ท้ายเอกสารรอบเดือน — ไม่ถูกละไว้เงียบ ๆ
-          </p>
-          <ul className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1 text-[12.5px]">
-            {noEvidence.map((i) => (
-              <li key={i.code}>
-                <Link href={`/item/${i.code}`} className="underline">{i.code}</Link>
-                <span className="text-[var(--muted)]">
-                  {" "}· L{i.achievedLevel}{i.achievedLevel >= i.targetLevel ? " ถึงเป้า!" : ""}
-                </span>
-              </li>
-            ))}
-          </ul>
-          {noEvidence.some((i) => i.achievedLevel >= i.targetLevel) && (
-            <p className="mt-2 text-[12.5px]" style={{ color: "var(--warn)" }}>
-              ⚠ มีรายการที่<b>ถึงเป้าแล้วแต่ไม่มีหลักฐานแม้ชิ้นเดียว</b> — Suggestion ของรายการเหล่านี้
-              ต้องไม่ขึ้นว่า “เสร็จสมบูรณ์” และในระบบนี้ไม่ขึ้น
-            </p>
-          )}
-        </Card>
+      <div style={{ marginBottom: 18 }}>
+        <div className="ga-h1">ศูนย์ตรวจสอบ</div>
+        <div className="ga-sub">
+          {profileFor(u.role).label} — ยืนยันข้อเสนอของ agent, ติดตามกองที่ยังไม่ส่ง,
+          ดูรายการที่ยังพิสูจน์ไม่ได้
+        </div>
       </div>
+
+      <div className="ga-banner-warn" style={{ marginBottom: 20 }}>
+        ค่า Verified ทั้งองค์กรขยับจากหน้านี้ที่เดียว — agent เสนอได้ เจ้าของข้อมูลแนบหลักฐานได้
+        แต่การยืนยันเป็นของ{profileFor(u.role).label} · ทุกการยืนยันบันทึกลง audit log
+        (ปัจจุบัน {auditCount()} รายการ)
+      </div>
+
+      <ReviewTabs
+        tabs={[
+          { key: "tier", label: "รอยืนยันชั้นหลักฐาน", count: queue.length },
+          { key: "notsub", label: "ยังไม่ส่ง", count: notSubmitted.length },
+          { key: "noev", label: "ยังไม่มีหลักฐาน", count: noEvidence.length },
+          { key: "outbox", label: "Outbox", count: unsent.length },
+        ]}
+        panels={{
+          tier: queue.length === 0 ? (
+            <Empty>ไม่มีหลักฐานค้างรอยืนยัน</Empty>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {queue.map((e) => (
+                <div key={e.id} style={{
+                  background: "var(--card)", border: "1px solid var(--line)",
+                  borderRadius: 10, padding: "14px 18px",
+                }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
+                    <Link href={`/item/${e.itemCode}`} style={{ fontWeight: 700, fontSize: 13 }}>
+                      {e.itemCode}
+                    </Link>
+                    <TierChip tier={e.proposedTier} confirmed={false} />
+                    <code style={{ fontSize: 11.5, color: "var(--muted2)" }}>{e.id}</code>
+                  </div>
+                  <div style={{ marginTop: 4, fontSize: 13 }}>{e.title}</div>
+                  <div style={{ fontSize: 12, color: "var(--ink2)" }}>
+                    วันที่ในเอกสาร:{" "}
+                    {e.documentDate ?? (
+                      <b style={{ color: "var(--warn-ink)" }}>ไม่พบ — ต้องให้เจ้าของข้อมูลเติมก่อน</b>
+                    )}
+                  </div>
+                  {e.proposedReason && (
+                    <div style={{ marginTop: 6, fontSize: 12.5, color: "#3d4a43", lineHeight: 1.6 }}>
+                      เหตุผลจาก Agent: {e.proposedReason}
+                    </div>
+                  )}
+                  <TierActions evidenceId={e.id} proposedTier={e.proposedTier} />
+                </div>
+              ))}
+            </div>
+          ),
+
+          notsub: notSubmitted.length === 0 ? (
+            <Empty>ทุกกองส่งข้อมูลรอบนี้ครบแล้ว</Empty>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {notSubmitted.map((i) => (
+                <div key={i.code} style={rowStyle}>
+                  <div style={{ fontSize: 13 }}>
+                    <Link href={`/item/${i.code}`}><b>{i.code}</b></Link> {i.name}
+                    <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
+                      {v.users.find((x) => x.id === i.ownerUserId)?.title ?? (
+                        <b style={{ color: "var(--warn-ink)" }}>ไม่มีเจ้าของในระบบ — ไม่มีใครถูกเตือน</b>
+                      )}
+                      {" · "}
+                      {i.daysToDue < 0 ? `เลยกำหนด ${-i.daysToDue} วัน` : `เหลือ ${i.daysToDue} วัน`}
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <StatusPill status={i.status} />
+                    <Link href="/alerts" className="ga-btn ga-btn-grey" style={{ textDecoration: "none" }}>
+                      สร้างร่างข้อความ
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ),
+
+          noev: (
+            <div>
+              <p style={{ fontSize: 12.5, color: "var(--muted)", marginTop: 0 }}>
+                รายการเหล่านี้จะเข้า “ทะเบียนหมายเหตุ” ท้ายเอกสารรอบเดือน — ไม่ถูกละไว้เงียบ ๆ
+                <b> (เอกสารรอบเดือนยังไม่ได้ทำ — M5)</b>
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {noEvidence.map((i) => (
+                  <div key={i.code} style={rowStyle}>
+                    <div style={{ fontSize: 13 }}>
+                      <Link href={`/item/${i.code}`}><b>{i.code}</b></Link> {i.name}
+                      <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
+                        ระดับ {i.achievedLevel} · เป้า {i.targetLevel}
+                        {i.achievedLevel >= i.targetLevel && (
+                          <b style={{ color: "var(--warn-ink)" }}> · ถึงเป้าแล้วแต่ไม่มีหลักฐานแม้ชิ้นเดียว</b>
+                        )}
+                      </div>
+                    </div>
+                    <StatusPill status={i.status} />
+                  </div>
+                ))}
+              </div>
+              {noEvidence.some((i) => i.achievedLevel >= i.targetLevel) && (
+                <p style={{ marginTop: 10, marginBottom: 0, fontSize: 12.5, color: "var(--warn-ink)" }}>
+                  ⚠ มีรายการที่<b>ถึงเป้าแล้วแต่ไม่มีหลักฐาน</b> — Suggestion ของรายการเหล่านี้
+                  ต้องไม่ขึ้นว่า “เสร็จสมบูรณ์” และในระบบนี้ไม่ขึ้น (AC-26)
+                </p>
+              )}
+            </div>
+          ),
+
+          outbox: (
+            <div>
+              {v.outbox.length === 0 ? (
+                <Empty>ยังไม่มีร่างข้อความ — ร่างได้จากหน้าแจ้งเตือน</Empty>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {v.outbox.map((m) => (
+                    <div key={m.id} style={rowStyle}>
+                      <div style={{ fontSize: 13, minWidth: 0 }}>
+                        <b>{m.subject}</b>
+                        <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
+                          ถึง {v.users.find((x) => x.id === m.toDisplay)?.title ?? m.toDisplay}
+                          {" · "}<code>{m.alertRule} · {m.itemCode}</code>
+                        </div>
+                      </div>
+                      {m.sentAt
+                        ? <span style={{ fontSize: 12, color: "var(--accent)", fontWeight: 700 }}>
+                            ✓ กดส่งแล้วโดย {m.sentBy}
+                          </span>
+                        : <Link href="/alerts" className="ga-btn ga-btn-primary"
+                            style={{ textDecoration: "none" }}>
+                            ตรวจแล้ว — ไปกดส่ง
+                          </Link>}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <p style={{ marginTop: 10, marginBottom: 0, fontSize: 12.5, color: "var(--ink2)" }}>
+                ⚠️ ต้นแบบนี้ <b>ไม่ส่งอีเมล / LINE / Teams จริง</b> — ในโปรเจกต์ไม่มี credential
+                ของช่องทางใดอยู่เลย · การกดส่งอยู่ที่หน้าแจ้งเตือน
+              </p>
+            </div>
+          ),
+        }}
+      />
     </Shell>
+  );
+}
+
+function Empty({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{
+      border: "1px dashed var(--line)", borderRadius: 10, padding: "22px 12px",
+      textAlign: "center", fontSize: 13, color: "var(--muted)", margin: 0,
+    }}>
+      {children}
+    </p>
   );
 }
