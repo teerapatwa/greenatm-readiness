@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
  * และปุ่มเป้าของทีมซึ่งเดิมกดไม่ได้ ที่นี่กดได้จริงถ้ามีสิทธิ์
  */
 
-const GRID = "2.1fr 1.1fr 1fr 90px 60px 172px 70px";
+const GRID = "2fr 1.05fr .95fr 128px 60px 172px 70px";
 
 export default async function HomePage() {
   const u = await currentUser();
@@ -27,22 +27,6 @@ export default async function HomePage() {
   const canSetTarget = hasAbility(u.role, "set_target_level");
 
   const dist = [1, 2, 3, 4, 5].map((L) => v.items.filter((i) => i.achievedLevel === L).length);
-
-  const decisions = [
-    ...v.items
-      .filter((i) => i.progress >= 67 && i.verified === 0 && i.evidenceCount === 0)
-      .slice(0, 2)
-      .map((i) => ({ tone: "warn" as const, code: i.code, icon: "⚠",
-        text: `งานคืบหน้า ${i.progress}% แต่ไม่มีหลักฐานที่นับได้เลย — ระดับที่ยืนยันยังเป็น 0` })),
-    ...v.items
-      .filter((i) => i.slipHistory.length >= v.settings.slip_escalate_after)
-      .map((i) => ({ tone: "danger" as const, code: i.code, icon: "⛔",
-        text: `เลื่อนแผนครบ ${i.slipHistory.length} ครั้ง — ต้องการการตัดสินใจ ไม่ใช่การเร่ง` })),
-    ...(v.org.notSubmitted > 0
-      ? [{ tone: "warn" as const, code: "", icon: "⚠",
-          text: `${v.org.notSubmitted} รายการยังไม่ส่งข้อมูลรอบนี้ · กำหนดส่ง ${v.meta.cycleDue}` }]
-      : []),
-  ];
 
   return (
     <Shell active="home">
@@ -56,26 +40,6 @@ export default async function HomePage() {
           {u.role === "executive" && <> · มุมมองอ่านอย่างเดียว ยกเว้นการตั้งเป้า</>}
         </div>
       </div>
-
-      {/* ── เรื่องที่ต้องตัดสินใจ มาก่อนตัวเลข ── */}
-      {decisions.length > 0 && (
-        <div style={{ marginBottom: 20 }}>
-          <Card tone="warn" pad="16px 20px">
-            <div style={{ fontSize: 12.5, fontWeight: 700, color: "var(--warn-ink)", marginBottom: 8 }}>
-              📋 เรื่องที่ต้องตัดสินใจ — มาก่อนตัวเลขทุกตัว
-            </div>
-            {decisions.map((d, i) => (
-              <div key={i} style={{ fontSize: 13, color: "var(--ink)", marginTop: 4 }}>
-                <span aria-hidden style={{ color: `var(--${d.tone})` }}>{d.icon}</span>{" "}
-                {d.code && (
-                  <Link href={`/item/${d.code}`} style={{ fontWeight: 700 }}>{d.code}</Link>
-                )}{" "}
-                {d.text}
-              </div>
-            ))}
-          </Card>
-        </div>
-      )}
 
       {/* ── แถบสรุปทั้งองค์กร + การกระจายตัวของ Level ── */}
       <div style={{ marginBottom: 22 }}>
@@ -131,20 +95,6 @@ export default async function HomePage() {
           </div>
         </Card>
       </div>
-
-      {v.org.unowned > 0 && (
-        <div style={{ marginBottom: 20 }}>
-          <Card tone="warn" pad="14px 18px">
-            <div style={{ fontSize: 13, color: "var(--warn-ink)" }}>
-              <b>{v.org.unowned} รายการไม่มีเจ้าของข้อมูลในระบบ</b> —{" "}
-              <b>{v.allAlertCounts.orphan} ฉบับของแจ้งเตือนจึงไม่ถึงใครเลย</b>
-              {hasAbility(u.role, "manage_item")
-                ? " · เปิดรายการนั้นแล้วมอบหมายผู้รับผิดชอบได้ที่หน้ารายละเอียด"
-                : " · ผู้ดูแลเป็นผู้มอบหมายผู้รับผิดชอบ"}
-            </div>
-          </Card>
-        </div>
-      )}
 
       {/* ── รายหมวด ── */}
       {v.categories.map((c) => {
@@ -234,12 +184,10 @@ export default async function HomePage() {
                         <div><MilestoneStrip milestones={i.milestones} today={today} /></div>
 
                         <div>
-                          <LevelSegments achieved={i.achievedLevel} percentWithinNext={i.percentWithinNextLevel} />
-                          <div style={{ fontSize: 10.5, color: "var(--muted2)", marginTop: 3 }}>
-                            {i.achievedLevel >= 5
-                              ? "ระดับสูงสุดแล้ว"
-                              : `ระดับ ${i.achievedLevel} · งานของระดับ ${i.achievedLevel + 1} ทำได้ ${i.percentWithinNextLevel}%`}
-                          </div>
+                          {/* บรรทัดเดียวแนวนอนแบบไฟล์ทีม — คำอธิบายยาวอยู่ใน tooltip
+                              และในบล็อก "อ่านตารางนี้อย่างไร" ท้ายหน้า */}
+                          <LevelSegments achieved={i.achievedLevel}
+                            percentWithinNext={i.percentWithinNextLevel} showPercent />
                         </div>
 
                         <div style={{

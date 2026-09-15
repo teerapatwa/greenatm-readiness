@@ -98,11 +98,14 @@ export function TierChip({ tier, confirmed }: { tier: string | null; confirmed: 
  * แถบ "สถานะปัจจุบัน" — 5 ช่องเล็กเรียงกัน แบบเดียวกับไฟล์ทีม
  * ช่องที่ได้แล้วทึบ ช่องถัดไปแสดงความคืบหน้าบางส่วน
  */
-export function LevelSegments({ achieved, percentWithinNext }: {
+export function LevelSegments({ achieved, percentWithinNext, showPercent = false }: {
   achieved: number; percentWithinNext: number;
+  /** แสดง % ต่อท้ายในบรรทัดเดียวกัน — ไม่ขึ้นบรรทัดใหม่ให้เซลล์สูงขึ้น */
+  showPercent?: boolean;
 }) {
   return (
-    <div style={{ display: "flex", gap: 3 }} aria-label={`ระดับ ${achieved}`}>
+    <div style={{ display: "flex", gap: 3, alignItems: "center" }}
+      aria-label={`ระดับ ${achieved}${achieved < 5 ? ` · งานของระดับ ${achieved + 1} ทำได้ ${percentWithinNext}%` : ""}`}>
       {[1, 2, 3, 4, 5].map((L) => {
         const done = L <= achieved;
         const next = L === achieved + 1;
@@ -123,6 +126,12 @@ export function LevelSegments({ achieved, percentWithinNext }: {
           </div>
         );
       })}
+      {showPercent && (
+        <span style={{ marginLeft: 4, fontSize: 10.5, color: "var(--muted2)", whiteSpace: "nowrap" }}
+          className="tnum">
+          {achieved >= 5 ? "สูงสุด" : `+${percentWithinNext}%`}
+        </span>
+      )}
     </div>
   );
 }

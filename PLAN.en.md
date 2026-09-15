@@ -18,7 +18,7 @@ AEROTHAI · Agentic AI Bootcamp
 | **Data** | **available**: the organisation's own internal assessment form **วว.นบ209_2569-14** — **4 categories · 24 items · Level 1–5 per item** — populated with a synthetic sample set (13 evidence documents, 19 milestones across 6 items, slip histories, a target level per item), plus the **CANSO GreenATM public model** (3 categories · 20 topics · 100 points · 5 levels · the cliff rule) as the external target, plus the response form template · **missing**: real progress files from divisions, real target levels for FY2570, flight data / emission factors · **restricted**: SharePoint, AD/SSO, corporate SMTP · **available · tested 15 Sep 2026**: the model endpoint (DGX 10.0.63.215 · no auth) |
 | **Prototype scope** | **In:** one complete path — **chat receives the update/evidence (confirmation card)** → compute → **agent evaluates evidence** → human confirms → draft response → approve → dashboard + monthly Word/PDF export · plus **alerting** (deadline / milestone / repeated slip → moderator · evidence gaps → owner, drafted into an Outbox a human sends), **a responsible person and a milestone timeline on every home-screen row with click-through to detail**, **an agent Suggestion column on "my work"**, and a **3-year / 5-year level projection with its assumptions printed on the page** · 3 roles on one machine with permissions enforced in the backend · **the manual form is kept as the fallback when the model is down**. **Out:** automated Excel import, real email/LINE/Teams delivery, real SSO, integration with existing systems, CO₂ calculation, kWh/vehicle metrics, OCR, cloud deployment. |
 | **Success test** | **Normal:** attach a signed measurement report to item **2.7 (CDO)** → the agent reads it, assigns tier **A** with a reason → a human confirms → the readiness figure moves → a response is drafted citing that document → approved → the monthly document contains the citation `[E-014]`. **Failure:** item **3.2 (Renewable energy)** reports 20% progress toward Level 2 but its only evidence is two "(draft) action plan" documents → the agent assigns tier **C** → **the verified level must not move** → it replies *"a plan is not evidence of a result"* and **states what kind of evidence is needed instead** → and 3.2 must appear in the **remarks register** at the end of the document; it may not be silently omitted. |
-| **Screens + design** | 8 screens, **6 of them already exist as a static mockup** · laptop-first (the executive view must be readable on a phone) · Thai UI with English technical terms · exported documents in English following the form template · **the home screen shows "items needing a decision" before any headline number** · status uses a symbol alongside colour, contrast ≥ 4.5:1 · no hero banners, no figures without a source · **any projected figure carries its assumptions and the words "a projection, not a commitment" beside it** `[proposed]` |
+| **Screens + design** | 8 screens, **6 of them already exist as a static mockup** · laptop-first (the executive view must be readable on a phone) · Thai UI with English technical terms · exported documents in English following the form template · **each row carries its own problem note; the honest headline is "19 of 24 items have not moved a level"** · status uses a symbol alongside colour, contrast ≥ 4.5:1 · no hero banners, no figures without a source · **any projected figure carries its assumptions and the words "a projection, not a commitment" beside it** `[proposed]` |
 
 ---
 
@@ -96,7 +96,7 @@ AEROTHAI · Agentic AI Bootcamp
 | R7 | **Two separate figures** — work progress vs. evidence-verified — always shown side by side | **Real** |
 | R8 | Draft the response from **confirmed** evidence, flag insufficient evidence | **Real** (model call) |
 | R9 | Human review → confirm / **return with a reason → revise → resubmit** → executive approval | **Real** |
-| R10 | **Executive dashboard** — paired KPIs · "needs a decision" first | **Real** |
+| R10 | **Executive dashboard** — summary strip + per-category grid · **each row states its own problem inline** rather than a separate "needs a decision" panel (§11.2.1 D20) | **Real** |
 | R11 | **Monthly Word + PDF document** per the form template + **remarks register** + a citation on every statement | **Real** |
 | R12 | Data survives a backend restart | **Real** |
 | R13 | Thresholds live in an `app_setting` table — **no hardcoding** | **Real** |
@@ -188,16 +188,15 @@ Shared layout
            / Review centre / Trend & projection / Monthly document
 
 1) Home — overview by category (landing screen)
-   Row 1: 📋 Needs a decision   ← before any other number
-            ⬜ 4.1  next level reported 100% done · 0 countable evidence documents
-            ⛔ 2.10 third slip, same reason each time
-            ⚠️ 4 items have not submitted this cycle (due in 5 days)
-   Row 2: Paired figures  [Mean achieved level 1.83]  [Last year 1.62]  [Target]  [Projection]
-            + "not submitted 4" + "alerts N"
-   Row 3: Items grouped by the 4 categories of วว.นบ209_2569-14, one row each:
-            code | name | RESPONSIBLE PERSON | milestone strip ▮▮▯▯ 2/4 | last year | now | target | projection
-          ⭐ the whole row is clickable → screen 4, preselected to that item
-   Row 4: [Generate monthly document]
+   Row 1: Summary strip — items · mean level (vs last year) · not moved · not submitted ·
+            alerts to you · Level (1–5) distribution bar
+   Row 2: Items grouped by the 4 categories of วว.นบ209_2569-14, one grid row each:
+            code | name | RESPONSIBLE PERSON | milestone strip | current level | last year | TARGET | projection
+          ⭐ the item code is a link → screen 4, preselected to that item
+          ⭐ the target cell is five clickable level buttons (central team + executive)
+          · a note line appears under a row only when that row has a problem
+            (3rd slip · target met with no evidence · not submitted)
+   Row 3: <details> "how to read this table" — collapsed by default
 
 2) Chat with the assistant (data owner)  ← the primary screen for this role
    Top    : division · current cycle · small link "use the form instead" (fallback when the model is down)
@@ -873,7 +872,7 @@ a confirmed milestone at 95%, a confirmed tier, 2 sent Outbox rows and an edited
 
 | ID | Precondition / input | Expected behaviour | Verification |
 |---|---|---|---|
-| **AC-01** ⭐ | **4.1**: the next level's work reported 100% done, no tier A/B evidence | **The verified level must not move at all** · both figures shown side by side · appears under "needs a decision" · **no response drafted** | `verify.py` + on screen |
+| **AC-01** ⭐ | **4.1**: the next level's work reported 100% done, no tier A/B evidence | **The verified level must not move at all** · both figures shown side by side · the row carries a note stating the problem · **no response drafted** | `verify.py` + on screen |
 | **AC-02** ⭐ | **3.2**: only evidence is two "(draft) action plans" | The agent assigns tier **C** · readiness **does not move** · message *"a plan is not evidence of a result"* · **states what evidence is needed instead** | `verify.py` |
 | **AC-03** | **2.10**: document carries no internal date | The system **asks for the date** · **never infers it from the upload date** | `verify.py` |
 | **AC-04** | **2.7**: attach a signed measurement report | The agent assigns tier **A** with a reason → human confirms → Verified figure moves → response drafted citing that document | On screen across all 3 steps |
@@ -1022,7 +1021,8 @@ D7–D10 came with the chat (rev 2.2); **D11–D15 came with rev 2.3** and are t
 | **D14** | **A Suggestion column on "my work"**, rule-based today, agent-worded later | It puts the "what is missing" output in front of the person who can act on it, which is the same argument that justified the chat in D7 |
 | **D15** | **A 3-/5-year projection, printed with its assumptions and the words "a projection, not a commitment"** | Leadership asked where the current rate leads · the assumptions block is the condition on which this was accepted, not decoration — **if it is cut, the projection is cut with it** |
 | **D18** ⭐ | **The role switcher becomes a user switcher — 3 data owners (one per division), 1 moderator, 1 management** (§4.3.1) | "Three roles" was not testable: one generic data owner could not show that scoping works. Three real divisions with different problems make the boundary visible, and each role's permissions are now **printed in the sidebar** rather than only enforced |
-| **D19** | **Category 4 is left with no data-owner user, and the gap is shown on screen** | A placeholder user would hide the fact that 4 items have nobody to update them and 5 alerts reach nobody · recorded as **Q8** |
+| **D19** | **Category 4 is left with no data-owner user** | A placeholder user would hide the fact that 4 items have nobody to update them · recorded as **Q8** |
+| **D20** | **The home screen drops the "needs a decision" panel and the "items with no owner" banner** — the same facts appear as a note line under the affected row instead | The team's own dashboard has neither panel, and matching its look was the agreed direction · **cost of this:** the count "5 owner-directed alerts reach nobody" is no longer stated anywhere on screen — it is visible only by noticing the "ไม่มีเจ้าของ" tag on 4 rows. Q8 still records it |
 
 ### 11.3 Open questions `[open question]`
 
