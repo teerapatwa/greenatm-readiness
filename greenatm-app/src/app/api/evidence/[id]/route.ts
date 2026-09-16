@@ -2,7 +2,10 @@ import { currentUser, requireAbility, requireItemWriteAccess } from "@/lib/auth/
 import { HttpError } from "@/lib/auth/session";
 import fs from "node:fs";
 import path from "node:path";
-import { confirmTier, deleteEvidence, evidence, setEvidenceDate } from "@/lib/db/queries";
+import {
+  confirmTier, deleteEvidence, evidence, itemByCode, revokeTier, setEvidenceDate,
+} from "@/lib/db/queries";
+import { verifiedPercent } from "@/lib/data/rules";
 import { fail, jsonBody, ok, str } from "@/lib/http";
 
 export const dynamic = "force-dynamic";
@@ -23,7 +26,20 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
     const ev = evidence().find((e) => e.id === id);
     if (!ev) throw new HttpError(404, `ไม่พบหลักฐาน ${id}`);
 
-    const body = await jsonBody<{ documentDate?: string; tier?: string; reason?: string }>(req);
+    const body = await jsonBody<{ documentDate?: string; tier?: string | null; reason?: string }>(req);
+
+    if (body.tier === null) {
+      // เพิกถอนการยืนยันที่กดผิด — ค่า Verified จะลดลงตาม ซึ่งถูกต้อง
+      requireAbility(u, "confirm_tier");
+      const itemBefore = itemByCode(ev.itemCode)!;
+      const before = verifiedPercent(itemBefore, evidence());
+      revokeTier(id, u.id, body.reason?.trim());
+      const after = verifiedPercent(itemByCode(ev.itemCode)!, evidence());
+      return ok({
+        id, confirmedTier: null, revokedBy: u.id, itemCode: ev.itemCode,
+        verifiedBefore: before, verifiedAfter: after,
+      });
+    }
 
     if (body.tier !== undefined) {
       requireAbility(u, "confirm_tier");
@@ -34,10 +50,19 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       if (ev.proposedTier && tier !== ev.proposedTier && !body.reason?.trim()) {
         throw new HttpError(400, "การแก้ชั้นที่ agent เสนอ ต้องระบุเหตุผล");
       }
+      // จับค่าก่อน/หลัง เพื่อให้หน้าจอบอกได้ว่าการกดนี้ขยับอะไรจากเท่าไรเป็นเท่าไร
+      const itemBefore = itemByCode(ev.itemCode)!;
+      const before = verifiedPercent(itemBefore, evidence());
       confirmTier(id, tier as "A" | "B" | "C" | "D", u.id, body.reason?.trim());
+      const after = verifiedPercent(itemByCode(ev.itemCode)!, evidence());
       return ok({
         id, confirmedTier: tier, confirmedBy: u.id,
         countsTowardVerified: tier === "A" || tier === "B",
+        itemCode: ev.itemCode,
+        verifiedBefore: before,
+        verifiedAfter: after,
+        achievedLevel: itemBefore.achievedLevel,
+        levelChanged: false,
       });
     }
 

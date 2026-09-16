@@ -316,6 +316,25 @@ export function confirmTier(id: string, tier: "A" | "B" | "C" | "D", actor: stri
     { confirmedTier: tier, proposedTier: s(r.proposed_tier), overrode: s(r.proposed_tier) !== tier, reason: reason ?? null });
 }
 
+/**
+ * เพิกถอนชั้นที่ยืนยันไว้ — ทีมกลางเท่านั้น
+ *
+ * ยืนยันผิดต้องถอนคืนได้ · ค่า Verified จะลดลงตาม ซึ่งถูกต้อง —
+ * หลักฐานที่ถอนการยืนยันแล้ว ไม่ควรนับว่าพิสูจน์อะไรได้
+ * ข้อเสนอของ agent (proposed_tier) ไม่ถูกลบ เพราะเป็นคนละเรื่องกับการยืนยันของคน
+ */
+export function revokeTier(id: string, actor: string, reason?: string) {
+  const r = db().prepare(
+    "SELECT item_code,confirmed_tier,confirmed_by FROM evidence WHERE id=?").get(id) as Row | undefined;
+  if (!r) throw new Error(`ไม่พบหลักฐาน ${id}`);
+  if (!r.confirmed_tier) throw new Error(`หลักฐาน ${id} ยังไม่เคยถูกยืนยัน จึงเพิกถอนไม่ได้`);
+  db().prepare(
+    "UPDATE evidence SET confirmed_tier=NULL, confirmed_by=NULL, confirmed_at=NULL WHERE id=?").run(id);
+  audit(actor, "revoke_tier", "evidence", id,
+    { confirmedTier: s(r.confirmed_tier), confirmedBy: s(r.confirmed_by) },
+    { confirmedTier: null, reason: reason ?? null });
+}
+
 // ── Outbox ──────────────────────────────────────────────────────────────────
 
 export function draftOutbox(a: {

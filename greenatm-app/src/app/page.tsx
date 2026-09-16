@@ -72,6 +72,18 @@ export default async function HomePage() {
               </div>
             </div>
             <div>
+              <div className="ga-label">มีหลักฐานยืนยันแล้ว</div>
+              <div className="ga-stat tnum" style={{
+                color: v.org.withVerified > 0 ? "var(--accent)" : "var(--warn)",
+              }}>
+                {v.org.withVerified}
+                <span style={{ fontSize: 15, color: "var(--muted2)" }}>/{v.items.length}</span>
+              </div>
+              <div style={{ fontSize: 11.5, color: "var(--muted2)" }}>
+                รายการที่พิสูจน์ได้ด้วยชั้น A/B
+              </div>
+            </div>
+            <div>
               <div className="ga-label">ยังไม่ส่งรอบนี้</div>
               <div className="ga-stat tnum" style={{ color: "var(--danger)" }}>
                 {v.org.notSubmitted}
@@ -188,6 +200,22 @@ export default async function HomePage() {
                               และในบล็อก "อ่านตารางนี้อย่างไร" ท้ายหน้า */}
                           <LevelSegments achieved={i.achievedLevel}
                             percentWithinNext={i.percentWithinNextLevel} showPercent />
+                          {/*
+                            ค่า Verified ต้องอยู่บนหน้าแรกด้วย — ไม่งั้นการยืนยันชั้นหลักฐาน
+                            ที่ศูนย์ตรวจสอบจะไม่มีผลอะไรให้เห็นบนหน้าหลัก และดูเหมือนกดแล้วไม่ทำงาน
+                          */}
+                          <div style={{
+                            fontSize: 10.5, marginTop: 4,
+                            color: i.verified > 0 ? "var(--accent)" : "var(--warn-ink)",
+                            fontWeight: 600,
+                          }}
+                            title={i.verified > 0
+                              ? `มีหลักฐานชั้น A/B ที่ทีมกลางยืนยันแล้ว — คิดเป็น ${i.verified}% ของเอกสารในรายการนี้`
+                              : "ยังไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้ว — ระดับนี้จึงยังพิสูจน์ไม่ได้"}>
+                            {i.verified > 0
+                              ? `◆ ยืนยันด้วยหลักฐาน ${i.verified}%`
+                              : "○ ยังไม่ยืนยันด้วยหลักฐาน"}
+                          </div>
                         </div>
 
                         <div style={{

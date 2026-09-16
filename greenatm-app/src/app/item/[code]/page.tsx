@@ -324,6 +324,8 @@ export default async function ItemPage({ params }: { params: Promise<{ code: str
               canManage={canManage}
               canSetTarget={hasAbility(u.role, "set_target_level")}
               hasConfirmedEvidence={ev.some((e) => e.confirmedTier === "A" || e.confirmedTier === "B")}
+              confirmedCount={ev.filter((e) => e.confirmedTier === "A" || e.confirmedTier === "B").length}
+              evidenceCount={ev.length}
               candidates={v.users
                 .filter((x) => x.role === "owner" && x.divisionId === item.divisionId)
                 .map((x) => ({ id: x.id, title: x.title }))}

@@ -25,7 +25,7 @@
 
 ```
 verify:seed   35/35     กฎบนชุดข้อมูล (แจ้งเตือน · Suggestion · คาดการณ์ · AC-01/02/03/04/26)
-verify:app   182/182    ยิง HTTP จริงในนามผู้ใช้แต่ละคน — สิทธิ์และเส้นทางการเขียน
+verify:app   189/189    ยิง HTTP จริงในนามผู้ใช้แต่ละคน — สิทธิ์และเส้นทางการเขียน
 typecheck     สะอาด
 build         สะอาด
 ```
@@ -116,7 +116,7 @@ npx next start -p 3000       # เปิด http://localhost:3000
 
 # อีกหน้าต่างหนึ่ง
 APP_URL=http://localhost:3000 npm run verify:seed   # 35/35
-APP_URL=http://localhost:3000 npm run verify:app    # 182/182
+APP_URL=http://localhost:3000 npm run verify:app    # 189/189
 ```
 
 **ล้างข้อมูลกลับเป็นค่าตั้งต้น** — ต้องปิดเซิร์ฟเวอร์ก่อน ไม่งั้นไฟล์ถูกล็อก
@@ -164,6 +164,8 @@ Windows Firewall อนุญาต Node inbound อยู่แล้ว ไม
 | 12 | Bash heredoc พังกับสตริงยาวที่มีอักขระพิเศษ/ไทย | **ใช้ Write tool เขียนสคริปต์ยาว** ไม่ใช้ heredoc |
 | 13 | `npm run lint` ค้างรอ input (`next lint` deprecated · `eslint-config-next@15.5` เข้ากับ ESLint 9 ไม่ได้) | ลบ script ที่พังออก · ใช้ `npm run typecheck` แทน |
 | 14 | Next.js 15.1.6 มี **CRITICAL RCE บน Windows-hosted server** | อัปเป็น 15.5.25 แล้ว · เหลือ moderate 1 + high 1 ใน `postcss@8.4.31` ที่ Next pin มาเอง (build-time, CSS ของเราเอง — รับได้) |
+| 15 | **หน้าแรกไม่แสดงค่า Verified เลย** — ยืนยันชั้นหลักฐานที่ศูนย์ตรวจสอบแล้วกลับมาหน้าหลัก ไม่มีอะไรเปลี่ยนให้เห็น ดูเหมือนกดแล้วไม่ทำงาน | **ผลของการกระทำต้องเห็นได้ในหน้าที่คนดูบ่อยที่สุด** · เพิ่มบรรทัด "ยืนยันด้วยหลักฐาน N%" ในทุกแถว + ตัวนับ "มีหลักฐานยืนยันแล้ว N/24" ในแถบสรุป |
+| 16 | **`verify:app` ไม่คืนค่าชั้นหลักฐาน** — หลักฐานที่ยังไม่ยืนยันหมดไปจาก 9 เหลือ 0 รอบถัดไปหา `unconf` ไม่เจอแล้วล้มทั้งชุด | บั๊กชนิดเดียวกับข้อ 5–7 ที่ยังพลาดอีกจุด · **จำสภาพตั้งต้นทั้งชุดตั้งแต่ต้น แล้วคืนตอนจบ** ไม่ใช่คืนทีละจุดที่นึกออก · เพิ่ม `PATCH {tier:null}` เพิกถอนชั้น (ฟีเจอร์ที่ควรมีจริงอยู่แล้ว) |
 
 ---
 
@@ -225,7 +227,7 @@ greenatm-app/                   ⭐ แอปจริง
                                    ItemAdmin · TargetDots · ReviewTabs · EvidenceDelete · Shell
   scripts/gen-seed.py              สร้าง seed.json แบบกำหนดผลตายตัว
   scripts/verify-seed.mjs          35 ข้อ
-  scripts/verify-app.mjs        ⭐ 182 ข้อ ยิง HTTP จริง
+  scripts/verify-app.mjs        ⭐ 189 ข้อ ยิง HTTP จริง
   scripts/make-demo-files.py       สร้างไฟล์หลักฐานตัวอย่างสำหรับสาธิต
   src/lib/db/snapshot.ts           สำรอง/ย้อนฐานข้อมูลเดโม (เครื่องมือเดโม ไม่ใช่ฟีเจอร์จริง)
 ```

@@ -348,9 +348,21 @@ export function TierActions({ evidenceId, proposedTier }: { evidenceId: string; 
     });
     const b = await res.json();
     if (!res.ok) throw new Error([b.error, b.detail].filter(Boolean).join(" · "));
-    return { note: b.countsTowardVerified
-      ? `ยืนยันชั้น ${b.confirmedTier} — นับเข้าค่า Verified แล้ว`
-      : `ยืนยันชั้น ${b.confirmedTier} — ชั้นนี้ไม่นับเข้าค่า Verified` };
+    /*
+      บอกตัวเลขที่ขยับจริง ไม่ใช่แค่ "นับเข้าแล้ว"
+      และย้ำว่า Level ไม่ขยับ เพราะเป็นคำถามแรกที่คนถามหลังกดปุ่มนี้
+    */
+    if (!b.countsTowardVerified) {
+      return { note: `ยืนยันชั้น ${b.confirmedTier} — ชั้นนี้ไม่นับเข้าค่า Verified (นับเฉพาะ A และ B)` };
+    }
+    const moved = b.verifiedAfter !== b.verifiedBefore
+      ? `ค่า Verified ของ ${b.itemCode} ขยับ ${b.verifiedBefore}% → ${b.verifiedAfter}%`
+      : `ค่า Verified ของ ${b.itemCode} ยังเป็น ${b.verifiedAfter}% เท่าเดิม`;
+    return {
+      note: `ยืนยันชั้น ${b.confirmedTier} แล้ว · ${moved} · `
+        + `ระดับที่ได้ยังเป็น ${b.achievedLevel} เท่าเดิม — `
+        + `การขึ้นระดับเป็นการตัดสินใจอีกครั้งที่หน้ารายละเอียด`,
+    };
   });
 
   return (

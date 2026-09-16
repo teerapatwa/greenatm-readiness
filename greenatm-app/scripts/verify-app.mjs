@@ -55,6 +55,16 @@ try {
 
   const OWNERS = ["u-owner1", "u-owner2", "u-owner3"];
 
+  /*
+    จำสภาพชั้นหลักฐานตั้งแต่ต้น แล้วคืนตอนจบ
+
+    เคยพลาด: เทสต์ยืนยันชั้นแล้วไม่ถอนคืน ทำให้หลักฐานที่ยังไม่ยืนยันหมดไปจาก 11 เหลือ 0
+    รอบถัดไปจึงหา unconf ไม่เจอแล้วล้มทั้งชุด · และ verify:seed ที่ยืนยันว่า
+    "3.2 ต้องมี Verified = 0" ก็ไม่ผ่าน
+  */
+  const tierBaseline = (await as("u-mod", "/api/state")).body.evidence
+    .map((e) => ({ id: e.id, confirmedTier: e.confirmedTier }));
+
   // ── AC-27 · ขอบเขตข้อมูลของเจ้าของข้อมูลแต่ละกอง ──────────────────────────
   group("AC-27 · ขอบเขตของเจ้าของข้อมูล 3 กอง");
   const views = {};
@@ -800,6 +810,56 @@ try {
   t("ลบจุดสำรองที่ชุดตรวจสร้างคืนครบ เหลือแต่ baseline",
     cleaned.length === 1 && cleaned[0].isBaseline,
     cleaned.map((s) => s.name).join(" "));
+
+  group("คืนสภาพชั้นหลักฐาน — ชุดทดสอบต้องไม่ทิ้งร่องรอย");
+  for (const b of tierBaseline) {
+    const now = (await state("u-mod")).evidence.find((e) => e.id === b.id);
+    if (!now || now.confirmedTier === b.confirmedTier) continue;
+    await as("u-mod", `/api/evidence/${b.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(
+        b.confirmedTier === null
+          ? { tier: null, reason: "คืนสภาพหลังชุดทดสอบ" }
+          : { tier: b.confirmedTier, reason: "คืนสภาพหลังชุดทดสอบ" }),
+    });
+  }
+  const finalTiers = (await state("u-mod")).evidence;
+  const drift = tierBaseline.filter((b) => {
+    const now = finalTiers.find((e) => e.id === b.id);
+    return now && now.confirmedTier !== b.confirmedTier;
+  });
+  t("ชั้นหลักฐานทุกชิ้นกลับเป็นสภาพเดิม", drift.length === 0,
+    drift.map((d) => d.id).join(" "));
+  t(`จำนวนที่ยังไม่ยืนยันกลับเป็น ${tierBaseline.filter((b) => b.confirmedTier === null).length}`,
+    finalTiers.filter((e) => e.confirmedTier === null).length
+      === tierBaseline.filter((b) => b.confirmedTier === null).length,
+    finalTiers.filter((e) => e.confirmedTier === null).length);
+
+  group("เพิกถอนชั้นที่ยืนยันผิด — ทีมกลางเท่านั้น");
+  const toRevoke = finalTiers.find((e) => e.confirmedTier !== null);
+  if (toRevoke) {
+    const ownerRevoke = await as("u-owner1", `/api/evidence/${toRevoke.id}`, {
+      method: "PATCH", body: JSON.stringify({ tier: null }),
+    });
+    t("เจ้าของข้อมูลเพิกถอนชั้น -> 403", ownerRevoke.status === 403, `ได้ ${ownerRevoke.status}`);
+    const rev = await as("u-mod", `/api/evidence/${toRevoke.id}`, {
+      method: "PATCH", body: JSON.stringify({ tier: null, reason: "ทดสอบการเพิกถอน" }),
+    });
+    t("ผู้ดูแลเพิกถอนได้", rev.status === 200, rev.body?.error);
+    t(`ค่า Verified ลดลงตาม (${rev.body?.verifiedBefore}% -> ${rev.body?.verifiedAfter}%)`,
+      (rev.body?.verifiedAfter ?? 100) < (rev.body?.verifiedBefore ?? 0));
+    const again = await as("u-mod", `/api/evidence/${toRevoke.id}`, {
+      method: "PATCH", body: JSON.stringify({ tier: null }),
+    });
+    t("เพิกถอนซ้ำที่ยังไม่เคยยืนยัน -> ปฏิเสธ", again.status >= 400, again.body?.error);
+    // คืนกลับ
+    await as("u-mod", `/api/evidence/${toRevoke.id}`, {
+      method: "PATCH", body: JSON.stringify({ tier: toRevoke.confirmedTier, reason: "คืนสภาพ" }),
+    });
+    t("คืนชั้นเดิมกลับได้",
+      (await state("u-mod")).evidence.find((e) => e.id === toRevoke.id).confirmedTier
+        === toRevoke.confirmedTier);
+  }
 
   // ── รายงาน ───────────────────────────────────────────────────────────────
   for (const grp of groups) {

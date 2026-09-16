@@ -88,6 +88,8 @@ export function buildView(u: CurrentUser) {
       unowned: items.filter((i) => !i.ownerUserId).length,
       delayed: items.filter((i) => i.status === "delayed").length,
       atRisk: items.filter((i) => i.status === "at_risk").length,
+      /** รายการที่มีหลักฐานชั้น A/B ที่ยืนยันแล้วอย่างน้อยหนึ่งชิ้น */
+      withVerified: items.filter((i) => i.verified > 0).length,
     },
   };
 }

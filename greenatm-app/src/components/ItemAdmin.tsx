@@ -10,7 +10,8 @@ import { useState, useTransition } from "react";
  * แต่ **การกันจริงอยู่ที่ route handler** — component นี้แค่ไม่แสดงช่องที่ทำไม่ได้
  */
 export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel, lastYearLevel,
-  canManage, canSetTarget, candidates, hasConfirmedEvidence }: {
+  canManage, canSetTarget, candidates, hasConfirmedEvidence,
+  confirmedCount, evidenceCount }: {
   code: string;
   name: string;
   ownerUserId: string | null;
@@ -22,6 +23,9 @@ export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel,
   /** เฉพาะผู้ใช้บทบาทเจ้าของข้อมูลที่สังกัดกองเดียวกับรายการนี้ */
   candidates: { id: string; title: string }[];
   hasConfirmedEvidence: boolean;
+  /** จำนวนหลักฐานชั้น A/B ที่ยืนยันแล้ว · จำนวนเอกสารทั้งหมดของรายการนี้ */
+  confirmedCount?: number;
+  evidenceCount?: number;
 }) {
   const router = useRouter();
   const [, startTransition] = useTransition();
@@ -122,12 +126,25 @@ export function ItemAdmin({ code, name, ownerUserId, achievedLevel, targetLevel,
                 </option>
               ))}
             </select>
-            {!hasConfirmedEvidence && (
-              <span style={{ marginTop: 4, display: "block", fontSize: 11.5, color: "var(--warn-ink)" }}>
-                รายการนี้ยังไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้ว — <b>ขึ้นระดับไม่ได้</b>
-                {" "}ระดับขยับด้วยหลักฐาน ไม่ใช่ด้วยการกรอก
-              </span>
-            )}
+            <span style={{
+              marginTop: 4, display: "block", fontSize: 11.5,
+              color: hasConfirmedEvidence ? "var(--accent)" : "var(--warn-ink)",
+            }}>
+              {hasConfirmedEvidence ? (
+                <>
+                  ◆ มีหลักฐานชั้น A/B ที่ยืนยันแล้ว <b>{confirmedCount ?? 0}</b> ชิ้น
+                  {" "}จาก {evidenceCount ?? 0} เอกสาร — <b>ขึ้นระดับได้</b>
+                  {achievedLevel >= tgt && " (แต่ระดับที่ได้ถึงเป้าแล้ว — ตั้งเป้าให้สูงขึ้นก่อน)"}
+                </>
+              ) : (
+                <>
+                  ○ ยังไม่มีหลักฐานชั้น A/B ที่ยืนยันแล้ว
+                  {(evidenceCount ?? 0) > 0 && ` (มี ${evidenceCount} เอกสาร แต่ยังไม่ถูกยืนยันเป็น A/B)`}
+                  {" — "}<b>ขึ้นระดับไม่ได้</b> · ระดับขยับด้วยหลักฐาน ไม่ใช่ด้วยการกรอก
+                  <br />ให้ทีมกลางยืนยันชั้นที่ศูนย์ตรวจสอบก่อน
+                </>
+              )}
+            </span>
           </label>
         )}
       </div>
