@@ -5,7 +5,7 @@ import {
   statusFor, expectedPercent, gapsFor,
   type Alert, type Item, type Status, type Gap,
 } from "@/lib/data/rules";
-import { snapshot, openPendingFor, outbox, evidence as allEvidence } from "@/lib/db/queries";
+import { snapshot, openPendingFor, outbox, evidence as allEvidence, agentRunCount } from "@/lib/db/queries";
 import { profileFor } from "@/lib/auth/perms";
 import { canWriteItem, type CurrentUser } from "@/lib/auth/session";
 
@@ -80,6 +80,8 @@ export function buildView(u: CurrentUser) {
     allAlertCounts: alertCounts(all),
     pending: openPendingFor(u.id),
     outbox: outbox(),
+    // จำนวนครั้งที่ agent ทำงาน — หลักฐานว่า agent ทำงานจริง ตรวจย้อนได้ (AC-06)
+    agentRuns: agentRunCount(),
     org: {
       meanNow: avg(items.map((i) => i.achievedLevel)),
       meanLast: avg(items.map((i) => i.lastYearLevel)),

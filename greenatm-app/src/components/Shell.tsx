@@ -3,6 +3,7 @@ import { currentUser } from "@/lib/auth/session";
 import { canSee, profileFor, type Screen } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { UserSwitcher } from "./actions";
+import { ModelStatus } from "./ModelStatus";
 
 /**
  * โครงหน้าจอ + เมนูตามสิทธิ์ — PLAN §4.3.1
@@ -34,13 +35,14 @@ export async function Shell({ active, children }: { active: Screen; children: Re
             GA
           </span>
           <div>
-            <p className="text-[14.5px] font-semibold leading-tight">GreenATM Evidence &amp; Readiness</p>
+            <p className="text-[14.5px] font-semibold leading-tight">Green ATM Tracker</p>
             <p style={{ fontSize: 11.5, color: "var(--muted)" }}>
               {v.meta.formRef} · รอบ {v.meta.cycle} · อ้างอิงวันที่ {v.meta.today}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <ModelStatus />
           <span style={{ fontSize: 11.5, color: "var(--muted)" }}>เข้าใช้เป็น</span>
           <UserSwitcher users={v.users} currentId={u.id} />
           <span

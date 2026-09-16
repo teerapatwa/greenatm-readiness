@@ -491,3 +491,57 @@ export function HistoryList({ rows }: {
     </div>
   );
 }
+
+/**
+ * คำอธิบายชั้นหลักฐาน A–D
+ *
+ * §6.5 ของแผนเขียนไว้ว่า **ต้องประกาศบนหน้าจอ** ว่าชั้นนี้เป็นเครื่องมือคัดกรองของทีมเราเอง
+ * ไม่ใช่เกณฑ์ของ CANSO — คนที่รู้เอกสาร CANSO จะจับได้ และการอ้างว่าเป็นของเขา
+ * จะทำให้ส่วนอื่นของงานเสียความน่าเชื่อถือไปด้วย
+ */
+export function TierLegend({ open = false }: { open?: boolean }) {
+  const rows: [string, string, string][] = [
+    ["A", "เอกสารที่ลงนามหรือออกอย่างเป็นทางการ และแสดง **ผลที่วัดได้จริง**", "นับเข้าค่า Verified"],
+    ["B", "เอกสารทางการที่แสดงผล แต่ยังไม่ลงนาม หรือครอบคลุมบางส่วน", "นับเข้าค่า Verified"],
+    ["C", "แผน ร่าง หรือความตั้งใจ — “แผนไม่ใช่หลักฐานของผลลัพธ์”", "ไม่นับ"],
+    ["D", "ถูกอ้างถึงแต่ไม่มีตัวเอกสาร หรือไม่เกี่ยวกับเกณฑ์ข้อนั้น", "ไม่นับ"],
+  ];
+  return (
+    <details open={open} style={{ fontSize: 12.5, color: "var(--ink2)" }}>
+      <summary style={{ cursor: "pointer", fontWeight: 700, fontSize: 12.5, color: "var(--ink)" }}>
+        ชั้นหลักฐาน A–D คืออะไร
+      </summary>
+      <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 6 }}>
+        {rows.map(([t, meaning, counts]) => (
+          <div key={t} style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+            <span style={{
+              flex: "none", width: 54, fontWeight: 800, fontSize: 12.5,
+              color: `var(--tier-${t.toLowerCase()})`,
+            }}>
+              {{ A: "◆", B: "◇", C: "○", D: "✕" }[t]} ชั้น {t}
+            </span>
+            <span style={{ lineHeight: 1.6 }}>
+              {meaning.split("**").map((part, i) => (i % 2 ? <b key={i}>{part}</b> : part))}
+              <span style={{ color: counts === "ไม่นับ" ? "var(--muted)" : "var(--accent)" }}>
+                {" · "}{counts}
+              </span>
+            </span>
+          </div>
+        ))}
+        <div style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+          <span style={{ flex: "none", width: 54, fontSize: 12, color: "var(--muted2)" }}>STALE</span>
+          <span>รับได้อยู่ แต่เก่ากว่าเกณฑ์อายุเอกสารที่ตั้งไว้</span>
+        </div>
+        <div style={{ display: "flex", gap: 10, alignItems: "baseline" }}>
+          <span style={{ flex: "none", width: 54, fontSize: 12, color: "var(--muted2)" }}>ASK</span>
+          <span>จัดชั้นไม่ได้จนกว่าคนจะเติมวันที่ในตัวเอกสารให้ก่อน</span>
+        </div>
+      </div>
+      <p className="ga-banner-warn" style={{ marginTop: 10, marginBottom: 0, fontSize: 12.5 }}>
+        ⚠ ชั้น A–D นี้เป็น<b>เครื่องมือคัดกรองของทีมเราเอง ไม่ใช่เกณฑ์ของ CANSO</b> —
+        CANSO ใช้หลัก “Point, Evidence, Explain” และไม่ได้ประกาศสเกลชั้นไว้
+        ใช้ตัดสินว่าจะไปเก็บอะไรต่อ <b>ห้ามนำไปเสนอว่าเป็นเกรดของ CANSO</b>
+      </p>
+    </details>
+  );
+}

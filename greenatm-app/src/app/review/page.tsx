@@ -4,7 +4,7 @@ import { canSee, profileFor } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { auditCount } from "@/lib/db/queries";
 import { Forbidden, Shell } from "@/components/Shell";
-import { Card, StatusPill, TierChip } from "@/components/ui";
+import { Card, StatusPill, TierChip, TierLegend } from "@/components/ui";
 import { TierActions } from "@/components/actions";
 import { ReviewTabs } from "@/components/ReviewTabs";
 import { DemoTools } from "@/components/DemoTools";
@@ -65,7 +65,10 @@ export default async function ReviewPage() {
         ]}
         panels={{
           tier: queue.length === 0 ? (
-            <Empty>ไม่มีหลักฐานค้างรอยืนยัน</Empty>
+            <div>
+              <Empty>ไม่มีหลักฐานค้างรอยืนยัน</Empty>
+              <div style={{ marginTop: 12 }}><TierLegend /></div>
+            </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {queue.map((e) => (
@@ -95,6 +98,7 @@ export default async function ReviewPage() {
                   <TierActions evidenceId={e.id} proposedTier={e.proposedTier} />
                 </div>
               ))}
+              <div style={{ marginTop: 4 }}><TierLegend /></div>
             </div>
           ),
 

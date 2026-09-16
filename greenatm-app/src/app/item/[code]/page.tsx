@@ -6,7 +6,7 @@ import { auditFor, evidenceRow, slipRows, snapshot } from "@/lib/db/queries";
 import { buildAlerts } from "@/lib/data/rules";
 import { Shell } from "@/components/Shell";
 import {
-  Card, Chip, EvidenceCard, GapChecklist, HistoryList, LevelSegments, MilestoneBars,
+  Card, Chip, EvidenceCard, GapChecklist, HistoryList, LevelSegments, MilestoneBars, TierLegend,
   StatusPill, ThreeColumnRule, VERB, VERDICT,
 } from "@/components/ui";
 import { ItemPicker } from "@/components/ItemPicker";
@@ -14,7 +14,7 @@ import { ItemAdmin } from "@/components/ItemAdmin";
 import { MilestoneEditor, SlipRow } from "@/components/MilestoneEditor";
 import { EvidenceDelete } from "@/components/EvidenceDelete";
 import {
-  ConfirmCard, EvidenceDateForm, EvidenceForm, ProgressForm, TierActions,
+  ConfirmCard, EvidenceDateForm, EvidenceForm, ProgressForm, ProposeTierButton, TierActions,
 } from "@/components/actions";
 
 export const dynamic = "force-dynamic";
@@ -147,9 +147,14 @@ export default async function ItemPage({ params }: { params: Promise<{ code: str
             ev.map((e) => (
               <EvidenceCard key={e.id} e={e} hasFile={files.get(e.id) !== null}>
                 {!e.documentDate && item.canWrite && <EvidenceDateForm evidenceId={e.id} />}
+                {/* ข้อเสนอของ agent มีความหมายเฉพาะกับของที่ยังไม่ถูกยืนยัน */}
+                {item.canWrite && !e.confirmedTier && (
+                  <ProposeTierButton evidenceId={e.id} hasProposal={e.proposedTier !== null} />
+                )}
                 {hasAbility(u.role, "confirm_tier") ? (
                   <>
-                    <TierActions evidenceId={e.id} proposedTier={e.proposedTier} />
+                    <TierActions evidenceId={e.id} proposedTier={e.proposedTier}
+                      confirmedTier={e.confirmedTier} confirmedBy={e.confirmedBy} />
                     <EvidenceDelete evidenceId={e.id} title={e.title} />
                   </>
                 ) : (
@@ -162,6 +167,10 @@ export default async function ItemPage({ params }: { params: Promise<{ code: str
               </EvidenceCard>
             ))
           )}
+
+          <div className="ga-divider">
+            <TierLegend />
+          </div>
 
           {item.canWrite && (
             <div className="ga-divider">

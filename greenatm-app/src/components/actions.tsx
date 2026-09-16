@@ -110,6 +110,11 @@ export function ProgressForm({ itemCode, milestones, percentWithinNextLevel, fro
   );
   const [date, setDate] = useState("");
 
+  /** ค่าปัจจุบันของสิ่งที่กำลังแก้อยู่ — ใช้เทียบให้เห็นว่าเลื่อนไปเท่าไร */
+  const current = field === "milestone_percent"
+    ? (milestones.find((m) => m.seq === seq)?.percentComplete ?? 0)
+    : percentWithinNextLevel;
+
   return (
     <div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "flex-end" }}>
@@ -151,35 +156,96 @@ export function ProgressForm({ itemCode, milestones, percentWithinNextLevel, fro
         )}
 
         <label style={{ fontSize: 12.5 }}>
-          <span style={{ display: "block", color: "var(--muted)" }}>เปอร์เซ็นต์</span>
-          <input
-            type="number" min={0} max={100} value={percent}
-            onChange={(e) => setPercent(Number(e.target.value))}
-            className={field} style={{ width: 86 }}
-          />
-        </label>
-
-        <label style={{ fontSize: 12.5 }}>
           <span style={{ display: "block", color: "var(--muted)" }}>วันที่เสร็จจริง (ถ้ามี)</span>
           <input
             type="date" value={date} onChange={(e) => setDate(e.target.value)}
             className={field}
           />
         </label>
-
-        <button
-          className={primary} disabled={busy}
-          onClick={() => run(() => send(`/api/items/${itemCode}/progress`, {
-            body: JSON.stringify({
-              field, milestoneSeq: seq, percent, actualDate: date || null,
-            }),
-          }))}
-        >
-          {busy ? "กำลังร่าง…" : "ตรวจก่อนบันทึก →"}
-        </button>
       </div>
-      <p style={{ marginTop: 8, fontSize: 12, color: "var(--muted)" }}>
-        กดปุ่มนี้แล้ว <b>ค่าจริงยังไม่เปลี่ยน</b> — ระบบจะขึ้นการ์ดให้ตรวจก่อนยืนยัน
+
+      {/*
+        แถบเลื่อน 0–100% — ลากง่ายกว่าพิมพ์ตอนสาธิต และเห็นระยะที่ขยับจากค่าเดิมชัด
+        step 5 เพราะความคืบหน้าของแผนงานไม่ได้ละเอียดระดับ 1% และลากให้ตรงเลขกลม ๆ ง่ายกว่า
+      */}
+      <div style={{ marginTop: 14 }}>
+        <div style={{
+          display: "flex", justifyContent: "space-between", alignItems: "baseline",
+          fontSize: 12.5, marginBottom: 4,
+        }}>
+          <span style={{ color: "var(--muted)" }}>ความคืบหน้า</span>
+          <span className="tnum">
+            <span style={{ color: "var(--muted2)" }}>เดิม {current}%</span>
+            {percent !== current && (
+              <>
+                {" → "}
+                <b style={{
+                  fontSize: 17,
+                  color: percent > current ? "var(--accent)" : "var(--danger)",
+                }}>
+                  {percent}%
+                </b>
+                <span style={{
+                  fontSize: 11.5, marginLeft: 4,
+                  color: percent > current ? "var(--accent)" : "var(--danger)",
+                }}>
+                  ({percent > current ? "+" : ""}{percent - current})
+                </span>
+              </>
+            )}
+            {percent === current && (
+              <span style={{ marginLeft: 6, fontSize: 11.5, color: "var(--muted2)" }}>
+                — ยังไม่ได้เลื่อน
+              </span>
+            )}
+          </span>
+        </div>
+
+        <input
+          className="ga-range"
+          type="range" min={0} max={100} step={5}
+          value={percent}
+          disabled={busy}
+          aria-label={`ความคืบหน้า เดิม ${current} เปอร์เซ็นต์ ตอนนี้เลือก ${percent} เปอร์เซ็นต์`}
+          onChange={(e) => setPercent(Number(e.target.value))}
+        />
+
+        <div style={{
+          display: "flex", justifyContent: "space-between",
+          fontSize: 10.5, color: "var(--muted2)", marginTop: -2,
+        }} className="tnum" aria-hidden>
+          <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
+        </div>
+
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 10, alignItems: "center" }}>
+          {[0, 25, 50, 75, 100].map((n) => (
+            <button key={n} className="ga-btn ga-btn-grey" style={{ padding: "4px 10px" }}
+              disabled={busy} onClick={() => setPercent(n)}>
+              {n}%
+            </button>
+          ))}
+          {percent !== current && (
+            <button className="ga-btn ga-btn-ghost" style={{ padding: "4px 10px" }}
+              disabled={busy} onClick={() => setPercent(current)}>
+              กลับค่าเดิม
+            </button>
+          )}
+          <button
+            className={primary} style={{ marginLeft: "auto" }}
+            disabled={busy || percent === current}
+            onClick={() => run(() => send(`/api/items/${itemCode}/progress`, {
+              body: JSON.stringify({
+                field, milestoneSeq: seq, percent, actualDate: date || null,
+              }),
+            }))}
+          >
+            {busy ? "กำลังร่าง…" : "ตรวจก่อนบันทึก →"}
+          </button>
+        </div>
+      </div>
+      <p style={{ marginTop: 10, fontSize: 12, color: "var(--muted)" }}>
+        เลื่อนแถบแล้วกด “ตรวจก่อนบันทึก” — <b>ค่าจริงยังไม่เปลี่ยน</b>
+        ระบบจะขึ้นการ์ดให้ตรวจก่อนยืนยันอีกครั้ง
       </p>
       <Msg error={error} note={note} />
     </div>
@@ -232,12 +298,111 @@ export function ConfirmCard({ pending }: {
 
 // ── หลักฐาน ─────────────────────────────────────────────────────────────────
 
+type ProposeResult = {
+  ok: boolean;
+  proposedTier: string | null;
+  proposedReason: string | null;
+  latencyMs: number;
+  retried: boolean;
+  error: string | null;
+  read: {
+    ok: boolean; pages: number | null; totalChars: number;
+    sentChars: number; truncated: boolean; reason: string | null;
+  };
+  note: string;
+};
+
+/**
+ * ผลของ agent ที่อ่านเอกสารแล้วเสนอชั้น
+ *
+ * ต้องบอกสามอย่างเสมอ ไม่ว่าผลจะออกมาอย่างไร:
+ *   1. อ่านเนื้อไฟล์ได้จริงหรือไม่ · ได้กี่ตัวอักษรจากทั้งหมดเท่าไร
+ *   2. นี่เป็น **ข้อเสนอ** ไม่ใช่การยืนยัน — ค่า Verified ยังไม่ขยับ
+ *   3. ถ้าล้ม ล้มเพราะอะไร · **ไม่มีการเดาชั้นใส่ไว้แทน**
+ */
+export function ProposeResultPanel({ r }: { r: ProposeResult }) {
+  const tone = r.ok ? "var(--ok-bg)" : "var(--warn-bg)";
+  const line = r.ok ? "var(--ok-line)" : "var(--warn-line)";
+  return (
+    <div style={{
+      marginTop: 8, background: tone, border: `1px solid ${line}`,
+      borderRadius: 8, padding: "10px 12px", fontSize: 12.5, lineHeight: 1.6,
+    }}>
+      <div style={{ fontWeight: 700, color: r.ok ? "var(--accent)" : "var(--warn-ink)" }}>
+        {r.ok ? `agent เสนอชั้น ${r.proposedTier}` : "agent เสนอชั้นไม่สำเร็จ"}
+        <span style={{ fontWeight: 400, color: "var(--muted)" }}> · {(r.latencyMs / 1000).toFixed(1)} วินาที</span>
+      </div>
+
+      {r.ok && r.proposedReason && (
+        <div style={{ marginTop: 4, color: "#3d4a43" }}>เหตุผล: {r.proposedReason}</div>
+      )}
+      {!r.ok && (
+        <div style={{ marginTop: 4, color: "var(--warn-ink)" }}>
+          {r.error} — <b>ทีมกลางจัดชั้นเอง</b> ระบบไม่เดาชั้นใส่ไว้แทน
+        </div>
+      )}
+
+      <div style={{ marginTop: 6, color: "var(--muted)", fontSize: 12 }}>
+        {r.read.ok
+          ? <>อ่านเนื้อไฟล์แล้ว {r.read.pages} หน้า · ส่งให้โมเดล {r.read.sentChars.toLocaleString()} จาก{" "}
+              {r.read.totalChars.toLocaleString()} ตัวอักษร
+              {r.read.truncated && <b style={{ color: "var(--warn-ink)" }}> (ตัดความยาว — ไม่ได้อ่านทั้งฉบับ)</b>}</>
+          : <b style={{ color: "var(--warn-ink)" }}>ไม่ได้อ่านเนื้อไฟล์: {r.read.reason}</b>}
+        {r.retried && " · ต้องถามซ้ำหนึ่งครั้งเพราะรอบแรกตอบไม่เป็น JSON"}
+      </div>
+
+      {r.ok && (
+        <div style={{ marginTop: 6, color: "var(--ink2)" }}>
+          ⓘ นี่คือ<b>ข้อเสนอ</b> ยังไม่ใช่การยืนยัน — ค่า Verified ไม่ขยับจนกว่าทีมกลางจะกดยืนยัน
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** ปุ่มเรียก agent ให้เสนอชั้น — ใช้กับหลักฐานที่ยังไม่มีข้อเสนอ */
+export function ProposeTierButton({ evidenceId, hasProposal }: {
+  evidenceId: string; hasProposal: boolean;
+}) {
+  const [busy, setBusy] = useState(false);
+  const [r, setR] = useState<ProposeResult | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const router = useRouter();
+
+  const go = async () => {
+    setBusy(true); setErr(null);
+    try {
+      const res = await fetch(`/api/evidence/${evidenceId}/propose-tier`, { method: "POST" });
+      const b = await res.json();
+      if (!res.ok) throw new Error([b.error, b.detail].filter(Boolean).join(" · "));
+      setR(b);
+      router.refresh();
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : String(e));
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div style={{ marginTop: 6 }}>
+      <button className={ghost} disabled={busy} onClick={go}>
+        {busy ? "agent กำลังอ่านเอกสาร…" : hasProposal ? "ให้ agent เสนอชั้นใหม่" : "ให้ agent เสนอชั้น"}
+      </button>
+      {err && <p style={{ margin: "6px 0 0", fontSize: 12.5, color: "var(--danger)" }}>⛔ {err}</p>}
+      {r && <ProposeResultPanel r={r} />}
+    </div>
+  );
+}
+
 export function EvidenceForm({ itemCode }: { itemCode: string }) {
   const { run, busy, error, note } = useAction();
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [noDate, setNoDate] = useState(false);
   const [file, setFile] = useState<File | null>(null);
+  const [proposing, setProposing] = useState(false);
+  const [proposal, setProposal] = useState<ProposeResult | null>(null);
 
   const submit = () =>
     run(async () => {
@@ -251,6 +416,19 @@ export function EvidenceForm({ itemCode }: { itemCode: string }) {
       const b = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error([b.error, b.detail].filter(Boolean).join(" · "));
       setTitle(""); setDate(""); setFile(null); setNoDate(false);
+
+      /*
+        แนบเสร็จแล้วค่อยให้ agent อ่าน — แยกคนละคำขอโดยตั้งใจ
+        การแนบหลักฐานต้องสำเร็จทันทีและต้องไม่พังเพราะโมเดลล่ม
+      */
+      setProposal(null);
+      setProposing(true);
+      try {
+        const pr = await fetch(`/api/evidence/${b.id}/propose-tier`, { method: "POST" });
+        const pb = await pr.json();
+        if (pr.ok) setProposal(pb);
+      } catch { /* ข้อเสนอเป็นของแถม ไม่ใช่เงื่อนไขของการแนบ */ }
+      setProposing(false);
       return b;
     });
 
@@ -284,6 +462,13 @@ export function EvidenceForm({ itemCode }: { itemCode: string }) {
           {busy ? "กำลังแนบ…" : "แนบหลักฐาน"}
         </button>
       </div>
+
+      {proposing && (
+        <p style={{ fontSize: 12.5, color: "var(--ink2)", marginTop: 8 }}>
+          agent กำลังอ่านเนื้อเอกสารเพื่อเสนอชั้น… (อาจใช้เวลาหลายวินาที)
+        </p>
+      )}
+      {proposal && <ProposeResultPanel r={proposal} />}
 
       {file && (
         <p style={{ fontSize: 12, color: "var(--ink2)", marginTop: 6 }}>
@@ -334,12 +519,42 @@ export function EvidenceDateForm({ evidenceId }: { evidenceId: string }) {
   );
 }
 
-/** ยืนยัน/แก้ชั้นหลักฐาน — ทีมกลางเท่านั้น ค่า Verified ขยับจากจุดนี้ */
-export function TierActions({ evidenceId, proposedTier }: { evidenceId: string; proposedTier: string | null }) {
+/**
+ * ยืนยัน / แก้ / เพิกถอนชั้นหลักฐาน — ทีมกลางเท่านั้น ค่า Verified ขยับจากจุดนี้
+ *
+ * เคยพลาดสามอย่างตรงนี้ และแก้แล้วทั้งหมด:
+ *  1. ช่องเลือกตั้งต้นที่ `proposedTier ?? "C"` → พอ agent ไม่ได้เสนอ มันโชว์ "ชั้น C"
+ *     ทั้งที่ยังไม่มีใครเสนออะไรเลย · และพอยืนยันไปแล้วก็ยังเด้งกลับไปโชว์ข้อเสนอเดิม
+ *     ไม่ใช่ค่าที่ใช้อยู่จริง — **ค่าเริ่มต้นเพื่อความสะดวก กลายเป็นการแสดงค่าที่ไม่มีอยู่จริง**
+ *  2. ปุ่มเขียน "ยืนยันชั้นนี้" ตลอด แม้ยืนยันไปแล้ว → อ่านแล้วเหมือนกดไม่ติด คนเลยกดซ้ำ
+ *     และกดซ้ำได้ไม่จำกัด ได้แถว audit เพิ่มทุกครั้งโดยไม่มีอะไรเปลี่ยน
+ *  3. API เพิกถอนชั้นได้ตั้งแต่แรก แต่ไม่มีปุ่มบนหน้าจอ — ของที่มีจริงแต่คนใช้ไม่ถึง
+ */
+export function TierActions({ evidenceId, proposedTier, confirmedTier, confirmedBy }: {
+  evidenceId: string;
+  proposedTier: string | null;
+  confirmedTier?: string | null;
+  confirmedBy?: string | null;
+}) {
   const { run, busy, error, note } = useAction();
-  const [tier, setTier] = useState(proposedTier ?? "C");
+
+  /* ค่าที่ใช้อยู่จริง: ที่ยืนยันแล้วมาก่อนข้อเสนอของ agent เสมอ */
+  const current = confirmedTier ?? null;
+  const [tier, setTier] = useState(current ?? proposedTier ?? "");
   const [reason, setReason] = useState("");
-  const overriding = proposedTier !== null && tier !== proposedTier;
+  const [armRevoke, setArmRevoke] = useState(false);
+
+  const unchanged = tier === (current ?? "") || (current === null && tier === proposedTier && !tier);
+  /* ต้องให้เหตุผลเมื่อ "ทับคำตัดสินที่มีอยู่แล้ว" ไม่ว่าคำตัดสินนั้นจะมาจาก agent หรือจากคน */
+  const overridingAgent = current === null && proposedTier !== null && tier !== proposedTier;
+  const overridingHuman = current !== null && tier !== current;
+  const needsReason = overridingAgent || overridingHuman;
+
+  const label = !tier
+    ? "เลือกชั้นก่อน"
+    : current === null
+      ? (overridingAgent ? `ยืนยันเป็นชั้น ${tier} พร้อมเหตุผล` : `ยืนยันชั้น ${tier}`)
+      : tier === current ? `ยืนยันเป็นชั้น ${current} แล้ว` : `แก้เป็นชั้น ${tier}`;
 
   const patch = () => run(async () => {
     const res = await fetch(`/api/evidence/${evidenceId}`, {
@@ -365,29 +580,80 @@ export function TierActions({ evidenceId, proposedTier }: { evidenceId: string; 
     };
   });
 
+  const revoke = () => run(async () => {
+    const res = await fetch(`/api/evidence/${evidenceId}`, {
+      method: "PATCH", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ tier: null, reason: reason || undefined }),
+    });
+    const b = await res.json();
+    if (!res.ok) throw new Error([b.error, b.detail].filter(Boolean).join(" · "));
+    setArmRevoke(false);
+    setTier(proposedTier ?? "");
+    return {
+      note: `เพิกถอนการยืนยันแล้ว · ค่า Verified ของ ${b.itemCode} `
+        + `${b.verifiedBefore}% → ${b.verifiedAfter}% · กลับเข้าคิวรอยืนยันใหม่`,
+    };
+  });
+
   return (
     <div style={{ marginTop: 8 }}>
       <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 8 }}>
-        <select
-          className={field}
-          value={tier} onChange={(e) => setTier(e.target.value)}
-        >
-          {["A", "B", "C", "D"].map((t) => <option key={t} value={t}>ชั้น {t}</option>)}
+        <select className={field} value={tier} onChange={(e) => setTier(e.target.value)}>
+          {/* ไม่มีค่าที่ใช้อยู่ ก็ต้องไม่แกล้งมีค่า — ตัวเลือกว่างบอกตามจริง */}
+          {!current && !proposedTier && <option value="">— agent ไม่ได้เสนอ เลือกเอง —</option>}
+          {["A", "B", "C", "D"].map((t) => (
+            <option key={t} value={t}>
+              ชั้น {t}
+              {t === current ? " · ใช้อยู่" : t === proposedTier && !current ? " · agent เสนอ" : ""}
+            </option>
+          ))}
         </select>
-        {overriding && (
+
+        {needsReason && (
           <input
             value={reason} onChange={(e) => setReason(e.target.value)}
-            placeholder="เหตุผลที่แก้จากที่ agent เสนอ (บังคับ)"
+            placeholder={overridingHuman
+              ? `เหตุผลที่แก้จากชั้น ${current} ที่ยืนยันไปแล้ว (บังคับ)`
+              : "เหตุผลที่แก้จากที่ agent เสนอ (บังคับ)"}
             className={field} style={{ minWidth: 260, flexGrow: 1, borderColor: "var(--warn)" }}
           />
         )}
-        <button className={primary} disabled={busy} onClick={patch}>
-          {overriding ? "แก้พร้อมเหตุผล" : "ยืนยันชั้นนี้"}
+
+        <button className={primary} disabled={busy || !tier || unchanged} onClick={patch}>
+          {label}
         </button>
+
+        {current !== null && (armRevoke ? (
+          <>
+            <span style={{ fontSize: 12, color: "var(--danger)" }}>
+              ถอนการยืนยันชั้น {current}? ค่า Verified จะลดลง
+            </span>
+            <button className="ga-btn ga-btn-danger" disabled={busy} onClick={revoke}>
+              ยืนยันการเพิกถอน
+            </button>
+            <button className={ghost} disabled={busy} onClick={() => setArmRevoke(false)}>ยกเลิก</button>
+          </>
+        ) : (
+          <button className={ghost} disabled={busy} onClick={() => setArmRevoke(true)}>
+            เพิกถอนการยืนยัน
+          </button>
+        ))}
       </div>
-      {overriding && (
+
+      {current !== null && (
+        <p style={{ marginTop: 4, fontSize: 12, color: "var(--muted)" }}>
+          ใช้อยู่: ชั้น {current}{confirmedBy ? ` · ยืนยันโดย ${confirmedBy}` : ""}
+          {unchanged && " — เลือกชั้นอื่นถึงจะแก้ได้"}
+        </p>
+      )}
+      {overridingAgent && (
         <p style={{ marginTop: 4, fontSize: 12, color: "var(--warn-ink)" }}>
           กำลังแก้จากชั้น {proposedTier} ที่ agent เสนอ → ต้องระบุเหตุผล ระบบบันทึกทั้งค่าเดิมและค่าใหม่
+        </p>
+      )}
+      {overridingHuman && (
+        <p style={{ marginTop: 4, fontSize: 12, color: "var(--warn-ink)" }}>
+          กำลังทับคำตัดสินของคน (ชั้น {current}) → ต้องระบุเหตุผล
         </p>
       )}
       <Msg error={error} note={note} />

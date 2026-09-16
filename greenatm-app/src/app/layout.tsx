@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "GreenATM Evidence & Readiness",
-  description: "ระบบหลักฐานและความพร้อม GreenATM — ต้นแบบสำหรับเวิร์กช็อป",
+  title: "Green ATM Tracker",
+  description: "ติดตามหลักฐานและความพร้อม Green ATM — ต้นแบบสำหรับเวิร์กช็อป",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -1,4 +1,5 @@
 import "server-only";
+import { activeProvider, readEndpoint } from "./endpoints";
 
 /**
  * อ่านและตรวจค่าตั้งค่าของโมเดล — ฝั่ง server เท่านั้น
@@ -40,19 +41,23 @@ function isUnset(v: string): boolean {
   return v === "" || PLACEHOLDER.test(v);
 }
 
-export function loadLlmConfig(): LlmConfig {
+export function loadLlmConfig(override?: ProviderId): LlmConfig {
   const problems: string[] = [];
   const hints: string[] = [];
 
-  const providerRaw = clean(process.env.LLM_PROVIDER) || "qwen";
-  if (providerRaw !== "dgx" && providerRaw !== "qwen") {
-    problems.push(`LLM_PROVIDER ต้องเป็น "dgx" หรือ "qwen" (ได้รับ "${providerRaw}")`);
-  }
-  const provider = (providerRaw === "dgx" ? "dgx" : "qwen") as ProviderId;
-
-  const baseUrl = clean(process.env.LLM_BASE_URL).replace(/\/+$/, "");
+  /*
+    provider ที่ใช้จริงมาจาก 3 ทาง เรียงตามลำดับความสำคัญ
+      1. override ที่ผู้เรียกระบุ (ใช้ตอน "ลองยิงตัวที่ยังไม่ได้เลือก")
+      2. ตัวที่ผู้ดูแลเลือกไว้บนหน้าจอ (เก็บในฐานข้อมูล)
+      3. LLM_PROVIDER ในไฟล์สภาพแวดล้อม
+    endpoints.ts import แค่ "ชนิดข้อมูล" จากไฟล์นี้ จึงไม่เกิดวงจรตอน runtime
+  */
+  const provider: ProviderId = override ?? activeProvider();
+  const P = provider.toUpperCase();
+  const ep = readEndpoint(provider);
+  const baseUrl = (ep.baseUrl ?? "").replace(/\/+$/, "");
   if (isUnset(baseUrl)) {
-    problems.push("LLM_BASE_URL ยังไม่ได้ตั้งค่า");
+    problems.push(`ยังไม่ได้ตั้งค่า endpoint ของ ${provider} (${ep.missing.join(" · ") || "LLM_BASE_URL"})`);
     hints.push("คัดลอก .env.example เป็น .env.local แล้วเติมค่าที่ facilitator ยืนยัน");
   } else if (!/^https?:\/\//.test(baseUrl)) {
     problems.push(`LLM_BASE_URL ต้องขึ้นต้นด้วย http:// หรือ https:// (ได้รับ "${baseUrl}")`);
@@ -61,13 +66,13 @@ export function loadLlmConfig(): LlmConfig {
     hints.push("โค้ดต่อ /chat/completions ให้เองอยู่แล้ว อย่าใส่มาใน URL");
   }
 
-  const model = clean(process.env.LLM_MODEL);
+  const model = ep.model ?? "";
   if (isUnset(model)) {
-    problems.push("LLM_MODEL ยังเป็น placeholder — ต้องใส่ชื่อรุ่นที่ served จริง");
+    problems.push(`ยังไม่ได้ตั้งค่าชื่อรุ่นของ ${provider} (LLM_${P}_MODEL)`);
     hints.push('ยืนยันจาก GET /v1/models หรือจาก facilitator · "qwen3.8-27b" ลอกมาจากโน้ต ยังไม่ยืนยัน');
   }
 
-  const apiKeyRaw = clean(process.env.LLM_API_KEY);
+  const apiKeyRaw = clean(process.env[`LLM_${P}_API_KEY`]) || clean(process.env.LLM_API_KEY);
   const apiKey = isUnset(apiKeyRaw) ? null : apiKeyRaw;
 
   const timeoutMs = Number(clean(process.env.LLM_TIMEOUT_MS) || "120000");

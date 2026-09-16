@@ -45,7 +45,80 @@ async function as(userId, path, init = {}) {
 
 const state = (u) => as(u, "/api/state").then((r) => r.body);
 
+/*
+  สภาพชั้นหลักฐานตั้งต้น + ฟังก์ชันคืนค่า
+
+  อยู่นอก try เพราะต้องเรียกใน finally ด้วย — ถ้าชุดทดสอบล้มกลางคันแล้วไม่คืนค่า
+  ข้อมูลจะเพี้ยนค้าง แล้วรอบถัดไปจะล้มเร็วกว่าเดิม กลายเป็นวงจรที่ซ่อมตัวเองไม่ได้
+*/
+/*
+  ตาข่ายชั้นแรก: สำรองทั้งฐานข้อมูลก่อนเริ่ม แล้วย้อนกลับใน finally
+
+  คืนชั้นหลักฐานอย่างเดียวไม่พอ — ชุดตรวจแตะความคืบหน้า ขั้นของแผน หลักฐานที่สร้างใหม่
+  และ audit ด้วย ถ้าล้มกลางคันสิ่งเหล่านั้นค้างอยู่ แล้ว verify:seed รอบถัดไปจะไม่ผ่าน
+  (เคยเจอจริง: milestone เลยกำหนดกลายเป็น 3 จาก 2 · แจ้งเตือนถึงผู้ดูแล 9 จาก 8)
+*/
+const GUARD = "ก่อนชุดตรวจอัตโนมัติ";
+let guard = null;
+
+async function takeGuard() {
+  /*
+    ถ้ายังมีจุดกันข้อมูลค้างอยู่ แปลว่ารอบก่อนล้มก่อนจะได้คืนค่า
+    จุดนั้นคือสภาพสะอาดก่อนรอบที่ล้ม — ย้อนกลับไปหาแทนที่จะทิ้ง ชุดตรวจจึงซ่อมตัวเองได้
+  */
+  const stale = (await as("u-mod", "/api/demo/snapshots")).body?.snapshots
+    ?.some((s) => s.name === GUARD);
+  if (stale) {
+    console.log("↩ พบจุดกันข้อมูลค้างจากรอบก่อนที่ล้มกลางคัน — ย้อนกลับไปหาก่อนเริ่มใหม่");
+    guard = GUARD;
+    await releaseGuard();
+  }
+  const r = await as("u-mod", "/api/demo/snapshots", {
+    method: "POST", body: JSON.stringify({ name: GUARD }),
+  });
+  guard = r.status < 300 ? GUARD : null;
+  return r;
+}
+
+async function releaseGuard() {
+  if (!guard) return { ok: false, skipped: true };
+  const name = guard;
+  guard = null; // กันเรียกซ้ำจาก finally หลังจากเรียกไปแล้ว
+  const r = await as("u-mod", `/api/demo/snapshots/${encodeURIComponent(name)}`, { method: "POST" });
+  // ลบทั้งจุดกันข้อมูลและสำเนากันพลาดที่การย้อนสร้างให้ ไม่ทิ้งไฟล์ค้างไว้
+  for (const n of [name, r.body?.safetyCopy].filter(Boolean)) {
+    await as("u-mod", `/api/demo/snapshots/${encodeURIComponent(n)}`, { method: "DELETE" });
+  }
+  return { ok: r.status < 300, error: r.body?.error };
+}
+
+let tierBaseline = [];
+async function restoreTiers() {
+  if (tierBaseline.length === 0) return { restored: false, drift: [], unconfirmed: -1 };
+  for (const b of tierBaseline) {
+    const now = (await state("u-mod")).evidence.find((e) => e.id === b.id);
+    if (!now || now.confirmedTier === b.confirmedTier) continue;
+    await as("u-mod", `/api/evidence/${b.id}`, {
+      method: "PATCH",
+      body: JSON.stringify(
+        b.confirmedTier === null
+          ? { tier: null, reason: "คืนสภาพหลังชุดทดสอบ" }
+          : { tier: b.confirmedTier, reason: "คืนสภาพหลังชุดทดสอบ" }),
+    });
+  }
+  const after = (await state("u-mod")).evidence;
+  const drift = tierBaseline.filter((b) => {
+    const now = after.find((e) => e.id === b.id);
+    return now && now.confirmedTier !== b.confirmedTier;
+  });
+  return {
+    restored: true, drift,
+    unconfirmed: after.filter((e) => e.confirmedTier === null).length,
+  };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
+let code = 0;
 try {
   const probe = await fetch(base, { cache: "no-store" }).catch(() => null);
   if (!probe || !probe.ok) {
@@ -62,8 +135,23 @@ try {
     รอบถัดไปจึงหา unconf ไม่เจอแล้วล้มทั้งชุด · และ verify:seed ที่ยืนยันว่า
     "3.2 ต้องมี Verified = 0" ก็ไม่ผ่าน
   */
-  const tierBaseline = (await as("u-mod", "/api/state")).body.evidence
+  const guarded = await takeGuard();
+  if (guarded.status >= 300) {
+    console.error(`\n⛔ สำรองฐานข้อมูลก่อนทดสอบไม่สำเร็จ: ${guarded.body?.error ?? guarded.status}`);
+    console.error("   ชุดตรวจนี้แก้ข้อมูลจริง จึงไม่ยอมเริ่มถ้ายังไม่มีทางย้อนกลับ\n");
+    process.exit(1);
+  }
+
+  tierBaseline = (await as("u-mod", "/api/state")).body.evidence
     .map((e) => ({ id: e.id, confirmedTier: e.confirmedTier }));
+  const evidenceAtStart = new Set(tierBaseline.map((b) => b.id));
+  /*
+    จำนวนแจ้งเตือนตั้งต้น — อ่านจากของจริง ไม่ผูกกับเลข 27 ของ seed
+    เพราะฐานข้อมูลที่ใช้ซ้อมจะมีหลักฐานที่คนเพิ่มเข้ามาเอง แล้วจำนวนแจ้งเตือนก็เปลี่ยนตาม
+    ชุดตรวจนี้มีหน้าที่ยืนยันว่า "คืนสภาพครบ" ไม่ใช่ยืนยันว่า "ข้อมูลเป็น seed"
+    (หน้าที่หลังเป็นของ verify:seed)
+  */
+  const alertsAtStart = (await state("u-mod")).allAlertCounts.ownerTotal;
 
   // ── AC-27 · ขอบเขตข้อมูลของเจ้าของข้อมูลแต่ละกอง ──────────────────────────
   group("AC-27 · ขอบเขตของเจ้าของข้อมูล 3 กอง");
@@ -107,7 +195,24 @@ try {
   }
 
   group("§5.5 · ยืนยันชั้นหลักฐานเป็นของทีมกลางเท่านั้น");
-  const unconf = mod.evidence.find((e) => e.confirmedTier === null && e.proposedTier);
+  /*
+    ถ้าไม่เหลือหลักฐานที่ยังไม่ยืนยันเลย (เช่นรอบก่อนล้มก่อนถึงขั้นคืนค่า)
+    ให้เพิกถอนคืนมาหนึ่งชิ้นก่อน ดีกว่าล้มทั้งชุดเพราะสภาพข้อมูลตั้งต้น
+  */
+  let unconf = mod.evidence.find((e) => e.confirmedTier === null && e.proposedTier);
+  if (!unconf) {
+    const victim = mod.evidence.find((e) => e.proposedTier);
+    if (victim) {
+      await as("u-mod", `/api/evidence/${victim.id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ tier: null, reason: "เตรียมสภาพให้ชุดทดสอบ" }),
+      });
+      unconf = (await state("u-mod")).evidence.find((e) => e.id === victim.id);
+    }
+  }
+  t("มีหลักฐานที่ยังไม่ยืนยันให้ทดสอบ", !!unconf && !unconf.confirmedTier,
+    "ไม่มีเลย แม้พยายามเพิกถอนคืนแล้ว");
+  if (!unconf) throw new Error("ไม่มีหลักฐานที่ยังไม่ยืนยัน — สั่ง npm run db:reset ก่อน");
   const rTierOwner = await as("u-owner2", `/api/evidence/${unconf.id}`, {
     method: "PATCH", body: JSON.stringify({ tier: "A" }),
   });
@@ -726,17 +831,21 @@ try {
     ข้อนี้คือเหตุผลที่ต้องมี DELETE /api/evidence/[id]:
     ถ้าไม่คืนสภาพ verify:seed ที่ยืนยันจำนวนแจ้งเตือนแบบเป๊ะจะไม่ผ่านเมื่อรันตามหลัง
   */
-  const SEED_EVIDENCE = 14;
+  /*
+    ลบเฉพาะ "ที่ไม่ได้อยู่ตั้งแต่ต้น" — เดิมใช้เกณฑ์ว่าเลข id เกิน 14
+    ซึ่งผิดทันทีที่ฐานข้อมูลมีแถวที่ id ไม่ได้เรียงติดกัน หรือมีของค้างจากรอบก่อน
+    กลายเป็นลบข้อมูลตั้งต้นทิ้ง แล้วรอบถัดไปก็เพี้ยนตาม
+  */
   for (const e of (await state("u-mod")).evidence) {
-    if (Number(e.id.replace(/\D/g, "")) > SEED_EVIDENCE) {
+    if (!evidenceAtStart.has(e.id)) {
       await as("u-mod", `/api/evidence/${e.id}`, { method: "DELETE" });
     }
   }
   const finalEv = (await state("u-mod")).evidence;
-  t(`ลบหลักฐานที่ชุดทดสอบเพิ่มคืนครบ — จำนวนกลับเป็น ${SEED_EVIDENCE} เท่า seed`,
-    finalEv.length === SEED_EVIDENCE, finalEv.length);
-  t("แจ้งเตือนกลับเป็นจำนวนเดิม — verify:seed รันตามหลังได้",
-    (await state("u-mod")).allAlertCounts.ownerTotal === 27,
+  t(`ลบหลักฐานที่ชุดทดสอบเพิ่มคืนครบ — จำนวนกลับเป็น ${evidenceAtStart.size} เท่าตอนเริ่ม`,
+    finalEv.length === evidenceAtStart.size, finalEv.length);
+  t(`แจ้งเตือนกลับเป็นจำนวนเดิม (${alertsAtStart}) — ชุดตรวจไม่ทิ้งร่องรอย`,
+    (await state("u-mod")).allAlertCounts.ownerTotal === alertsAtStart,
     (await state("u-mod")).allAlertCounts.ownerTotal);
 
   // ── เครื่องมือเดโม: สำรอง / ย้อนกลับ ─────────────────────────────────────
@@ -801,39 +910,88 @@ try {
   t("ย้อนไปจุดที่ไม่มี -> ปฏิเสธ", missing.status >= 400, missing.body?.error);
 
   // เก็บกวาดจุดสำรองที่ชุดตรวจสร้าง ให้เหลือแต่ baseline
+  // ยกเว้นจุดกันข้อมูลของชุดตรวจเอง — ต้องอยู่จนจบ ไม่งั้น finally ไม่มีอะไรให้ย้อนกลับ
   for (const s of (await as("u-mod", "/api/demo/snapshots")).body.snapshots) {
-    if (!s.isBaseline) {
+    if (!s.isBaseline && s.name !== GUARD) {
       await as("u-mod", `/api/demo/snapshots/${encodeURIComponent(s.name)}`, { method: "DELETE" });
     }
   }
-  const cleaned = (await as("u-mod", "/api/demo/snapshots")).body.snapshots;
+  const cleaned = (await as("u-mod", "/api/demo/snapshots")).body.snapshots
+    .filter((s) => s.name !== GUARD); // จุดกันข้อมูลของชุดตรวจเอง ลบตอนจบใน finally
   t("ลบจุดสำรองที่ชุดตรวจสร้างคืนครบ เหลือแต่ baseline",
     cleaned.length === 1 && cleaned[0].isBaseline,
     cleaned.map((s) => s.name).join(" "));
 
-  group("คืนสภาพชั้นหลักฐาน — ชุดทดสอบต้องไม่ทิ้งร่องรอย");
-  for (const b of tierBaseline) {
-    const now = (await state("u-mod")).evidence.find((e) => e.id === b.id);
-    if (!now || now.confirmedTier === b.confirmedTier) continue;
-    await as("u-mod", `/api/evidence/${b.id}`, {
-      method: "PATCH",
-      body: JSON.stringify(
-        b.confirmedTier === null
-          ? { tier: null, reason: "คืนสภาพหลังชุดทดสอบ" }
-          : { tier: b.confirmedTier, reason: "คืนสภาพหลังชุดทดสอบ" }),
+  // ── R6 · agent อ่านเอกสารแล้วเสนอชั้น ────────────────────────────────────
+  group("R6 · agent เสนอชั้นหลักฐาน — เสนอเท่านั้น ไม่ใช่การยืนยัน");
+  {
+    const mine = views["u-owner3"].myItems[0].code;
+    const made = await as("u-owner3", "/api/evidence", {
+      method: "POST",
+      body: JSON.stringify({ itemCode: mine, title: "(ร่าง) แผนสำหรับทดสอบ agent" }),
     });
+    t("แนบหลักฐานเพื่อทดสอบได้", made.status === 201, made.body?.error);
+    const evId = made.body?.id;
+
+    if (evId) {
+      const execTry = await as("u-exec", `/api/evidence/${evId}/propose-tier`, { method: "POST" });
+      t("ผู้บริหารสั่ง agent เสนอชั้น → 403", execTry.status === 403, `ได้ ${execTry.status}`);
+      const crossTry = await as("u-owner1", `/api/evidence/${evId}/propose-tier`, { method: "POST" });
+      t("เจ้าของกองอื่นสั่ง agent เสนอชั้น → 403", crossTry.status === 403, `ได้ ${crossTry.status}`);
+
+      const runsBefore = (await state("u-mod")).agentRuns;
+      const verifiedBefore = (await state("u-mod")).items.find((i) => i.code === mine)?.verified;
+
+      const r = await as("u-owner3", `/api/evidence/${evId}/propose-tier`, { method: "POST" });
+      t("เรียก agent ได้ (ไม่ว่าโมเดลจะตอบหรือไม่)", r.status === 200, r.body?.error);
+
+      /*
+        ไม่ยืนยันว่า "ต้องเสนอชั้น A" เพราะนั่นคือการทดสอบคำตอบของโมเดล ซึ่งไม่ตายตัว
+        สิ่งที่ต้องตายตัวคือ **กติกา** — เสนอแล้วต้องไม่ยืนยันให้เอง และต้องบันทึกร่องรอยไว้
+      */
+      const after = await state("u-mod");
+      const evAfter = after.evidence.find((e) => e.id === evId);
+      t("ยังไม่ถูกยืนยัน — การยืนยันยังเป็นของคน",
+        evAfter && evAfter.confirmedTier === null, evAfter?.confirmedTier);
+      t("ค่า Verified ไม่ขยับจากข้อเสนอของ agent",
+        after.items.find((i) => i.code === mine)?.verified === verifiedBefore);
+      t("บันทึกลง agent_run ทุกครั้ง แม้โมเดลจะล้ม (AC-06)",
+        after.agentRuns === runsBefore + 1, `${runsBefore} → ${after.agentRuns}`);
+      t("บอกตามจริงว่าอ่านเนื้อไฟล์ได้หรือไม่",
+        typeof r.body?.read?.ok === "boolean" && (r.body.read.ok || !!r.body.read.reason),
+        JSON.stringify(r.body?.read));
+      if (r.body?.ok) {
+        t("เสนอชั้นเป็น A/B/C/D เท่านั้น",
+          ["A", "B", "C", "D"].includes(r.body.proposedTier), r.body.proposedTier);
+        t("ข้อเสนอต้องมีเหตุผลติดมาด้วย",
+          typeof r.body.proposedReason === "string" && r.body.proposedReason.length > 5,
+          r.body.proposedReason);
+      } else {
+        t("ล้มแล้วต้องไม่เดาชั้นใส่ไว้แทน",
+          r.body?.proposedTier === null && !!r.body?.error, JSON.stringify(r.body));
+      }
+
+      // ยืนยันแล้ว → ห้ามให้ agent มาเสนอทับ
+      await as("u-mod", `/api/evidence/${evId}`, {
+        method: "PATCH", body: JSON.stringify({ tier: "C", reason: "ทดสอบกฎ agent" }),
+      });
+      const afterConfirm = await as("u-owner3", `/api/evidence/${evId}/propose-tier`, { method: "POST" });
+      t("ของที่ยืนยันแล้ว agent เสนอทับไม่ได้", afterConfirm.status === 400, `ได้ ${afterConfirm.status}`);
+
+      await as("u-mod", `/api/evidence/${evId}`, { method: "DELETE" });
+      t("ลบหลักฐานที่ใช้ทดสอบคืนแล้ว",
+        !(await state("u-mod")).evidence.some((e) => e.id === evId));
+    }
   }
+
+  group("คืนสภาพชั้นหลักฐาน — ชุดทดสอบต้องไม่ทิ้งร่องรอย");
+  const tierRestore = await restoreTiers();
+  const baseUnconf = tierBaseline.filter((b) => b.confirmedTier === null).length;
+  t("ชั้นหลักฐานทุกชิ้นกลับเป็นสภาพเดิม", tierRestore.drift.length === 0,
+    tierRestore.drift.map((d) => d.id).join(" "));
+  t(`จำนวนที่ยังไม่ยืนยันกลับเป็น ${baseUnconf}`,
+    tierRestore.unconfirmed === baseUnconf, tierRestore.unconfirmed);
   const finalTiers = (await state("u-mod")).evidence;
-  const drift = tierBaseline.filter((b) => {
-    const now = finalTiers.find((e) => e.id === b.id);
-    return now && now.confirmedTier !== b.confirmedTier;
-  });
-  t("ชั้นหลักฐานทุกชิ้นกลับเป็นสภาพเดิม", drift.length === 0,
-    drift.map((d) => d.id).join(" "));
-  t(`จำนวนที่ยังไม่ยืนยันกลับเป็น ${tierBaseline.filter((b) => b.confirmedTier === null).length}`,
-    finalTiers.filter((e) => e.confirmedTier === null).length
-      === tierBaseline.filter((b) => b.confirmedTier === null).length,
-    finalTiers.filter((e) => e.confirmedTier === null).length);
 
   group("เพิกถอนชั้นที่ยืนยันผิด — ทีมกลางเท่านั้น");
   const toRevoke = finalTiers.find((e) => e.confirmedTier !== null);
@@ -872,8 +1030,27 @@ try {
   console.log("\n" + "─".repeat(66));
   console.log(`ผ่าน ${pass}/${pass + fail}${fail ? ` · ไม่ผ่าน ${fail}` : ""}`);
   console.log("─".repeat(66));
-  process.exit(fail > 0 ? 2 : 0);
+  code = fail > 0 ? 2 : 0;
 } catch (e) {
   console.error("\n⛔ เทสต์ล้ม:", e?.stack ?? e);
-  process.exit(1);
+  code = 1;
+} finally {
+  /*
+    คืนสภาพให้ได้เสมอ แม้ชุดทดสอบจะล้มกลางคัน
+    นี่คือสิ่งที่กันไม่ให้ความล้มครั้งเดียว ทำให้ข้อมูลเดโมเพี้ยนถาวร
+  */
+  try {
+    const g = await releaseGuard();
+    if (!g.skipped && !g.ok) {
+      console.error(`\n⚠ ย้อนฐานข้อมูลกลับไม่สำเร็จ: ${g.error ?? ""}`);
+    }
+    const r = await restoreTiers();
+    if (r.restored && r.drift.length > 0) {
+      console.error(`\n⚠ คืนชั้นหลักฐานไม่ครบ: ${r.drift.map((d) => d.id).join(" ")}`);
+    }
+  } catch (e2) {
+    console.error("\n⚠ คืนสภาพชั้นหลักฐานไม่สำเร็จ:", e2?.message ?? e2);
+  }
 }
+// process.exit ข้าม finally จึงต้องเรียกหลังบล็อกจบแล้วเท่านั้น
+process.exit(code);

@@ -47,8 +47,23 @@ export async function PATCH(req: Request, ctx: { params: Promise<{ id: string }>
       if (!["A", "B", "C", "D"].includes(tier)) {
         throw new HttpError(400, "tier ต้องเป็น A, B, C หรือ D");
       }
-      if (ev.proposedTier && tier !== ev.proposedTier && !body.reason?.trim()) {
+      /*
+        กฎเหตุผล: ต้องให้เหตุผลเมื่อ "ทับคำตัดสินที่มีอยู่แล้ว"
+        ไม่ว่าคำตัดสินนั้นจะเป็นข้อเสนอของ agent หรือเป็นการยืนยันของคนด้วยกันเอง
+        เดิมดักแค่กรณีแรก — การแก้ชั้นที่คนยืนยันไปแล้วจึงหลุดไปโดยไม่ต้องบอกเหตุผล
+        ซึ่งเป็นกรณีที่ควรเข้มกว่า ไม่ใช่หลวมกว่า
+      */
+      if (ev.confirmedTier && tier !== ev.confirmedTier && !body.reason?.trim()) {
+        throw new HttpError(400,
+          `การแก้ชั้นที่ยืนยันไปแล้ว (ชั้น ${ev.confirmedTier}) ต้องระบุเหตุผล`);
+      }
+      if (!ev.confirmedTier && ev.proposedTier && tier !== ev.proposedTier && !body.reason?.trim()) {
         throw new HttpError(400, "การแก้ชั้นที่ agent เสนอ ต้องระบุเหตุผล");
+      }
+      // กดยืนยันค่าเดิมซ้ำ ไม่เปลี่ยนอะไรเลย แต่ได้แถว audit เพิ่มทุกครั้ง — ปฏิเสธไป
+      if (ev.confirmedTier === tier) {
+        throw new HttpError(400,
+          `หลักฐานนี้ยืนยันเป็นชั้น ${tier} อยู่แล้ว — เลือกชั้นอื่นถ้าต้องการแก้`);
       }
       // จับค่าก่อน/หลัง เพื่อให้หน้าจอบอกได้ว่าการกดนี้ขยับอะไรจากเท่าไรเป็นเท่าไร
       const itemBefore = itemByCode(ev.itemCode)!;

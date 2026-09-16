@@ -74,6 +74,18 @@ function migrate(d: DatabaseSync) {
   if (!cols.includes("stored_path")) {
     d.exec("ALTER TABLE evidence ADD COLUMN stored_path TEXT");
   }
+
+  /*
+    ค่าตั้งค่าที่เป็นข้อความ — แยกตารางจาก app_setting โดยตั้งใจ
+    เพราะ settings() แปลงทุกแถวเป็นตัวเลขด้วย Number() ถ้าเอาข้อความไปปนจะได้ NaN
+    เงียบ ๆ แล้วไปโผล่เป็นบั๊กที่อื่นแทน
+  */
+  d.exec(`CREATE TABLE IF NOT EXISTS app_text_setting (
+    key        TEXT PRIMARY KEY,
+    value      TEXT NOT NULL,
+    updated_by TEXT,
+    updated_at TEXT
+  )`);
 }
 
 function seedInto(d: DatabaseSync) {

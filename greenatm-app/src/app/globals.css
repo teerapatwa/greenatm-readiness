@@ -285,3 +285,59 @@ a:hover {
 @media (max-width: 1024px) {
   .ga-nav { display: none; }
 }
+
+/* ── แถบเลื่อน % ความคืบหน้า ───────────────────────────────────────────────
+   input[type=range] ไม่รับ style ตรง ๆ ต้องจัดผ่าน pseudo-element ของแต่ละเบราว์เซอร์
+   สีใช้ ramp ชุดเดียวกับระดับ ไม่สร้างสีใหม่ */
+.ga-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+.ga-range::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--track);
+  border: 1px solid var(--line);
+}
+.ga-range::-moz-range-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--track);
+  border: 1px solid var(--line);
+}
+.ga-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: -7px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(21, 41, 34, 0.35);
+}
+.ga-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--accent);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 3px rgba(21, 41, 34, 0.35);
+}
+.ga-range:disabled::-webkit-slider-thumb { background: var(--muted2); }
+.ga-range:disabled::-moz-range-thumb { background: var(--muted2); }
+.ga-range:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* จุดกะพริบของไฟบอกสถานะการต่อโมเดล — ใช้ตอนกำลังตรวจเท่านั้น */
+@keyframes ga-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: .35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  @keyframes ga-pulse { 0%, 100% { opacity: 1; } }
+}

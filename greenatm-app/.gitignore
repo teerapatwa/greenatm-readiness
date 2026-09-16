@@ -9,7 +9,10 @@ sample-data/uploads/
 next-env.d.ts
 srv.log
 srv.err
-data/
+# ต้องมี / นำหน้า — ไม่งั้น git กลืนโฟลเดอร์ชื่อ data ทุกระดับ
+# รวมถึง src/lib/data/ (rules.ts · seed.ts) และ src/app/api/data/
+# ซึ่งเคยทำให้ไฟล์หัวใจของโปรเจกต์ไม่ขึ้น repo และเพื่อนในทีม build ไม่ผ่าน
+/data/
 
 # จุดสำรองฐานข้อมูลเดโม — เป็นของเฉพาะเครื่อง ไม่ขึ้น repo
 data/snapshots/

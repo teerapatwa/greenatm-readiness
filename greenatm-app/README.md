@@ -1,4 +1,4 @@
-# GreenATM Evidence & Readiness — แอป Next.js + SQLite
+# Green ATM Tracker — แอป Next.js + SQLite
 
 ระบบติดตามความพร้อมด้านสิ่งแวดล้อมตาม **แบบประเมินภายใน วว.นบ209_2569-14**
 (4 หมวด · 24 รายการ · Level 0–5 ต่อรายการ) พร้อมชั้นเชื่อมต่อโมเดลสำหรับงาน agent

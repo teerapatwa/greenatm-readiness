@@ -282,8 +282,14 @@ export function addEvidence(a: {
   if (a.documentDate && !/^\d{4}-\d{2}-\d{2}$/.test(a.documentDate)) {
     throw new Error("รูปแบบวันที่ต้องเป็น YYYY-MM-DD");
   }
-  const r = db().prepare("SELECT COUNT(*) AS c FROM evidence").get() as Row;
-  const id = `E-${String(n(r.c) + 1).padStart(3, "0")}`;
+  /*
+    เลขลำดับต้องมาจาก "เลขสูงสุดที่เคยใช้" ไม่ใช่ "จำนวนแถวที่มีอยู่"
+    เพราะพอลบแถวไหนไป จำนวนแถวจะลดลง แล้วแถวถัดไปจะได้เลขที่มีคนใช้อยู่แล้ว
+    → UNIQUE constraint failed: evidence.id · แนบหลักฐานใหม่ไม่ได้อีกเลยจนกว่าจะรีเซ็ต
+  */
+  const r = db().prepare(
+    "SELECT MAX(CAST(SUBSTR(id, 3) AS INTEGER)) AS m FROM evidence").get() as Row;
+  const id = `E-${String((r.m === null || r.m === undefined ? 0 : n(r.m)) + 1).padStart(3, "0")}`;
   db().prepare(
     `INSERT INTO evidence (id,item_code,title,document_date,upload_date,uploaded_by)
      VALUES (?,?,?,?,?,?)`)
@@ -707,4 +713,70 @@ export function deleteEvidence(id: string, actor: string) {
   audit(actor, "delete_evidence", "evidence", id,
     { itemCode: row.itemCode, title: row.title, confirmedTier: row.confirmedTier }, null);
   return row;
+}
+
+/* ── ค่าตั้งค่าที่เป็นข้อความ (เช่น provider ของโมเดลที่เลือกใช้อยู่) ─────────── */
+
+export function textSetting(key: string): string | null {
+  const r = db().prepare("SELECT value FROM app_text_setting WHERE key=?").get(key) as Row | undefined;
+  return r ? String(r.value) : null;
+}
+
+/**
+ * เขียนค่าตั้งค่าที่เป็นข้อความ พร้อมบันทึก audit
+ *
+ * `allowed` บังคับให้ค่าที่รับได้มาจากรายการที่กำหนดไว้เท่านั้น — ไม่ใช่ข้อความอะไรก็ได้
+ * ที่หลุดจาก body ของ request เข้ามาตรง ๆ
+ */
+export function setTextSetting(key: string, value: string, actor: string, allowed: readonly string[]) {
+  if (!allowed.includes(value)) {
+    throw new Error(`ค่า "${value}" ไม่อยู่ในตัวเลือกที่อนุญาต (${allowed.join(" / ")})`);
+  }
+  const before = textSetting(key);
+  db().prepare(
+    `INSERT INTO app_text_setting (key,value,updated_by,updated_at) VALUES (?,?,?,?)
+     ON CONFLICT(key) DO UPDATE SET value=excluded.value,
+       updated_by=excluded.updated_by, updated_at=excluded.updated_at`,
+  ).run(key, value, actor, nowIso());
+  audit(actor, "set_setting", "app_text_setting", key, { value: before }, { value });
+}
+
+/**
+ * บันทึกข้อเสนอชั้นของ agent — **เสนอเท่านั้น**
+ *
+ * แตะเฉพาะ proposed_* · ไม่แตะ confirmed_tier จึงไม่ทำให้ค่า Verified ขยับ
+ * และ**ไม่เขียน audit_log** เพราะ audit_log บังคับว่า actor ต้องเป็นคน (CHECK actor <> 'ai')
+ * ร่องรอยของ agent อยู่ในตาราง agent_run ซึ่งเป็นคนละเรื่องกันโดยตั้งใจ
+ */
+export function setProposedTier(id: string, tier: "A" | "B" | "C" | "D", reason: string) {
+  const r = db().prepare("SELECT id FROM evidence WHERE id=?").get(id) as Row | undefined;
+  if (!r) throw new Error(`ไม่พบหลักฐาน ${id}`);
+  db().prepare("UPDATE evidence SET proposed_tier=?, proposed_reason=? WHERE id=?")
+    .run(tier, reason, id);
+}
+
+/** หลักฐานว่า agent ทำงานจริง ตรวจย้อนได้ — AC-06 */
+export function recordAgentRun(a: {
+  itemCode: string | null; startedAt: string; endedAt: string;
+  toolCalls: string | null; outcome: string;
+}) {
+  db().prepare(
+    `INSERT INTO agent_run (item_code,started_at,ended_at,tool_calls,outcome)
+     VALUES (?,?,?,?,?)`,
+  ).run(a.itemCode, a.startedAt, a.endedAt, a.toolCalls, a.outcome);
+}
+
+export function agentRuns(limit = 20) {
+  return (db().prepare(
+    `SELECT id,item_code,started_at,ended_at,tool_calls,outcome
+     FROM agent_run ORDER BY id DESC LIMIT ?`).all(limit) as Row[])
+    .map((r) => ({
+      id: n(r.id), itemCode: s(r.item_code),
+      startedAt: String(r.started_at), endedAt: s(r.ended_at),
+      toolCalls: s(r.tool_calls), outcome: String(r.outcome),
+    }));
+}
+
+export function agentRunCount(): number {
+  return n((db().prepare("SELECT COUNT(*) AS c FROM agent_run").get() as Row).c);
 }
