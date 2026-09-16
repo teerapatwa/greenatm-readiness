@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 /**
  * หน้าแรก — โครงและขนาดยึดตาม GreenATM Evidence Dashboard (standalone).html
  *
- * ของทีม 5 คอลัมน์: รายการ · สถานะปัจจุบัน · ปีที่แล้ว · เป้าปีนี้ (ทีมกลาง) · คาดการณ์
+ * ของทีม 5 คอลัมน์: รายการ · สถานะปัจจุบัน · Level เดิม · เป้าปีนี้ (ทีมกลาง) · คาดการณ์
  * ที่เราเพิ่ม 2 คอลัมน์: ผู้รับผิดชอบ · timeline/milestone (ตามที่ขอไว้)
  * และปุ่มเป้าของทีมซึ่งเดิมกดไม่ได้ ที่นี่กดได้จริงถ้ามีสิทธิ์
  */
@@ -34,8 +34,8 @@ export default async function HomePage() {
       <div style={{ marginBottom: 20 }}>
         <div className="ga-h1">หน้าแรก — ภาพรวมระดับ GreenATM ตามหมวดหมู่</div>
         <div className="ga-sub">
-          จัดกลุ่มตามแบบประเมิน {v.meta.formRef} · เทียบระดับปีที่แล้ว เป้าที่ทีมกลางกำหนด
-          และคาดการณ์จากอัตราปัจจุบัน · <b>แถวสีเขียวอ่อน = เป้าปีนี้สูงกว่าปีที่แล้ว</b>
+          จัดกลุ่มตามหมวดของแบบประเมิน · เทียบกับ Level เดิม เป้าที่ทีมกลางกำหนด
+          และคาดการณ์จากอัตราปัจจุบัน · <b>แถวสีเขียวอ่อน = เป้าปีนี้สูงกว่า Level เดิม</b>
           {u.role === "owner" && <> · แก้ได้เฉพาะ {v.myItems.length} รายการของกองคุณ</>}
           {u.role === "executive" && <> · มุมมองอ่านอย่างเดียว ยกเว้นการตั้งเป้า</>}
         </div>
@@ -55,14 +55,14 @@ export default async function HomePage() {
                 {v.org.meanNow.toFixed(2)}
               </div>
               <div style={{ fontSize: 11.5, color: "var(--muted2)" }}>
-                ปีที่แล้ว {v.org.meanLast.toFixed(2)} ·{" "}
+                Level เดิม {v.org.meanLast.toFixed(2)} ·{" "}
                 <b style={{ color: "var(--accent)" }}>
                   +{(v.org.meanNow - v.org.meanLast).toFixed(2)}
                 </b>
               </div>
             </div>
             <div>
-              <div className="ga-label">ไม่ขยับระดับจากปีที่แล้ว</div>
+              <div className="ga-label">ไม่ขยับจาก Level เดิม</div>
               <div className="ga-stat tnum" style={{ color: "var(--warn)" }}>
                 {v.org.stalled}
                 <span style={{ fontSize: 15, color: "var(--muted2)" }}>/{v.items.length}</span>
@@ -154,7 +154,7 @@ export default async function HomePage() {
                 <div>ผู้รับผิดชอบ</div>
                 <div>timeline / milestone</div>
                 <div>สถานะปัจจุบัน</div>
-                <div>ปีที่แล้ว</div>
+                <div>Level เดิม</div>
                 <div>เป้าปีนี้ (ทีมกลาง)</div>
                 <div>คาดการณ์</div>
               </div>
@@ -184,7 +184,7 @@ export default async function HomePage() {
                       }}>
                         <div style={{ fontSize: 13, color: "var(--ink)" }}>
                           <Link href={`/item/${i.code}`}><b>{i.code}</b></Link> {i.name}
-                          {stretch && <Tag tone="ok">เป้าสูงกว่าปีที่แล้ว</Tag>}
+                          {stretch && <Tag tone="ok">เป้าสูงกว่า Level เดิม</Tag>}
                           {i.isMine && <Tag tone="ok">ของกองคุณ</Tag>}
                           {!i.ownerUserId && <Tag tone="muted">ไม่มีเจ้าของ</Tag>}
                         </div>

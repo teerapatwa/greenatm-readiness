@@ -80,6 +80,15 @@ function migrate(d: DatabaseSync) {
     เพราะ settings() แปลงทุกแถวเป็นตัวเลขด้วย Number() ถ้าเอาข้อความไปปนจะได้ NaN
     เงียบ ๆ แล้วไปโผล่เป็นบั๊กที่อื่นแทน
   */
+  /*
+    ร่องรอยว่าคนแก้ข้อความที่ระบบร่างไว้หรือไม่
+    ต้องเห็นบนหน้าจอ ไม่งั้นแยกไม่ออกว่าข้อความที่ส่งออกไปเป็นของระบบล้วนหรือคนแก้แล้ว
+  */
+  const ob = (d.prepare("PRAGMA table_info(outbox)").all() as { name: string }[])
+    .map((c) => c.name);
+  if (!ob.includes("edited_by")) d.exec("ALTER TABLE outbox ADD COLUMN edited_by TEXT");
+  if (!ob.includes("edited_at")) d.exec("ALTER TABLE outbox ADD COLUMN edited_at TEXT");
+
   d.exec(`CREATE TABLE IF NOT EXISTS app_text_setting (
     key        TEXT PRIMARY KEY,
     value      TEXT NOT NULL,

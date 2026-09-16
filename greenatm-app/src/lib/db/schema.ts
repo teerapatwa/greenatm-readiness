@@ -4,7 +4,7 @@ import "server-only";
  * โครงฐานข้อมูล — PLAN.en.md §6.3
  *
  * กฎที่ฝังไว้ในโครงนี้ ไม่ใช่แค่เขียนในเอกสาร:
- *   · ไม่มีคอลัมน์ weight ระดับรายการ — แบบฟอร์ม วว.นบ209 ให้คะแนนเป็น Level ไม่ใช่ถ่วงน้ำหนัก
+ *   · ไม่มีคอลัมน์ weight ระดับรายการ — แบบประเมินภายในให้คะแนนเป็น Level ไม่ใช่ถ่วงน้ำหนัก
  *   · achieved_level กับ verified_level แยกคอลัมน์กันคนละช่อง เพื่อให้ "รวมกันโดยบังเอิญ" เป็นไปไม่ได้
  *   · pending_progress เป็นตารางแยก — agent เขียนได้แค่ตารางนี้ ค่าจริงเปลี่ยนเมื่อคนกดยืนยัน
  *   · audit_log เป็น append-only และ actor ต้องเป็น user id เสมอ (CHECK กันค่า 'ai' ไว้ในระดับ DB)
@@ -137,7 +137,10 @@ CREATE TABLE IF NOT EXISTS outbox (
   created_by  TEXT NOT NULL REFERENCES app_user(id),
   created_at  TEXT NOT NULL,
   sent_by     TEXT REFERENCES app_user(id),
-  sent_at     TEXT
+  sent_at     TEXT,
+  -- ร่องรอยว่าคนแก้ข้อความที่ระบบร่างไว้หรือไม่ ก่อนกดส่ง
+  edited_by   TEXT REFERENCES app_user(id),
+  edited_at   TEXT
 );
 
 CREATE TABLE IF NOT EXISTS agent_run (

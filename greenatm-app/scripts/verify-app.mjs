@@ -60,23 +60,29 @@ const state = (u) => as(u, "/api/state").then((r) => r.body);
 */
 const GUARD = "ก่อนชุดตรวจอัตโนมัติ";
 let guard = null;
+let guardName = GUARD;
 
 async function takeGuard() {
   /*
-    ถ้ายังมีจุดกันข้อมูลค้างอยู่ แปลว่ารอบก่อนล้มก่อนจะได้คืนค่า
-    จุดนั้นคือสภาพสะอาดก่อนรอบที่ล้ม — ย้อนกลับไปหาแทนที่จะทิ้ง ชุดตรวจจึงซ่อมตัวเองได้
+    เจอจุดกันข้อมูลค้างจากรอบก่อน = รอบนั้นถูก kill กลางคัน
+
+    **ห้ามย้อนกลับไปหาอัตโนมัติ** — เคยทำแล้วพัง: ระหว่างนั้นคนแนบหลักฐานจริงเข้ามา
+    การย้อนกลับจึงลบงานของคนทิ้งไปด้วย · ชุดตรวจไม่มีสิทธิ์ตัดสินใจแทนคนว่าข้อมูลไหนทิ้งได้
+    ให้บอกแล้วเก็บไฟล์นั้นไว้ ให้คนเลือกเองว่าจะย้อนหรือไม่
   */
   const stale = (await as("u-mod", "/api/demo/snapshots")).body?.snapshots
-    ?.some((s) => s.name === GUARD);
+    ?.find((s) => s.name.startsWith(GUARD));
   if (stale) {
-    console.log("↩ พบจุดกันข้อมูลค้างจากรอบก่อนที่ล้มกลางคัน — ย้อนกลับไปหาก่อนเริ่มใหม่");
-    guard = GUARD;
-    await releaseGuard();
+    console.log(`\n⚠ พบจุดกันข้อมูลค้างจากรอบก่อนที่ถูกปิดกลางคัน: "${stale.name}"`);
+    console.log("   ชุดตรวจ**ไม่ย้อนกลับให้อัตโนมัติ** เพราะอาจมีงานที่คนทำเพิ่มหลังจากนั้น");
+    console.log("   ถ้าข้อมูลดูเพี้ยน ให้ย้อนเองที่ศูนย์ตรวจสอบ → เครื่องมือเดโม\n");
   }
+  // ชื่อไม่ซ้ำกันทุกรอบ — ของค้างจากรอบก่อนจึงไม่ถูกทับหรือถูกลบโดยบังเอิญ
+  guardName = `${GUARD} ${new Date().toISOString().slice(11, 19).replace(/:/g, "")}`;
   const r = await as("u-mod", "/api/demo/snapshots", {
-    method: "POST", body: JSON.stringify({ name: GUARD }),
+    method: "POST", body: JSON.stringify({ name: guardName }),
   });
-  guard = r.status < 300 ? GUARD : null;
+  guard = r.status < 300 ? guardName : null;
   return r;
 }
 
@@ -909,18 +915,177 @@ try {
   const missing = await as("u-mod", "/api/demo/snapshots/ไม่มีอยู่จริง", { method: "POST" });
   t("ย้อนไปจุดที่ไม่มี -> ปฏิเสธ", missing.status >= 400, missing.body?.error);
 
-  // เก็บกวาดจุดสำรองที่ชุดตรวจสร้าง ให้เหลือแต่ baseline
-  // ยกเว้นจุดกันข้อมูลของชุดตรวจเอง — ต้องอยู่จนจบ ไม่งั้น finally ไม่มีอะไรให้ย้อนกลับ
+  /*
+    ลบเฉพาะจุดสำรองที่ "ชุดตรวจสร้างเอง" เท่านั้น
+
+    เคยพลาด: ลบทุกอันที่ไม่ใช่ baseline ทำให้จุดสำรองที่คนเตรียมไว้ก่อนซ้อมเดโม
+    หายไปพร้อมกัน — ชุดตรวจไม่มีสิทธิ์ลบของที่คนอื่นตั้งใจเก็บไว้
+  */
+  const MINE = new Set([snapName, restored.body?.safetyCopy].filter(Boolean));
   for (const s of (await as("u-mod", "/api/demo/snapshots")).body.snapshots) {
-    if (!s.isBaseline && s.name !== GUARD) {
+    if (MINE.has(s.name)) {
       await as("u-mod", `/api/demo/snapshots/${encodeURIComponent(s.name)}`, { method: "DELETE" });
     }
   }
-  const cleaned = (await as("u-mod", "/api/demo/snapshots")).body.snapshots
-    .filter((s) => s.name !== GUARD); // จุดกันข้อมูลของชุดตรวจเอง ลบตอนจบใน finally
-  t("ลบจุดสำรองที่ชุดตรวจสร้างคืนครบ เหลือแต่ baseline",
-    cleaned.length === 1 && cleaned[0].isBaseline,
+  const cleaned = (await as("u-mod", "/api/demo/snapshots")).body.snapshots;
+  t("ลบจุดสำรองที่ชุดตรวจสร้างคืนครบ",
+    !cleaned.some((s) => MINE.has(s.name)),
     cleaned.map((s) => s.name).join(" "));
+  t("จุดสำรองของคนอื่นไม่ถูกแตะ — ยังมี baseline อยู่",
+    cleaned.some((s) => s.isBaseline));
+
+  group("R11 · AC-10 / AC-15 · เอกสารรอบเดือน — ไม่มีข้อไหนหายไปเงียบ ๆ");
+  {
+    const rep = await as("u-mod", "/api/report");
+    t("ผู้ดูแลดูเอกสารรอบเดือนได้", rep.status === 200, rep.body?.error);
+    const R = rep.body;
+
+    const owner = await as("u-owner3", "/api/report");
+    t("เจ้าของข้อมูลดูเอกสารรอบเดือน → ปฏิเสธ", owner.status >= 400, `ได้ ${owner.status}`);
+    const exec = await as("u-exec", "/api/report");
+    t("ผู้บริหารดูได้ — เป็นภาพระดับองค์กร", exec.status === 200, `ได้ ${exec.status}`);
+
+    /*
+      หัวใจของ AC-10: ทุกข้อต้องอยู่ที่ใดที่หนึ่งเสมอ
+      ถ้าผลรวมไม่ตรงกับจำนวนข้อทั้งหมด แปลว่ามีข้อที่หายไปจากเอกสารโดยไม่มีใครรู้
+    */
+    t(`ทุกข้ออยู่ที่ใดที่หนึ่ง — ${R.summary.withCitation} + ${R.summary.inRemarks} = ${R.summary.totalItems}`,
+      R.summary.withCitation + R.summary.inRemarks === R.summary.totalItems,
+      `${R.summary.withCitation} + ${R.summary.inRemarks}`);
+
+    const statements = R.sections.flatMap((x) => x.statements);
+    t("ทุกประโยคในเนื้อรายงานมีการอ้างอิงอย่างน้อยหนึ่งฉบับ (AC-15)",
+      statements.length > 0 && statements.every((st) => st.citations.length > 0),
+      statements.filter((st) => st.citations.length === 0).map((st) => st.itemCode).join(" "));
+
+    t("อ้างอิงทุกฉบับเป็นหลักฐานที่ยืนยันแล้วเท่านั้น",
+      statements.every((st) => st.citations.every((c) => ["A", "B", "C", "D"].includes(c.tier))));
+
+    t("ประโยคที่อ้างชั้น C ต้องถูกกำกับว่ายังไม่นับ",
+      statements.every((st) =>
+        st.citations.every((c) => c.tier === "C") ? st.notCounted === true : true));
+
+    t("รายการที่ไม่มีหลักฐานยืนยัน ต้องขึ้นทะเบียนหมายเหตุทุกข้อ (AC-10)",
+      R.remarks.length > 0 && R.remarks.every((m) => m.itemCode && m.reason));
+    t("ทะเบียนหมายเหตุบอกเจ้าของและวันที่อัปเดตล่าสุดครบทุกแถว",
+      R.remarks.every((m) => !!m.ownerTitle && !!m.lastUpdated));
+
+    const inBody = new Set(statements.map((st) => st.itemCode));
+    const inRemarks = new Set(R.remarks.map((m) => m.itemCode));
+    t("ไม่มีข้อไหนอยู่ทั้งสองที่พร้อมกัน",
+      [...inBody].every((c) => !inRemarks.has(c)));
+    t("เอกสารประกาศตัวว่าเป็นข้อมูลสังเคราะห์", R.meta.synthetic === true);
+
+    // ── ส่งออก ───────────────────────────────────────────────────────────
+    for (const fmt of ["html", "md", "json"]) {
+      const res = await fetch(`${base}/api/report?format=${fmt}`, {
+        headers: { cookie: "greenatm_user=u-mod" }, cache: "no-store",
+      });
+      const text = await res.text();
+      t(`ส่งออก ${fmt} สำเร็จและมีเนื้อหาจริง`,
+        res.status === 200 && text.length > 2000, `${res.status} · ${text.length} ตัวอักษร`);
+      t(`ส่งออก ${fmt} แนบชื่อไฟล์มาให้ดาวน์โหลด`,
+        (res.headers.get("content-disposition") ?? "").includes("attachment"));
+      t(`ไฟล์ ${fmt} มีทะเบียนหมายเหตุอยู่จริง`,
+        fmt === "json" ? text.includes('"remarks"') : text.includes("ทะเบียนหมายเหตุ"));
+      t(`ไฟล์ ${fmt} ติดป้ายว่าเป็นข้อมูลสังเคราะห์`,
+        fmt === "json" ? text.includes('"synthetic": true') : text.includes("สังเคราะห์"));
+    }
+
+    const bad = await as("u-mod", "/api/report?format=docx");
+    t("รูปแบบที่ไม่รองรับ → ปฏิเสธ ไม่ใช่ส่งไฟล์เปล่ามาให้", bad.status >= 400, bad.body?.error);
+
+    /*
+      ไฟล์ HTML ต้องเปิดได้บนเครื่องที่ไม่มีอินเทอร์เน็ต — กฎห้าม asset จาก CDN ภายนอก
+      ตรวจตรง ๆ ว่าไม่มี src/href ที่ชี้ออกนอกเครื่อง
+    */
+    const html = await (await fetch(`${base}/api/report?format=html`, {
+      headers: { cookie: "greenatm_user=u-mod" },
+    })).text();
+    t("ไฟล์ HTML ไม่ดึง asset จากภายนอกเลย — เปิดบนเครือข่ายปิดได้",
+      !/(src|href)\s*=\s*["']https?:/i.test(html));
+  }
+
+  // ── Outbox · คนต้องแก้และทิ้งร่างได้ ไม่ใช่แค่กดอนุมัติ ──────────────────
+  group("§3.3 · คนแก้ร่างได้ ทิ้งได้ ไม่ใช่แค่กดส่ง");
+  {
+    const code = mod.alerts[0].itemCode;
+    const made = await as("u-mod", "/api/outbox", {
+      method: "POST",
+      body: JSON.stringify({
+        alertRule: "A-NOEV", itemCode: code,
+        subject: "หัวเรื่องที่ระบบร่าง", body: "เนื้อความที่ระบบร่างไว้ ยังไม่มีคนตรวจ",
+      }),
+    });
+    t("ร่างข้อความใหม่ได้", made.status === 201, made.body?.error);
+    const id = made.body?.id;
+
+    if (id) {
+      for (const who of ["u-owner3", "u-exec"]) {
+        const r = await as(who, `/api/outbox/${id}`, {
+          method: "PATCH",
+          body: JSON.stringify({ subject: "แอบแก้", body: "แอบแก้เนื้อความให้ยาวพอผ่าน" }),
+        });
+        t(`${who} แก้ร่างข้อความ → 403`, r.status === 403, `ได้ ${r.status}`);
+      }
+
+      const tooShort = await as("u-mod", `/api/outbox/${id}`, {
+        method: "PATCH", body: JSON.stringify({ subject: "ก", body: "สั้น" }),
+      });
+      t("แก้ด้วยข้อความสั้นเกินไป → ปฏิเสธ", tooShort.status === 400, tooShort.body?.error);
+
+      const edited = await as("u-mod", `/api/outbox/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          subject: "หัวเรื่องที่คนแก้แล้ว",
+          body: "เนื้อความที่คนตรวจแล้วแก้เอง ก่อนกดส่งจริง",
+        }),
+      });
+      t("ผู้ดูแลแก้ข้อความก่อนส่งได้", edited.status === 200, edited.body?.error);
+
+      const m = (await state("u-mod")).outbox.find((x) => x.id === id);
+      t("ข้อความเปลี่ยนจริงตามที่แก้", m?.subject === "หัวเรื่องที่คนแก้แล้ว", m?.subject);
+      t("บันทึกไว้ว่าคนเป็นผู้แก้ — แยกออกจากข้อความที่ระบบร่างล้วน",
+        m?.editedBy === "u-mod" && !!m?.editedAt, `${m?.editedBy} · ${m?.editedAt}`);
+      t("แก้แล้วยังไม่ถือว่าส่ง", m?.sentAt === null, m?.sentAt);
+
+      /*
+        ส่งแล้วต้องแก้และลบไม่ได้ — ข้อความที่กดส่งคือบันทึกว่าส่งอะไรออกไป
+        แก้ย้อนหลังได้เมื่อไร บันทึกนั้นก็ใช้อ้างอิงไม่ได้อีกเลย
+      */
+      const sent = await as("u-mod", `/api/outbox/${id}`, { method: "POST" });
+      t("กดส่งได้", sent.status === 200, sent.body?.error);
+      const editAfter = await as("u-mod", `/api/outbox/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({ subject: "แก้หลังส่งไปแล้ว", body: "พยายามแก้ย้อนหลังหลังกดส่ง" }),
+      });
+      t("แก้ร่างที่ส่งไปแล้ว → ปฏิเสธ", editAfter.status === 400, editAfter.body?.error);
+      const delAfter = await as("u-mod", `/api/outbox/${id}`, {
+        method: "DELETE", body: JSON.stringify({}),
+      });
+      t("ลบร่างที่ส่งไปแล้ว → ปฏิเสธ", delAfter.status === 400, delAfter.body?.error);
+
+      // ร่างที่ยังไม่ส่ง ต้องทิ้งได้
+      const throwaway = await as("u-mod", "/api/outbox", {
+        method: "POST",
+        body: JSON.stringify({
+          alertRule: "A-NOEV", itemCode: code,
+          subject: "ร่างที่ไม่ควรส่ง", body: "ร่างผิดรายการ ต้องทิ้งได้ ไม่ใช่ค้างอยู่ตลอดไป",
+        }),
+      });
+      const discarded = await as("u-mod", `/api/outbox/${throwaway.body.id}`, {
+        method: "DELETE", body: JSON.stringify({ reason: "ร่างผิดรายการ" }),
+      });
+      t("ทิ้งร่างที่ยังไม่ส่งได้", discarded.status === 200, discarded.body?.error);
+      t("ร่างที่ทิ้งหายไปจริง",
+        !(await state("u-mod")).outbox.some((x) => x.id === throwaway.body.id));
+
+      const ownerDiscard = await as("u-owner3", `/api/outbox/${id}`, {
+        method: "DELETE", body: JSON.stringify({}),
+      });
+      t("เจ้าของข้อมูลทิ้งร่าง → 403", ownerDiscard.status === 403, `ได้ ${ownerDiscard.status}`);
+    }
+  }
 
   // ── R6 · agent อ่านเอกสารแล้วเสนอชั้น ────────────────────────────────────
   group("R6 · agent เสนอชั้นหลักฐาน — เสนอเท่านั้น ไม่ใช่การยืนยัน");

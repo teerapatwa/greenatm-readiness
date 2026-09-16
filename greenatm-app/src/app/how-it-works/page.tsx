@@ -169,7 +169,7 @@ export default async function HowItWorksPage() {
           <br />
           · แจ้งเตือนร่างลง Outbox เท่านั้น — ในโปรเจกต์ไม่มี credential ของช่องทางใดอยู่เลย
           <br />
-          · ข้อมูลทั้งหมดเป็น SYNTHETIC ตามแบบฟอร์ม {v.meta.formRef}
+          · ข้อมูลทั้งหมดเป็น SYNTHETIC
         </div>
       </div>
     </Shell>

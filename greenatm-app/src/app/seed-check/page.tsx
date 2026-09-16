@@ -25,7 +25,7 @@ export default function SeedCheck() {
     <main className="mx-auto max-w-5xl px-5 py-10">
       <h1 className="text-xl font-semibold">ชุดข้อมูลตัวอย่าง — ตรวจด้วยตา</h1>
       <p className="mt-1 text-[14px] text-[var(--ink2)]">
-        {SEED.meta.note} · อ้างอิงแบบฟอร์ม {SEED.meta.formRef} · วันที่อ้างอิง {SEED.meta.today}
+        {SEED.meta.note} · วันที่อ้างอิง {SEED.meta.today}
       </p>
 
       {/* หัวข้อข่าวที่ซื่อสัตย์คือการนิ่ง ไม่ใช่ค่าเฉลี่ย (PLAN §5.7) */}

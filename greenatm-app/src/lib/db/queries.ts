@@ -371,13 +371,15 @@ export function markSent(id: number, actor: string) {
 
 export function outbox() {
   return (db().prepare(
-    `SELECT id,alert_rule,item_code,to_display,subject,body,created_by,created_at,sent_by,sent_at
+    `SELECT id,alert_rule,item_code,to_display,subject,body,created_by,created_at,
+            sent_by,sent_at,edited_by,edited_at
      FROM outbox ORDER BY id DESC`).all() as Row[])
     .map((r) => ({
       id: n(r.id), alertRule: String(r.alert_rule), itemCode: String(r.item_code),
       toDisplay: String(r.to_display), subject: String(r.subject), body: String(r.body),
       createdBy: String(r.created_by), createdAt: String(r.created_at),
       sentBy: s(r.sent_by), sentAt: s(r.sent_at),
+      editedBy: s(r.edited_by), editedAt: s(r.edited_at),
     }));
 }
 
@@ -779,4 +781,38 @@ export function agentRuns(limit = 20) {
 
 export function agentRunCount(): number {
   return n((db().prepare("SELECT COUNT(*) AS c FROM agent_run").get() as Row).c);
+}
+
+/**
+ * แก้ข้อความที่ระบบร่างไว้ ก่อนคนกดส่ง
+ *
+ * นี่คือสิ่งที่ทำให้ "คนกดส่ง" มีความหมายจริง — ถ้าคนแก้ไม่ได้ ก็เหลือแค่กดอนุมัติ
+ * ซึ่งเป็นสิ่งที่ทั้งระบบอ้างว่าไม่ทำ
+ *
+ * **ร่างที่กดส่งไปแล้วแก้ไม่ได้** — ข้อความนั้นคือบันทึกว่าส่งอะไรออกไป
+ * แก้ย้อนหลังคือการปลอมประวัติ
+ */
+export function editOutbox(id: number, a: { subject: string; body: string; actor: string }) {
+  const r = db().prepare("SELECT subject,body,sent_at FROM outbox WHERE id=?").get(id) as Row | undefined;
+  if (!r) throw new Error("ไม่พบร่างข้อความ");
+  if (r.sent_at) throw new Error("ร่างนี้กดส่งไปแล้ว — แก้ย้อนหลังไม่ได้ เพราะเป็นบันทึกว่าส่งอะไรออกไป");
+  const subject = a.subject.trim();
+  const body = a.body.trim();
+  if (subject.length < 3) throw new Error("หัวเรื่องสั้นเกินไป (ต้อง 3 ตัวอักษรขึ้นไป)");
+  if (body.length < 10) throw new Error("เนื้อความสั้นเกินไป (ต้อง 10 ตัวอักษรขึ้นไป)");
+  db().prepare("UPDATE outbox SET subject=?, body=?, edited_by=?, edited_at=? WHERE id=?")
+    .run(subject, body, a.actor, nowIso(), id);
+  audit(a.actor, "edit_outbox", "outbox", String(id),
+    { subject: s(r.subject), body: s(r.body) }, { subject, body });
+}
+
+/** ทิ้งร่างที่ไม่ควรส่ง — ร่างที่กดส่งไปแล้วลบไม่ได้ */
+export function discardOutbox(id: number, actor: string, reason?: string) {
+  const r = db().prepare("SELECT subject,body,item_code,sent_at FROM outbox WHERE id=?")
+    .get(id) as Row | undefined;
+  if (!r) throw new Error("ไม่พบร่างข้อความ");
+  if (r.sent_at) throw new Error("ร่างนี้กดส่งไปแล้ว — ลบไม่ได้ เพราะเป็นบันทึกว่าส่งอะไรออกไป");
+  db().prepare("DELETE FROM outbox WHERE id=?").run(id);
+  audit(actor, "discard_outbox", "outbox", String(id),
+    { subject: s(r.subject), itemCode: s(r.item_code) }, { reason: reason ?? null });
 }

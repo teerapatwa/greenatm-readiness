@@ -83,7 +83,7 @@ export function TargetDots({ code, achieved, target, lastYear, editable }: {
       </div>
       {target > lastYear && (
         <div style={{ fontSize: 10.5, color: "#166b40", marginTop: 3, fontWeight: 700 }}>
-          สูงกว่าปีที่แล้ว ({lastYear})
+          สูงกว่า Level เดิม ({lastYear})
         </div>
       )}
       {/*

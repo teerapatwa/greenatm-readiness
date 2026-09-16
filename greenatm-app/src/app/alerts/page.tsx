@@ -4,7 +4,8 @@ import { canSee, hasAbility, profileFor } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { Shell } from "@/components/Shell";
 import { Card, Chip, Empty, VERB } from "@/components/ui";
-import { DraftAlertButton, SendButton, SettingField } from "@/components/actions";
+import { DraftAlertButton, SettingField } from "@/components/actions";
+import { OutboxCard } from "@/components/OutboxCard";
 
 export const dynamic = "force-dynamic";
 
@@ -120,31 +121,23 @@ export default async function AlertsPage() {
           <ul style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 8, listStyle: "none", padding: 0 }}>
             {v.outbox.map((m) => (
               <li key={m.id}>
-                <Card tone={m.sentAt ? "ok" : undefined}>
-                  <p style={{ fontSize: 13 }}>
-                    <b>ถึง {v.users.find((x) => x.id === m.toDisplay)?.title ?? m.toDisplay}</b>{" "}
-                    <code style={{ fontSize: 11.5, color: "var(--muted)" }}>{m.alertRule} · {m.itemCode}</code>
-                    {m.sentAt && (
-                      <span style={{ marginLeft: 8, fontSize: 12, color: "var(--accent)" }}>
-                        ✓ กดส่งแล้วโดย {m.sentBy}
-                      </span>
-                    )}
-                  </p>
-                  <p className="mt-1 text-[13px] font-medium">{m.subject}</p>
-                  <pre style={{ marginTop: 4, whiteSpace: "pre-wrap", fontFamily: "inherit", fontSize: 12.5, color: "var(--ink2)" }}>{m.body}</pre>
-                  {!m.sentAt && hasAbility(u.role, "send_outbox") && (
-                    <div style={{ marginTop: 8 }}><SendButton id={m.id} /></div>
-                  )}
-                </Card>
+                <OutboxCard
+                  m={m}
+                  toTitle={v.users.find((x) => x.id === m.toDisplay)?.title ?? m.toDisplay}
+                  canDraft={hasAbility(u.role, "draft_outbox")}
+                  canSend={hasAbility(u.role, "send_outbox")}
+                />
               </li>
             ))}
           </ul>
         )}
         <p style={{ marginTop: 8, background: "var(--fill)", borderRadius: 8, padding: "8px 12px", fontSize: 12.5, color: "var(--ink2)" }}>
           ⚠️ ต้นแบบนี้ <b>ไม่ส่งอีเมล / LINE / Teams จริง</b> — ในโปรเจกต์ไม่มี SMTP หรือ credential
-          ของช่องทางใดอยู่เลย จึงส่งออกนอกเครื่องไม่ได้แม้จะอยากส่ง · และ<b>ไม่มีปุ่มส่งทั้งหมด</b>
+          ของช่องทางใดอยู่เลย จึงส่งออกนอกเครื่องไม่ได้แม้จะอยากส่ง ·
+          &ldquo;กดส่ง&rdquo; คือการบันทึกว่าคนตรวจแล้วและรับผิดชอบข้อความนี้
         </p>
       </section>
+
 
       {hasAbility(u.role, "set_setting") && (
         <section style={{ marginTop: 20 }}>

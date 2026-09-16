@@ -232,7 +232,7 @@ def build():
             "synthetic": True,
             "note": "ข้อมูลสังเคราะห์เพื่อการสาธิตเท่านั้น ไม่ใช่สถานะจริงขององค์กร",
             "today": D(TODAY), "cycle": CYCLE, "cycleDue": D(CYCLE_DUE),
-            "formRef": "วว.นบ209_2569-14",
+            "formRef": "แบบประเมินภายใน",
         },
         "settings": {
             "at_risk_threshold_points": 15, "alert_lead_days": 15, "monthly_due_day": 5,

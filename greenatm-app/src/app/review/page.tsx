@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { currentUser } from "@/lib/auth/session";
-import { canSee, profileFor } from "@/lib/auth/perms";
+import { canSee, hasAbility, profileFor } from "@/lib/auth/perms";
 import { buildView } from "@/lib/view";
 import { auditCount } from "@/lib/db/queries";
 import { Forbidden, Shell } from "@/components/Shell";
@@ -8,6 +8,7 @@ import { Card, StatusPill, TierChip, TierLegend } from "@/components/ui";
 import { TierActions } from "@/components/actions";
 import { ReviewTabs } from "@/components/ReviewTabs";
 import { DemoTools } from "@/components/DemoTools";
+import { OutboxCard } from "@/components/OutboxCard";
 
 export const dynamic = "force-dynamic";
 
@@ -167,29 +168,19 @@ export default async function ReviewPage() {
               ) : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {v.outbox.map((m) => (
-                    <div key={m.id} style={rowStyle}>
-                      <div style={{ fontSize: 13, minWidth: 0 }}>
-                        <b>{m.subject}</b>
-                        <div style={{ fontSize: 12, color: "var(--muted)", marginTop: 2 }}>
-                          ถึง {v.users.find((x) => x.id === m.toDisplay)?.title ?? m.toDisplay}
-                          {" · "}<code>{m.alertRule} · {m.itemCode}</code>
-                        </div>
-                      </div>
-                      {m.sentAt
-                        ? <span style={{ fontSize: 12, color: "var(--accent)", fontWeight: 700 }}>
-                            ✓ กดส่งแล้วโดย {m.sentBy}
-                          </span>
-                        : <Link href="/alerts" className="ga-btn ga-btn-primary"
-                            style={{ textDecoration: "none" }}>
-                            ตรวจแล้ว — ไปกดส่ง
-                          </Link>}
-                    </div>
+                    <OutboxCard
+                      key={m.id}
+                      m={m}
+                      toTitle={v.users.find((x) => x.id === m.toDisplay)?.title ?? m.toDisplay}
+                      canDraft={hasAbility(u.role, "draft_outbox")}
+                      canSend={hasAbility(u.role, "send_outbox")}
+                    />
                   ))}
                 </div>
               )}
               <p style={{ marginTop: 10, marginBottom: 0, fontSize: 12.5, color: "var(--ink2)" }}>
                 ⚠️ ต้นแบบนี้ <b>ไม่ส่งอีเมล / LINE / Teams จริง</b> — ในโปรเจกต์ไม่มี credential
-                ของช่องทางใดอยู่เลย · การกดส่งอยู่ที่หน้าแจ้งเตือน
+                ของช่องทางใดอยู่เลย · &ldquo;กดส่ง&rdquo; คือการบันทึกว่าคนตรวจแล้วและรับผิดชอบข้อความนี้
               </p>
             </div>
           ),

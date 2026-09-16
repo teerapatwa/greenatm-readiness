@@ -37,7 +37,7 @@ export async function Shell({ active, children }: { active: Screen; children: Re
           <div>
             <p className="text-[14.5px] font-semibold leading-tight">Green ATM Tracker</p>
             <p style={{ fontSize: 11.5, color: "var(--muted)" }}>
-              {v.meta.formRef} · รอบ {v.meta.cycle} · อ้างอิงวันที่ {v.meta.today}
+              รอบ {v.meta.cycle} · อ้างอิงวันที่ {v.meta.today}
             </p>
           </div>
         </div>
@@ -120,6 +120,22 @@ export async function Shell({ active, children }: { active: Screen; children: Re
             ยิง request ตรงก็ได้ 403
           </p>
 
+          {/*
+            เอกสารรอบเดือนเข้าจากท้าย sidebar เหมือนหน้าหลักการทำงาน
+            ไม่นับในเมนู 1–6 ที่ทีมตกลงกันไว้ จึงไม่กระทบโครงเมนูเดิม
+          */}
+          {canSee(u.role, "trend") && (
+            <div style={{ marginTop: 18, padding: "0 16px" }}>
+              <Link href="/report"
+                style={{ fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
+                เอกสารสรุปรอบเดือน →
+              </Link>
+              <p style={{ margin: "3px 0 0", fontSize: 11, color: "var(--muted)" }}>
+                ทุกข้อความมีการอ้างอิง · สิ่งที่ไม่มีหลักฐานขึ้นทะเบียนหมายเหตุ
+              </p>
+            </div>
+          )}
+
           <div style={{ marginTop: 18, padding: "0 16px" }}>
             <Link href="/how-it-works"
               style={{ fontSize: 12, fontWeight: 700, textDecoration: "none" }}>
@@ -135,7 +151,7 @@ export async function Shell({ active, children }: { active: Screen; children: Re
       </div>
 
       <footer style={{ borderTop: "1px solid var(--line)", padding: "12px 20px", fontSize: 11.5, color: "var(--muted)" }}>
-        ข้อมูลสังเคราะห์ทั้งหมด · โครงตาม {v.meta.formRef} ·
+        ข้อมูลสังเคราะห์ทั้งหมด ·
         กฎทุกข้อคำนวณด้วยโค้ดใน <code>src/lib/data/rules.ts</code> — ไม่มีการเรียกโมเดลในเส้นทางเหล่านี้
       </footer>
     </div>
